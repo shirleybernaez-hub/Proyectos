@@ -19,13 +19,13 @@
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
+        width: 100%;
     }
 
     header {
-        /* Definimos un alto mínimo y padding para asegurar el espacio */
         width: 100%;
         padding-top: 60px;
-        padding-bottom: 40px; 
+        padding-bottom: 20px; 
         text-align: center;
     }
 
@@ -35,11 +35,11 @@
     }
 
     main {
-        /* Esta es la clave: el margin-top separa el bloque del grid del header */
         width: 100%;
         display: flex;
-        justify-content: center;
-        margin-top: 50px; /* <--- AJUSTA ESTE NÚMERO PARA MÁS O MENOS ESPACIO */
+        flex-direction: column;
+        align-items: center;
+        margin-top: 80px; 
         padding-bottom: 80px;
     }
 
@@ -63,16 +63,24 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+        box-sizing: border-box;
     }
 
     .item-large { grid-column: span 2; grid-row: span 2; }
     .item-wide { grid-column: span 2; }
 
-    @media (max-width: 768px) {
-        header { padding-top: 40px; padding-bottom: 20px; }
-        main { margin-top: 30px; }
-        .bento-grid { grid-template-columns: 1fr; width: 85%; }
-        .item-large, .item-wide { grid-column: span 1; grid-row: span 1; }
+  @media (max-width: 768px) {
+        header { padding-top: 40px; }
+        main { margin-top: 40px; }
+        .bento-grid { 
+            grid-template-columns: 1fr; 
+            width: 85%; 
+        }
+        .item-large, .item-wide { 
+            grid-column: span 1; 
+            grid-row: span 1; 
+        }
+        .bento-item { min-height: 200px; }
     }
 </style>
 </head>

@@ -4,60 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brandbook | Caracas Bakery</title>
-    <style>
-        :root {
-            --bg-color: #FFFFFF;
-            --accent: #EDE2D5; 
-            --text-main: #000000;
-        }
+   <style>
+    .cintillo-seccion {
+        width: 100%;
+        background-color: var(--accent);
+        padding: 80px 0; /* Aumentamos el padding para un look más premium */
+        text-align: center;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        position: relative; /* Necesario para ubicar el botón adentro */
+    }
 
-        body {
-            background-color: var(--bg-color);
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-main);
-        }
+    .btn-volver {
+        position: absolute; /* Lo sacamos del flujo normal */
+        top: 20px;          /* Distancia desde arriba */
+        left: 30px;         /* Distancia desde la izquierda */
+        text-decoration: none;
+        color: #666;
+        font-size: 0.8rem;
+        text-transform: none;
+        transition: color 0.3s ease;
+    }
 
-        .cintillo-seccion {
-            width: 100%;
-            background-color: var(--accent);
-            padding: 20px 0 60px 0; /* Ajustado para dar espacio al botón arriba */
-            text-align: center;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            position: relative;
-        }
+    .btn-volver:hover {
+        color: #000;
+    }
 
-        .btn-volver {
-            display: inline-block;
-            margin-bottom: 30px; /* Espacio entre el botón y el título H1 */
-            text-decoration: none;
-            color: #666;
-            font-size: 0.8rem;
-            text-transform: none; 
-            transition: color 0.3s ease;
-        }
+    .cintillo-seccion h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        /* El título se queda centrado automáticamente */
+    }
+</style>
 
-        .btn-volver:hover {
-            color: #000;
-        }
-
-        .cintillo-seccion h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        .contenido-recursos {
-            max-width: 1100px;
-            margin: 60px auto;
-            padding: 0 20px;
-            text-align: center;
-        }
-    </style>
-</head>
 <body>
+    <header class="cintillo-seccion">
+        <a href="index.html" class="btn-volver">← Volver al inicio</a>
+        <h1>Brandbook</h1> 
+    </header>
+    <!-- ... resto del contenido ... -->
+</body>
 
     <header class="cintillo-seccion">
         <!-- El botón ahora vive dentro del cintillo -->

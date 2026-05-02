@@ -15,13 +15,11 @@
         margin: 0;
         padding: 0;
         font-family: 'Inter', sans-serif;
-        display: block; /* Volvemos a bloque para estabilidad */
-        width: 100%;
     }
 
     header {
         width: 100%;
-        padding: 80px 0 60px 0; /* Espacio real arriba y abajo del logo */
+        padding: 80px 0 60px 0;
         text-align: center;
     }
 
@@ -30,10 +28,9 @@
         width: auto;
     }
 
-    /* El contenedor que centra TODO el grid */
     .grid-container {
         max-width: 1100px;
-        margin: 0 auto; /* Centrado horizontal automático */
+        margin: 0 auto;
         padding: 0 20px 80px 20px;
     }
 
@@ -52,30 +49,40 @@
         color: #000;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+        /* Ubica el contenido al final (abajo) y a la derecha */
+        justify-content: flex-end;
+        align-items: flex-end;
+        text-align: right;
         box-sizing: border-box;
+        transition: transform 0.3s ease;
     }
 
-    /* Clases de tamaño para el Bento */
+    .bento-item h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .bento-item p {
+        margin: 5px 0 0 0;
+        font-size: 0.85rem;
+        opacity: 0.6;
+    }
+
+    /* Jerarquía de tamaños */
     .item-large { grid-column: span 2; grid-row: span 2; }
     .item-wide { grid-column: span 2; }
 
-    /* Ajustes para Mobile */
     @media (max-width: 768px) {
         header { padding: 60px 0 40px 0; }
-        .bento-grid {
-            grid-template-columns: 1fr; /* Una sola columna */
-            grid-auto-rows: auto;
-        }
-        .item-large, .item-wide { 
-            grid-column: span 1; 
-            grid-row: span 1; 
-        }
+        .bento-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
+        .item-large, .item-wide { grid-column: span 1; grid-row: span 1; }
         .bento-item { min-height: 200px; }
     }
 </style>
+
 </head>
 <body>
 
@@ -83,12 +90,39 @@
     <img src="recursos/logo-caracas-bakery.png" class="logo-bakery">
 </header>
 
-<div class="grid-container"> <!-- Asegúrate de que esta línea exista -->
+<div class="grid-container">
     <main class="bento-grid">
-        <a href="#" class="bento-item item-large"> ... </a>
-        <a href="#" class="bento-item"> ... </a>
-        <a href="#" class="bento-item"> ... </a>
-        <a href="#" class="bento-item item-wide"> ... </a>
+        
+        <!-- 1. BRANDBOOK (Nueva) -->
+        <a href="recursos/brandbook.pdf" download class="bento-item item-large">
+            <h3>BRANDBOOK</h3>
+            <p>Manual de identidad completo</p>
+        </a>
+
+        <!-- 2. LOGOTIPOS -->
+        <a href="recursos/logos.zip" download class="bento-item">
+            <h3>LOGOTIPOS</h3>
+            <p>Descargar variantes (PNG, SVG, JPG)</p>
+        </a>
+
+        <!-- 3. MENÚ -->
+        <a href="recursos/menu.pdf" download class="bento-item">
+            <h3>MENÚ</h3>
+            <p>Cartas y Digital</p>
+        </a>
+
+        <!-- 4. STICKERS -->
+        <a href="recursos/stickers.zip" download class="bento-item">
+            <h3>STICKERS</h3>
+            <p>Diseños para empaque</p>
+        </a>
+
+        <!-- 5. PATRONES -->
+        <a href="recursos/patrones.zip" download class="bento-item item-wide">
+            <h3>PATRONES</h3>
+            <p>Texturas de marca e identidad visual</p>
+        </a>
+
     </main>
 </div>
 

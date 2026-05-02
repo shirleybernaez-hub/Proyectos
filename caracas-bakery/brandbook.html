@@ -4,50 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brandbook | Caracas Bakery</title>
-   <style>
-    .cintillo-seccion {
-        width: 100%;
-        background-color: var(--accent);
-        padding: 80px 0; /* Aumentamos el padding para un look más premium */
-        text-align: center;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
-        position: relative; /* Necesario para ubicar el botón adentro */
-    }
+    <style>
+        :root {
+            --bg-color: #FFFFFF;
+            --accent: #EDE2D5; /* Color crema seleccionado para el cintillo */
+            --text-main: #000000;
+            --text-secondary: #666666;
+        }
 
-    .btn-volver {
-        position: absolute; /* Lo sacamos del flujo normal */
-        top: 20px;          /* Distancia desde arriba */
-        left: 30px;         /* Distancia desde la izquierda */
-        text-decoration: none;
-        color: #666;
-        font-size: 0.8rem;
-        text-transform: none;
-        transition: color 0.3s ease;
-    }
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+        }
 
-    .btn-volver:hover {
-        color: #000;
-    }
+        /* Contenedor del cintillo */
+        .cintillo-seccion {
+            width: 100%;
+            background-color: var(--accent);
+            padding: 100px 0; /* Espaciado vertical para elegancia */
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: relative; /* Necesario para posicionar el botón adentro */
+        }
 
-    .cintillo-seccion h1 {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        /* El título se queda centrado automáticamente */
-    }
-</style>
+        /* Botón Volver posicionado arriba a la izquierda */
+        .btn-volver {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: none; /* Respeta la mayúscula inicial manual */
+            transition: color 0.3s ease;
+        }
 
+        .btn-volver:hover {
+            color: var(--text-main);
+        }
+
+        /* Título del cintillo */
+        .cintillo-seccion h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        /* Área de contenido principal */
+        .contenido-recursos {
+            max-width: 1100px;
+            margin: 80px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .contenido-recursos p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Ajustes para móviles */
+        @media (max-width: 768px) {
+            .cintillo-seccion { padding: 80px 0; }
+            .btn-volver { left: 20px; top: 20px; }
+            .cintillo-seccion h1 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
 <body>
+
     <header class="cintillo-seccion">
+        <!-- El botón "Volver al inicio" con la primera letra en mayúscula -->
         <a href="index.html" class="btn-volver">← Volver al inicio</a>
         <h1>Brandbook</h1> 
     </header>
 
-
     <main class="contenido-recursos">
         <p>Aquí irán los visualizadores y enlaces de descarga del Brandbook.</p>
+        <!-- En esta sección podrás agregar imágenes o PDFs más adelante -->
     </main>
 
 </body>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Assets | Caracas Bakery</title>
+    <style>
+        :root {
+            --bg-color: #FFFFFF; /* Fondo blanco como pediste */
+            --text-color: #000000;
+            --accent: #f4f4f4;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Animación de entrada para el logo */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            padding: 60px 20px;
+            animation: fadeInDown 1.2s ease-out;
+        }
+
+        .logo-bakery {
+            max-height: 80px;
+            /* Aquí irá tu logo animado o el logo oficial */
+        }
+
+        /* Estructura Bento Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 250px);
+            gap: 15px;
+            width: 90%;
+            max-width: 1100px;
+            padding-bottom: 80px;
+        }
+
+        .bento-item {
+            background-color: var(--accent);
+            border-radius: 20px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        /* Variaciones de tamaño para el estilo Bento */
+        .item-large { grid-column: span 2; grid-row: span 2; } /* Cuadro grande */
+        .item-wide { grid-column: span 2; } /* Cuadro horizontal */
+
+        .bento-item h3 { margin: 0; font-size: 1.2rem; font-weight: 600; }
+        .bento-item p { margin: 5px 0 0 0; font-size: 0.85rem; opacity: 0.6; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- Aquí puedes colocar un GIF animado o el SVG de Caracas Bakery -->
+        <img src="recursos/logo-caracas-bakery.png" alt="Caracas Bakery" class="logo-bakery">
+
+    <main class="bento-grid">
+        
+        <!-- Cuadro Grande: Logos -->
+        <a href="recursos/logos.zip" download class="bento-item item-large">
+            <h3>LOGOTIPOS</h3>
+            <p>Descargar variantes (PNG, SVG, JPG)</p>
+        </a>
+
+        <!-- Cuadro: Menú -->
+        <a href="recursos/menu.pdf" download class="bento-item">
+            <h3>MENÚ</h3>
+            <p>Cartas y Digital</p>
+        </a>
+
+        <!-- Cuadro: Stickers -->
+        <a href="recursos/stickers.zip" download class="bento-item">
+            <h3>STICKERS</h3>
+            <p>Diseños para empaque</p>
+        </a>
+
+        <!-- Cuadro Horizontal: Patrones -->
+        <a href="recursos/patrones.zip" download class="bento-item item-wide">
+            <h3>PATRONES</h3>
+            <p>Texturas de marca e identidad visual</p>
+        </a>
+
+    </main>
+
+</body>
+</html>

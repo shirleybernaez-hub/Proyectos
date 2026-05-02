@@ -18,21 +18,27 @@
             color: var(--text-main);
         }
 
+        .cintillo-seccion {
+            width: 100%;
+            background-color: var(--accent);
+            padding: 20px 0 60px 0; /* Ajustado para dar espacio al botón arriba */
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+        }
+
         .btn-volver {
             display: inline-block;
-            margin: 20px;
+            margin-bottom: 30px; /* Espacio entre el botón y el título H1 */
             text-decoration: none;
             color: #666;
             font-size: 0.8rem;
             text-transform: none; 
+            transition: color 0.3s ease;
         }
 
-        .cintillo-seccion {
-            width: 100%;
-            background-color: var(--accent);
-            padding: 60px 0;
-            text-align: center;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+        .btn-volver:hover {
+            color: #000;
         }
 
         .cintillo-seccion h1 {
@@ -53,9 +59,9 @@
 </head>
 <body>
 
-    <a href="index.html" class="btn-volver">← Volver al inicio</a>
-
     <header class="cintillo-seccion">
+        <!-- El botón ahora vive dentro del cintillo -->
+        <a href="index.html" class="btn-volver">← Volver al inicio</a>
         <h1>Brandbook</h1> 
     </header>
 

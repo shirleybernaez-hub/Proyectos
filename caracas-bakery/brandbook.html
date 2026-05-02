@@ -7,7 +7,7 @@
     <style>
         :root {
             --bg-color: #FFFFFF;
-            --accent: #EDE2D5; /* Color crema seleccionado para el cintillo */
+            --accent: #EDE2D5; /* Color arena/crema */
             --text-main: #000000;
             --text-secondary: #666666;
         }
@@ -20,33 +20,15 @@
             color: var(--text-main);
         }
 
-        /* Contenedor del cintillo */
+        /* Cintillo centrado */
         .cintillo-seccion {
             width: 100%;
             background-color: var(--accent);
-            padding: 100px 0; /* Espaciado vertical para elegancia */
+            padding: 80px 0;
             text-align: center;
             border-bottom: 1px solid rgba(0,0,0,0.05);
-            position: relative; /* Necesario para posicionar el botón adentro */
         }
 
-        /* Botón Volver posicionado arriba a la izquierda */
-        .btn-volver {
-            position: absolute;
-            top: 25px;
-            left: 30px;
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-transform: none; /* Respeta la mayúscula inicial manual */
-            transition: color 0.3s ease;
-        }
-
-        .btn-volver:hover {
-            color: var(--text-main);
-        }
-
-        /* Título del cintillo */
         .cintillo-seccion h1 {
             margin: 0;
             font-size: 1.8rem;
@@ -55,24 +37,37 @@
             letter-spacing: 4px;
         }
 
-        /* Área de contenido principal */
+        /* Contenedor para el botón debajo del cintillo */
+        .nav-container {
+            max-width: 1100px;
+            margin: 20px auto 0 auto; /* 20px de espacio debajo del cintillo */
+            padding: 0 20px;
+            display: flex;
+            justify-content: flex-start; /* Alineado a la izquierda */
+        }
+
+        .btn-volver {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: none; /* Primera letra en mayúscula manual */
+            transition: color 0.3s ease;
+        }
+
+        .btn-volver:hover {
+            color: var(--text-main);
+        }
+
+        /* Área de contenido */
         .contenido-recursos {
             max-width: 1100px;
-            margin: 80px auto;
+            margin: 60px auto;
             padding: 0 20px;
             text-align: center;
         }
 
-        .contenido-recursos p {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* Ajustes para móviles */
         @media (max-width: 768px) {
-            .cintillo-seccion { padding: 80px 0; }
-            .btn-volver { left: 20px; top: 20px; }
+            .cintillo-seccion { padding: 60px 0; }
             .cintillo-seccion h1 { font-size: 1.4rem; }
         }
     </style>
@@ -80,14 +75,16 @@
 <body>
 
     <header class="cintillo-seccion">
-        <!-- El botón "Volver al inicio" con la primera letra en mayúscula -->
-        <a href="index.html" class="btn-volver">← Volver al inicio</a>
         <h1>Brandbook</h1> 
     </header>
 
+    <!-- El botón ahora vive aquí, justo debajo del cintillo -->
+    <nav class="nav-container">
+        <a href="index.html" class="btn-volver">← Volver al inicio</a>
+    </nav>
+
     <main class="contenido-recursos">
         <p>Aquí irán los visualizadores y enlaces de descarga del Brandbook.</p>
-        <!-- En esta sección podrás agregar imágenes o PDFs más adelante -->
     </main>
 
 </body>

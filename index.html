@@ -4,112 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Onshift | Estrategia & Diseño</title>
-    <style>
-        .card-tag {
-    font-size: 11px;
-    letter-spacing: 3px; /* Esto le da el aire premium que buscamos */
-    font-weight: 600;
-    color: #ffffff; /* Blanco puro para que resalte */
-    margin-bottom: 20px;
-}
-        /* Estética Minimalista y Alto Contraste */
-        :root {
-            --bg-color: #000000;
-            --card-bg: #0a0a0a;
-            --text-main: #FFFFFF;
-            --text-secondary: #888888;
-            --border-color: #222222;
-            --accent-color: #ffffff;
-        }
+   <style>
+    :root {
+        --bg-color: #FFFFFF;
+        --text-color: #000000;
+        --accent: #f4f4f4;
+        --border-radius: 20px;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
 
+    /* Animación de entrada para el logo */
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    header {
+        padding: 40px 20px 20px 20px; /* Reducido para móvil */
+        animation: fadeInDown 1.2s ease-out;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .logo-bakery {
+        max-width: 100%; /* Asegura que no se desborde */
+        height: auto;
+        max-height: 80px;
+    }
+
+    /* Estructura Bento Grid Base (Escritorio) */
+    .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 250px; /* Altura automática de fila */
+        gap: 15px;
+        width: 90%;
+        max-width: 1100px;
+        padding-bottom: 60px;
+        box-sizing: border-box;
+    }
+
+    .bento-item {
+        background-color: var(--accent);
+        border-radius: var(--border-radius);
+        padding: 30px;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-sizing: border-box; /* Crucial para el padding */
+    }
+
+    .bento-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    /* Variaciones de tamaño para el estilo Bento (Escritorio) */
+    .item-large { grid-column: span 2; grid-row: span 2; }
+    .item-wide { grid-column: span 2; }
+
+    .bento-item h3 {
+        margin: 0;
+        font-size: 1.3rem; /* Ligeramente más grande */
+        font-weight: 700; /* Más grosor */
+        letter-spacing: 1px;
+    }
+
+    .bento-item p {
+        margin: 8px 0 0 0;
+        font-size: 0.9rem; /* Ligeramente más grande */
+        opacity: 0.7;
+        line-height: 1.4;
+    }
+
+    /* ========================================= */
+    /*   MEDIA QUERY PARA MOBILE (RESPONSIVE)    */
+    /* ========================================= */
+    @media (max-width: 768px) {
         header {
-            padding: 100px 20px 60px 20px;
-            text-align: center;
-            width: 100%;
+            padding: 30px 15px 15px 15px;
         }
 
-        /* Ajuste según Captura de pantalla 2026-05-02 a la(s) 2.57.59 p. m..png */
-        .logo-onshift {
-            max-height: 50px;
-            width: auto;
-            margin-bottom: 20px;
-            /* Si tu logo es oscuro, esta línea lo invierte a blanco para el fondo negro */
-            filter: brightness(0) invert(1); 
+        .logo-bakery {
+            max-height: 60px; /* Logo más pequeño en móvil */
         }
 
-        .linea-separadora {
-            width: 40px;
-            height: 1px;
-            background-color: var(--text-secondary);
-            margin: 0 auto 40px auto;
+        .bento-grid {
+            /* Cambiamos a 1 columna para móvil */
+            grid-template-columns: 1fr;
+            /* Altura automática basada en contenido */
+            grid-auto-rows: auto;
+            gap: 15px;
+            width: 95%; /* Un poco más ancho en móvil */
+            padding-bottom: 40px;
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            width: 90%;
-            max-width: 1100px;
-            padding-bottom: 100px;
+        /* Desactivamos los "spans" de escritorio para móvil */
+        .item-large, .item-wide {
+            grid-column: span 1;
+            grid-row: span 1;
         }
 
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 45px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        .bento-item {
+            padding: 25px; /* Padding ajustado */
+            min-height: 180px; /* Altura mínima para que no queden muy chatos */
+            justify-content: flex-end; /* Mantiene contenido abajo */
         }
 
-        .card:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-5px);
+        .bento-item h3 {
+            font-size: 1.2rem;
         }
 
-        .card-tag {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
+        .bento-item p {
+            font-size: 0.85rem;
         }
-
-        .card h2 {
-            font-size: 1.25rem;
-            font-weight: 300;
-            letter-spacing: 1px;
-            margin: 0 0 15px 0;
-            text-transform: uppercase;
-        }
-
-        .card p {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            margin: 0;
-        }
-
-        @media (max-width: 600px) {
-            header { padding: 60px 20px; }
-            .grid-container { grid-template-columns: 1fr; }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
 

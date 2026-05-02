@@ -7,9 +7,10 @@
     <style>
         :root {
             --bg-color: #FFFFFF;
-            --accent: #EDE2D5; /* Color arena/crema */
+            --accent: #EDE2D5; 
             --text-main: #000000;
             --text-secondary: #666666;
+            --cta-color: #1A1A1A;
         }
 
         body {
@@ -20,7 +21,6 @@
             color: var(--text-main);
         }
 
-        /* Cintillo centrado */
         .cintillo-seccion {
             width: 100%;
             background-color: var(--accent);
@@ -37,38 +37,91 @@
             letter-spacing: 4px;
         }
 
-        /* Contenedor para el botón debajo del cintillo */
         .nav-container {
             max-width: 1100px;
-            margin: 10px auto 0 auto; /* Reducido de 20px a 10px */
+            margin: 10px auto 0 auto;
             padding: 0 20px;
             display: flex;
-            justify-content: flex-start;
         }
 
         .btn-volver {
             text-decoration: none;
             color: var(--text-secondary);
             font-size: 0.85rem;
-            text-transform: none; /* Primera letra en mayúscula manual */
             transition: color 0.3s ease;
         }
 
-        .btn-volver:hover {
-            color: var(--text-main);
-        }
-
-        /* Área de contenido */
-        .contenido-recursos {
-            max-width: 1100px;
+        /* Sección de Texto Estratégico */
+        .intro-texto {
+            max-width: 800px;
             margin: 60px auto;
             padding: 0 20px;
+            text-align: left;
+        }
+
+        .intro-texto h2 { font-size: 1.2rem; margin-bottom: 20px; }
+        .intro-texto p { line-height: 1.8; color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* Visor de PDF */
+        .pdf-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #eee;
+            border-radius: 12px;
+        }
+
+        .cta-download {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: var(--cta-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Caja de Comentarios */
+        .comentarios-section {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 40px 20px;
+            background-color: #f9f9f9;
+            border-radius: 16px;
             text-align: center;
         }
 
+        .comentarios-section textarea {
+            width: 100%;
+            height: 100px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
         @media (max-width: 768px) {
-            .cintillo-seccion { padding: 60px 0; }
-            .cintillo-seccion h1 { font-size: 1.4rem; }
+            .pdf-viewer { height: 400px; }
         }
     </style>
 </head>
@@ -78,14 +131,45 @@
         <h1>Brandbook</h1> 
     </header>
 
-    <!-- El botón ahora vive aquí, justo debajo del cintillo -->
     <nav class="nav-container">
         <a href="index.html" class="btn-volver">← Volver al inicio</a>
     </nav>
 
-    <main class="contenido-recursos">
-        <p>Aquí irán los visualizadores y enlaces de descarga del Brandbook.</p>
-    </main>
+    <!-- 1. Párrafo Introductorio -->
+    <section class="intro-texto">
+        <h2>La Esencia de Nuestra Identidad</h2>
+        <p>
+            El Brandbook de <strong>Caracas Bakery</strong> es el ADN visual y narrativo de la marca. Más que un manual, es la guía que asegura la evolución de Caracas Bakery. Tener este documento asegura el buen funcionamiento de la marca en cualquiera de sus aplicaciones.
+
+    <!-- 2. Visor de PDF y Descarga -->
+    <section class="pdf-container">
+        <iframe src="recursos/brandbook.pdf" class="pdf-viewer"></iframe>
+        <div style="text-align: center;">
+            <a href="recursos/brandbook.pdf" download class="cta-download">Descargar Brandbook (PDF)</a>
+        </div>
+    </section>
+
+    <!-- 3. Caja de Comentarios a WhatsApp -->
+    <section class="comentarios-section">
+        <h3>¿Tienes alguna sugerencia sobre la marca?</h3>
+        <p>Escribe tus comentarios y los recibiré directamente.</p>
+        <textarea id="mensajeInput" placeholder="Escribe aquí tus sugerencias o comentarios..."></textarea>
+        <button class="btn-whatsapp" onclick="enviarWhatsApp()">Enviar a WhatsApp</button>
+    </section>
+
+    <script>
+        function enviarWhatsApp() {
+            const mensaje = document.getElementById('mensajeInput').value;
+            const telefono = "584242623012"; 
+            const url = `https://wa.me/${telefono}?text=${encodeURIComponent('Sugerencia Caracas Bakery: ' + mensaje)}`;
+            
+            if(mensaje.trim() !== "") {
+                window.open(url, '_blank');
+            } else {
+                alert("Por favor, escribe un mensaje antes de enviar.");
+            }
+        }
+    </script>
 
 </body>
 </html>

@@ -17,7 +17,7 @@
         font-family: 'Inter', sans-serif;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: center; /* Centra el header y el main */
         min-height: 100vh;
         width: 100%;
     }
@@ -37,9 +37,9 @@
     main {
         width: 100%;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 80px; 
+        flex-direction: column; /* Cambiado a column para facilitar el centrado */
+        align-items: center;    /* ESTO centra las cards horizontalmente */
+        margin-top: 80px;       /* Mantiene el espacio con el logo */
         padding-bottom: 80px;
     }
 
@@ -50,6 +50,7 @@
         gap: 20px;
         width: 90%;
         max-width: 1100px;
+        margin: 0 auto;         /* Refuerza el centrado */
     }
 
     .bento-item {
@@ -69,7 +70,7 @@
     .item-large { grid-column: span 2; grid-row: span 2; }
     .item-wide { grid-column: span 2; }
 
-  @media (max-width: 768px) {
+    @media (max-width: 768px) {
         header { padding-top: 40px; }
         main { margin-top: 40px; }
         .bento-grid { 

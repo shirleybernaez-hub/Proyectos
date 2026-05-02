@@ -3,44 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ONSHIFT | Shift your brand</title>
+    <title>Onshift | Estrategia & Diseño</title>
     <style>
+        /* Estética Minimalista y Alto Contraste */
+        :root {
+            --bg-color: #000000;
+            --card-bg: #0a0a0a;
+            --text-main: #FFFFFF;
+            --text-secondary: #888888;
+            --border-color: #222222;
+            --accent-color: #ffffff;
+        }
+
         body {
-            background-color: #050505;
-            color: #ffffff;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 100px 20px 60px 20px;
             text-align: center;
+            width: 100%;
         }
-        h1 {
-            font-size: 3rem;
-            letter-spacing: 0.2em;
-            font-weight: 200;
-            margin-bottom: 10px;
-            text-transform: uppercase;
+
+        /* Ajuste según Captura de pantalla 2026-05-02 a la(s) 2.57.59 p. m..png */
+        .logo-onshift {
+            max-height: 50px;
+            width: auto;
+            margin-bottom: 20px;
+            /* Si tu logo es oscuro, esta línea lo invierte a blanco para el fondo negro */
+            filter: brightness(0) invert(1); 
         }
-        p {
-            font-size: 0.9rem;
-            letter-spacing: 0.4em;
-            color: #888;
-            text-transform: uppercase;
-        }
-        .line {
-            width: 50px;
+
+        .linea-separadora {
+            width: 40px;
             height: 1px;
-            background-color: #444;
-            margin: 20px 0;
+            background-color: var(--text-secondary);
+            margin: 0 auto 40px auto;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            width: 90%;
+            max-width: 1100px;
+            padding-bottom: 100px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 45px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        .card-tag {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 60px 20px; }
+            .grid-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <h1>ONSHIFT</h1>
-    <div class="line"></div>
-    <p>Próximamente</p>
+
+    <header>
+        <!-- Nombre del archivo verificado en tu carpeta local -->
+        <img src="Logo Onshift.png" alt="Onshift Logo" class="logo-onshift">
+        <div class="linea-separadora"></div>
+    </header>
+
+    <main class="grid-container">
+        
+        <!-- Tarjeta Caracas Bakery -->
+        <a href="#" class="card">
+            <div>
+                <span class="card-tag">Branding / Gastronomía</span>
+                <h2>Caracas Bakery</h2>
+                <p>Evolución de identidad visual y narrativa de marca enfocada en la maestría de la masa.</p>
+            </div>
+        </a>
+
+        <!-- Tarjeta Construtasking -->
+        <a href="#" class="card">
+            <div>
+                <span class="card-tag">Industrial / Tech</span>
+                <h2>Construtasking</h2>
+                <p>Presencia digital y diseño estratégico para infraestructura y tecnología Fuji.</p>
+            </div>
+        </a>
+
+        <!-- Tarjeta Proyecto Extra -->
+        <a href="#" class="card">
+            <div>
+                <span class="card-tag">Estrategia / Digital</span>
+                <h2>Thinkphant</h2>
+                <p>Contenido estratégico y despliegue de marca en plataformas digitales.</p>
+            </div>
+        </a>
+
+    </main>
+
 </body>
 </html>

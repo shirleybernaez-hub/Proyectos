@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brand Assets | Caracas Bakery</title>
-    <style>
+   <style>
     :root {
         --bg-color: #FFFFFF;
         --text-color: #000000;
@@ -17,59 +17,85 @@
         font-family: 'Inter', sans-serif;
         margin: 0;
         padding: 0;
+        /* Centrado absoluto */
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        width: 100%;
     }
 
     header {
-        /* Se aumentó el tercer valor a 60px para dar más espacio abajo */
-        padding: 40px 20px 60px 20px; 
+        /* Espacio generoso para que el logo respire */
+        padding: 80px 20px 60px 20px; 
         text-align: center;
         width: 100%;
         box-sizing: border-box;
     }
 
     .logo-bakery {
-        max-height: 80px;
+        max-height: 100px; /* Un poco más grande para que se aprecie el detalle */
         height: auto;
+        width: auto;
+    }
+
+    /* Contenedor principal centrado */
+    main {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding-bottom: 80px;
     }
 
     .bento-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-auto-rows: 250px;
-        gap: 15px;
+        gap: 20px;
         width: 90%;
         max-width: 1100px;
-        padding-bottom: 60px;
+        margin: 0 auto; /* Centra el grid dentro de main */
     }
 
     .bento-item {
         background-color: var(--accent);
-        border-radius: 20px;
-        padding: 30px;
+        border-radius: 24px;
+        padding: 40px;
         text-decoration: none;
         color: inherit;
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: center; /* Texto centrado verticalmente en la card */
+        align-items: center;    /* Texto centrado horizontalmente en la card */
+        text-align: center;
         transition: transform 0.3s ease;
     }
 
-    /* Estilos Desktop */
     .item-large { grid-column: span 2; grid-row: span 2; }
     .item-wide { grid-column: span 2; }
 
-    /* Estilos Mobile */
+    /* Estilos Mobile Optimizado */
     @media (max-width: 768px) {
-        header { padding: 30px 15px 40px 15px; } /* Espacio ajustado para móvil */
-        .bento-grid {
-            grid-template-columns: 1fr;
-            grid-auto-rows: auto;
+        header { 
+            padding: 60px 20px 40px 20px; 
         }
-        .item-large, .item-wide { grid-column: span 1; grid-row: span 1; }
-        .bento-item { min-height: 180px; }
+        
+        .bento-grid {
+            grid-template-columns: 1fr; /* Una sola columna */
+            grid-auto-rows: auto;
+            width: 85%;
+        }
+        
+        .item-large, .item-wide { 
+            grid-column: span 1; 
+            grid-row: span 1; 
+        }
+        
+        .bento-item { 
+            min-height: 200px; 
+            padding: 30px;
+        }
     }
 </style>
 </head>

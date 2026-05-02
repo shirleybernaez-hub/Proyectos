@@ -5,59 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brandbook | Caracas Bakery</title>
     <style>
-    :root {
-        --bg-color: #FFFFFF;
-        --accent: #EDE2D5; /* Color crema para el cintillo */
-        --text-main: #000000;
-    }
+        :root {
+            --bg-color: #FFFFFF;
+            --accent: #EDE2D5; 
+            --text-main: #000000;
+        }
 
-    body {
-        background-color: var(--bg-color);
-        margin: 0;
-        font-family: 'Inter', sans-serif;
-    }
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+        }
 
-    /* Aquí es donde deben vivir los estilos del botón */
-    .btn-volver {
-        display: inline-block;
-        margin: 20px;
-        text-decoration: none;
-        color: #666;
-        font-size: 0.8rem;
-        text-transform: none; /* Esto permite la mayúscula inicial */
-    }
+        .btn-volver {
+            display: inline-block;
+            margin: 20px;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.8rem;
+            text-transform: none; 
+        }
 
-    .cintillo-seccion {
-        width: 100%;
-        background-color: var(--accent);
-        padding: 60px 0;
-        text-align: center;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
+        .cintillo-seccion {
+            width: 100%;
+            background-color: var(--accent);
+            padding: 60px 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
 
-    .cintillo-seccion h1 {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-    }
-</style>
+        .cintillo-seccion h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
 
-<body>
-    <!-- Texto con la primera en mayúscula -->
-    <a href="index.html" class="btn-volver">← Volver al inicio</a>
-
-    <header class="cintillo-seccion">
-        <h1>Brandbook</h1>
-    </header>
-    
-    <!-- Resto del contenido -->
-
+        .contenido-recursos {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
-    
+    <a href="index.html" class="btn-volver">← Volver al inicio</a>
 
     <header class="cintillo-seccion">
         <h1>Brandbook</h1> 
@@ -65,7 +61,6 @@
 
     <main class="contenido-recursos">
         <p>Aquí irán los visualizadores y enlaces de descarga del Brandbook.</p>
-        
     </main>
 
 </body>

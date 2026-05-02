@@ -7,45 +7,39 @@
    <style>
     :root {
         --bg-color: #FFFFFF;
-        --text-color: #000000;
         --accent: #f4f4f4;
     }
 
     body {
         background-color: var(--bg-color);
-        color: var(--text-color);
-        font-family: 'Inter', sans-serif;
         margin: 0;
         padding: 0;
-        /* Centrado absoluto */
+        font-family: 'Inter', sans-serif;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
         min-height: 100vh;
-        width: 100%;
     }
 
     header {
-        /* Espacio generoso para que el logo respire */
-        padding: 60px 20px 20px 20px; 
-        text-align: center;
+        /* Definimos un alto mínimo y padding para asegurar el espacio */
         width: 100%;
-        box-sizing: border-box;
+        padding-top: 60px;
+        padding-bottom: 40px; 
+        text-align: center;
     }
 
     .logo-bakery {
-        max-height: 100px; /* Un poco más grande para que se aprecie el detalle */
+        max-height: 90px;
         height: auto;
-        width: auto;
     }
 
-    /* Contenedor principal centrado */
     main {
+        /* Esta es la clave: el margin-top separa el bloque del grid del header */
+        width: 100%;
         display: flex;
         justify-content: center;
-        width: 100%;
-        margin-top: 100px;
+        margin-top: 50px; /* <--- AJUSTA ESTE NÚMERO PARA MÁS O MENOS ESPACIO */
         padding-bottom: 80px;
     }
 
@@ -56,47 +50,29 @@
         gap: 20px;
         width: 90%;
         max-width: 1100px;
-        margin: 0 auto; /* Centra el grid dentro de main */
     }
 
     .bento-item {
         background-color: var(--accent);
         border-radius: 24px;
-        padding: 40px;
+        padding: 30px;
         text-decoration: none;
-        color: inherit;
+        color: #000;
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Texto centrado verticalmente en la card */
-        align-items: center;    /* Texto centrado horizontalmente en la card */
+        justify-content: center;
+        align-items: center;
         text-align: center;
-        transition: transform 0.3s ease;
     }
 
     .item-large { grid-column: span 2; grid-row: span 2; }
     .item-wide { grid-column: span 2; }
 
-    /* Estilos Mobile Optimizado */
     @media (max-width: 768px) {
-        header { 
-            padding: 60px 20px 40px 20px; 
-        }
-        
-        .bento-grid {
-            grid-template-columns: 1fr; /* Una sola columna */
-            grid-auto-rows: auto;
-            width: 85%;
-        }
-        
-        .item-large, .item-wide { 
-            grid-column: span 1; 
-            grid-row: span 1; 
-        }
-        
-        .bento-item { 
-            min-height: 200px; 
-            padding: 30px;
-        }
+        header { padding-top: 40px; padding-bottom: 20px; }
+        main { margin-top: 30px; }
+        .bento-grid { grid-template-columns: 1fr; width: 85%; }
+        .item-large, .item-wide { grid-column: span 1; grid-row: span 1; }
     }
 </style>
 </head>

@@ -22,6 +22,7 @@
             color: var(--text-main);
         }
 
+        /* Cintillo Superior */
         .cintillo-seccion {
             width: 100%;
             background-color: var(--accent);
@@ -38,6 +39,7 @@
             letter-spacing: 4px;
         }
 
+        /* Navegación */
         .nav-container {
             max-width: 1100px;
             margin: 10px auto 0 auto;
@@ -55,6 +57,7 @@
 
         .btn-volver:hover { color: var(--text-main); }
 
+        /* Texto de Introducción */
         .intro-texto {
             max-width: 800px;
             margin: 40px auto;
@@ -78,8 +81,11 @@
             border: 1px solid #eee;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            width: 100%;
+            height: 600px;
         }
 
+        /* Botón de Descarga */
         .download-container {
             text-align: center;
             margin: 40px 0 60px 0;
@@ -99,6 +105,7 @@
 
         .cta-download:hover { transform: scale(1.02); }
 
+        /* Sección de Sugerencias */
         .comentarios-section {
             max-width: 700px;
             margin: 80px auto;
@@ -121,8 +128,8 @@
             resize: none;
         }
 
-        .btn-whatsapp {
-            background-color: #25D366;
+        .btn-enviar {
+            background-color: #25D366; /* Color representativo de WhatsApp */
             color: white;
             border: none;
             padding: 14px 30px;
@@ -135,11 +142,14 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: opacity 0.3s ease;
         }
+
+        .btn-enviar:hover { opacity: 0.9; }
 
         @media (max-width: 768px) {
             .cintillo-seccion { padding: 60px 0; }
-            .fp-iframe { height: 350px !important; }
+            .fp-iframe { height: 400px !important; }
         }
     </style>
 </head>
@@ -160,51 +170,74 @@
         </p>
     </section>
 
-    <!-- Visualizador Flipbook Real -->
+    <!-- Visualizador Interactivo -->
     <div class="flipbook-viewport">
-        <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="fp-iframe" src="https://heyzine.com/flip-book/df9c08b9a7.html" style="width: 100%; height: 600px;"></iframe>
+        <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="fp-iframe" 
+                src="https://heyzine.com/flip-book/df9c08b9a7.html"></iframe>
     </div>
 
+    <!-- Opción de Descarga -->
     <div class="download-container">
         <a href="recursos/brandbook.pdf" download class="cta-download">
             <i class="fas fa-file-download"></i> Descargar Brandbook (PDF)
         </a>
     </div>
 
+    <!-- Caja de Comentarios Anónima -->
     <section class="comentarios-section">
         <h3>¿Tienes alguna sugerencia?</h3>
-        <p>Escribe tu comentario y lo recibiremos directamente en WhatsApp.</p>
-        <textarea id="mensajeInput" placeholder="Tu opinión ayuda a que Caracas Bakery siga creciendo..."></textarea>
-        <button class="btn-whatsapp" onclick="enviarWhatsApp()">
-            <i class="fab fa-whatsapp"></i> ENVIAR COMENTARIO
+        <p>Escribe tu comentario y lo recibiremos de inmediato de forma anónima.</p>
+        
+        <textarea id="mensajeInput" placeholder="Escribe aquí tu opinión sobre nuestra identidad visual..."></textarea>
+        
+        <button class="btn-enviar" onclick="enviarSugerencia()">
+            <i class="fas fa-paper-plane"></i> ENVIAR SUGERENCIA
         </button>
+        
         <div id="status" style="margin-top:15px; font-size:0.85rem; display:none;"></div>
     </section>
 
     <script>
-        function enviarWhatsApp() {
+        async function enviarSugerencia() {
             const mensaje = document.getElementById('mensajeInput').value;
             const status = document.getElementById('status');
             
             if(mensaje.trim() === "") {
-                alert("Por favor, escribe un mensaje.");
+                alert("Por favor, escribe un mensaje antes de enviar.");
                 return;
             }
 
             status.style.display = "block";
-            status.innerHTML = "Procesando mensaje...";
+            status.innerHTML = "Enviando de forma segura...";
             status.style.color = "#666";
 
-            // Simulación de envío (Puedes conectar con API de terceros si deseas 100% invisible)
-            setTimeout(() => {
-                status.innerHTML = "¡Gracias! Tu sugerencia ha sido enviada correctamente.";
-                status.style.color = "green";
-                document.getElementById('mensajeInput').value = "";
-                
-                // Abre WA en otra pestaña para asegurar la entrega
-                const tel = "58412XXXXXXX"; // Coloca tu número aquí
-                window.open(`https://wa.me/${tel}?text=${encodeURIComponent('Sugerencia Brandbook: ' + mensaje)}`, '_blank');
-            }, 1000);
+            // Endpoint de Formspree
+            const endpoint = "https://formspree.io/f/xjglgwgq";
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        asunto: "Nueva sugerencia anónima de Brandbook",
+                        mensaje: mensaje
+                    })
+                });
+
+                if (response.ok) {
+                    status.innerHTML = "¡Gracias! Tu sugerencia ha sido recibida correctamente.";
+                    status.style.color = "green";
+                    document.getElementById('mensajeInput').value = "";
+                } else {
+                    throw new Error();
+                }
+            } catch (error) {
+                status.innerHTML = "Hubo un error al enviar. Por favor, intenta de nuevo.";
+                status.style.color = "red";
+            }
         }
     </script>
 

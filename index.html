@@ -73,23 +73,20 @@
     }
 
   .card-brandbook {
+        position: relative;
+        background-color: #f4f4f4;
         background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
                           url("caracas-bakery/recursos/brand-palette.jpg");
         background-size: cover;
         background-position: center;
+        background-repeat: no-repeat;
+        z-index: 1;
+        overflow: hidden;
     }
 
     .card-brandbook:hover {
-        background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)) 
-                          url("caracas-bakery/recursos/paleta.jpg");
-    }
-    .card-tag {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #888;
-        margin-bottom: 10px;
-        display: block;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)), 
+                          url("caracas-bakery/recursos/brand-palette.jpg");
     }
 
     h2 { margin: 10px 0; font-size: 1.5rem; }

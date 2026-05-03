@@ -72,11 +72,11 @@
         box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     }
 
-   /* Ruta corregida: entramos a la carpeta caracas-bakery y luego a recursos */
-    .card-brandbook {
+  .card-brandbook {
         position: relative;
         background-color: #f4f4f4;
-        background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
+        /* IMPORTANTE: No hay coma entre el gradient y el url */
+        background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)) 
                           url("caracas-bakery/recursos/paleta.jpg");
         background-size: cover;
         background-position: center;
@@ -86,10 +86,9 @@
     }
 
     .card-brandbook:hover {
-        background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)), 
+        background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)) 
                           url("caracas-bakery/recursos/paleta.jpg");
     }
-
     .card-tag {
         font-size: 0.75rem;
         text-transform: uppercase;

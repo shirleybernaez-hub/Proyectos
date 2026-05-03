@@ -75,11 +75,11 @@
     /* --- ESTILO CORREGIDO CON URL CODIFICADA --- */
     .card-brandbook {
         position: relative;
-        /* Reemplazamos espacios por %20 para que el navegador encuentre el archivo */
         background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
-                          url('recursos/paleta%20de%20colores.jpg');
+                          url("./recursos/paleta de colores.jpg"); /* Nota el ./ al inicio */
         background-size: cover;
         background-position: center;
+        background-repeat: no-repeat;
         z-index: 1;
         overflow: hidden;
     }

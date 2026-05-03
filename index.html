@@ -72,12 +72,12 @@
         box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     }
 
-    /* --- ESTILO ESPECÍFICO PARA CARACAS BAKERY --- */
+    /* --- ESTILO CORREGIDO CON URL CODIFICADA --- */
     .card-brandbook {
         position: relative;
-        /* Capa de transparencia blanca (0.85) sobre la imagen */
+        /* Reemplazamos espacios por %20 para que el navegador encuentre el archivo */
         background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
-                          url('recursos/paleta de colores.jpg');
+                          url('recursos/paleta%20de%20colores.jpg');
         background-size: cover;
         background-position: center;
         z-index: 1;
@@ -85,9 +85,8 @@
     }
 
     .card-brandbook:hover {
-        /* Al hacer hover, la imagen se aclara un poco más (0.75) */
         background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)), 
-                          url('recursos/paleta de colores.jpg');
+                          url('recursos/paleta%20de%20colores.jpg');
     }
 
     .card-tag {
@@ -115,7 +114,6 @@
 
     <main class="grid-container">
         
-        <!-- Tarjeta Caracas Bakery con el nuevo fondo -->
         <a href="/caracas-bakery/" class="card card-brandbook">
             <div>
                 <span class="card-tag">Branding / Gastronomía</span>
@@ -124,7 +122,6 @@
             </div>
         </a>
 
-        <!-- Tarjeta Construtasking -->
         <a href="#" class="card">
             <div>
                 <span class="card-tag">Industrial / Tech</span>
@@ -133,7 +130,6 @@
             </div>
         </a>
 
-        <!-- Tarjeta Proyecto Extra -->
         <a href="#" class="card">
             <div>
                 <span class="card-tag">Estrategia / Digital</span>

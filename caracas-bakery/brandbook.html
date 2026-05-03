@@ -3,145 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brandbook Interactivo | Caracas Bakery</title>
-    
-    <!-- Importamos librerías para el efecto revista y fuentes -->
+    <title>Brandbook | Caracas Bakery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --bg-color: #FFFFFF;
-            --accent: #EDE2D5;
+            --accent: #EDE2D5; 
             --text-main: #000000;
+            --text-secondary: #666666;
+            --cta-color: #1A1A1A;
         }
 
         body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
         }
 
         .cintillo-seccion {
+            width: 100%;
             background-color: var(--accent);
-            padding: 60px 0;
+            padding: 80px 0;
             text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* Contenedor del Flipbook - Optimizado para Mobile */
+        .cintillo-seccion h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 10px auto 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .btn-volver {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .btn-volver:hover { color: var(--text-main); }
+
+        .intro-texto {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        .intro-texto h2 { font-size: 1.2rem; margin-bottom: 15px; }
+        .intro-texto p { line-height: 1.8; color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* Contenedor del Flipbook */
         .flipbook-viewport {
             width: 100%;
-            max-width: 900px;
-            margin: 40px auto;
-            aspect-ratio: 4 / 3;
-            background: #f0f0f0;
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .fp-iframe {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .download-container {
+            text-align: center;
+            margin: 40px 0 60px 0;
+        }
+
+        .cta-download {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: var(--cta-color);
+            color: white;
+            text-decoration: none;
             border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
-            position: relative;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: transform 0.2s ease;
         }
 
-        /* Simulación de visor interactivo */
-        .flipbook-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            background-image: url('recursos/portada-brandbook.jpg'); /* Imagen de portada */
-            background-size: cover;
-        }
+        .cta-download:hover { transform: scale(1.02); }
 
-        /* Formulario de WhatsApp Invisible */
-        .whatsapp-form-container {
-            max-width: 600px;
-            margin: 60px auto;
-            padding: 30px;
-            background: #f9f9f9;
+        .comentarios-section {
+            max-width: 700px;
+            margin: 80px auto;
+            padding: 40px;
+            background-color: #FBFBFB;
             border-radius: 20px;
             text-align: center;
+            border: 1px solid #eee;
         }
 
-        .whatsapp-form-container textarea {
+        .comentarios-section textarea {
             width: 100%;
             height: 120px;
+            padding: 15px;
             border: 1px solid #ddd;
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            font-family: inherit;
+            box-sizing: border-box;
             resize: none;
         }
 
-        .btn-send-api {
+        .btn-whatsapp {
             background-color: #25D366;
             color: white;
             border: none;
-            padding: 15px 40px;
+            padding: 14px 30px;
             border-radius: 30px;
+            margin-top: 20px;
             cursor: pointer;
-            font-weight: 700;
+            font-weight: 600;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            width: 100%;
         }
 
-        .status-msg {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            display: none;
+        @media (max-width: 768px) {
+            .cintillo-seccion { padding: 60px 0; }
+            .fp-iframe { height: 350px !important; }
         }
     </style>
 </head>
 <body>
 
     <header class="cintillo-seccion">
-        <h1>BRANDBOOK</h1>
+        <h1>Brandbook</h1> 
     </header>
 
-    <main>
-        <!-- Visualizador Estilo Revista -->
-        <div class="flipbook-viewport">
-            <!-- Nota: Para un flipbook real de PDF se recomienda servicios como Issuu o AnyFlip embebidos -->
-            <iframe src="https://heyzine.com/flip-book/tu-id-aqui" 
-                    style="width:100%; height:100%; border:none;" 
-                    allowfullscreen></iframe>
-        </div>
+    <nav class="nav-container">
+        <a href="index.html" class="btn-volver">← Volver al inicio</a>
+    </nav>
 
-        <!-- Formulario de Envío Silencioso -->
-        <div class="whatsapp-form-container">
-            <h3>Sugerencias Directas</h3>
-            <p>Escribe tu mensaje y lo recibiremos al instante.</p>
-            <textarea id="user-msg" placeholder="¿Qué piensas de nuestra nueva imagen?"></textarea>
-            
-            <button class="btn-send-api" onclick="handleFormSubmit()">
-                <i class="fab fa-whatsapp"></i> ENVIAR AHORA
-            </button>
-            <div id="status" class="status-msg"></div>
-        </div>
-    </main>
+    <section class="intro-texto">
+        <h2>La Esencia de Nuestra Identidad</h2>
+        <p>
+            El Brandbook de <strong>Caracas Bakery</strong> es el ADN visual y narrativo de nuestra marca. Más que un manual, es la guía que asegura que nuestra evolución —desde la panadería tradicional gallega hasta la fusión de masas venezolanas— mantenga una coherencia impecable en cada punto de contacto. Proteger nuestra historia es garantizar que cada detalle transmita la maestría que nos define.
+        </p>
+    </section>
+
+    <!-- Visualizador Flipbook Real -->
+    <div class="flipbook-viewport">
+        <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="fp-iframe" src="https://heyzine.com/flip-book/df9c08b9a7.html" style="width: 100%; height: 600px;"></iframe>
+    </div>
+
+    <div class="download-container">
+        <a href="recursos/brandbook.pdf" download class="cta-download">
+            <i class="fas fa-file-download"></i> Descargar Brandbook (PDF)
+        </a>
+    </div>
+
+    <section class="comentarios-section">
+        <h3>¿Tienes alguna sugerencia?</h3>
+        <p>Escribe tu comentario y lo recibiremos directamente en WhatsApp.</p>
+        <textarea id="mensajeInput" placeholder="Tu opinión ayuda a que Caracas Bakery siga creciendo..."></textarea>
+        <button class="btn-whatsapp" onclick="enviarWhatsApp()">
+            <i class="fab fa-whatsapp"></i> ENVIAR COMENTARIO
+        </button>
+        <div id="status" style="margin-top:15px; font-size:0.85rem; display:none;"></div>
+    </section>
 
     <script>
-        async function handleFormSubmit() {
-            const msg = document.getElementById('user-msg').value;
+        function enviarWhatsApp() {
+            const mensaje = document.getElementById('mensajeInput').value;
             const status = document.getElementById('status');
             
-            if (!msg) return alert("Escribe un mensaje");
+            if(mensaje.trim() === "") {
+                alert("Por favor, escribe un mensaje.");
+                return;
+            }
 
             status.style.display = "block";
-            status.innerText = "Enviando...";
-            status.style.color = "blue";
+            status.innerHTML = "Procesando mensaje...";
+            status.style.color = "#666";
 
-            // NOTA: Para enviar SIN abrir WhatsApp, debes conectar esto a un Backend 
-            // o un servicio como Formspree o EmailJS que dispare el mensaje.
-            // Aquí simulamos la petición exitosa:
-            
+            // Simulación de envío (Puedes conectar con API de terceros si deseas 100% invisible)
             setTimeout(() => {
-                status.innerText = "¡Mensaje enviado con éxito!";
+                status.innerHTML = "¡Gracias! Tu sugerencia ha sido enviada correctamente.";
                 status.style.color = "green";
-                document.getElementById('user-msg').value = "";
-            }, 2000);
+                document.getElementById('mensajeInput').value = "";
+                
+                // Abre WA en otra pestaña para asegurar la entrega
+                const tel = "58412XXXXXXX"; // Coloca tu número aquí
+                window.open(`https://wa.me/${tel}?text=${encodeURIComponent('Sugerencia Brandbook: ' + mensaje)}`, '_blank');
+            }, 1000);
         }
     </script>
+
 </body>
 </html>

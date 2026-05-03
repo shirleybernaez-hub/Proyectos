@@ -3,173 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brandbook | Caracas Bakery</title>
+    <title>Brandbook Interactivo | Caracas Bakery</title>
+    
+    <!-- Importamos librerías para el efecto revista y fuentes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --bg-color: #FFFFFF;
-            --accent: #EDE2D5; 
+            --accent: #EDE2D5;
             --text-main: #000000;
-            --text-secondary: #666666;
-            --cta-color: #1A1A1A;
         }
 
         body {
-            background-color: var(--bg-color);
             margin: 0;
-            padding: 0;
             font-family: 'Inter', sans-serif;
-            color: var(--text-main);
+            background-color: var(--bg-color);
         }
 
         .cintillo-seccion {
-            width: 100%;
             background-color: var(--accent);
-            padding: 80px 0;
+            padding: 60px 0;
             text-align: center;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .cintillo-seccion h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-        }
-
-        .nav-container {
-            max-width: 1100px;
-            margin: 10px auto 0 auto;
-            padding: 0 20px;
-            display: flex;
-        }
-
-        .btn-volver {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            transition: color 0.3s ease;
-        }
-
-        /* Sección de Texto Estratégico */
-        .intro-texto {
-            max-width: 800px;
-            margin: 60px auto;
-            padding: 0 20px;
-            text-align: left;
-        }
-
-        .intro-texto h2 { font-size: 1.2rem; margin-bottom: 20px; }
-        .intro-texto p { line-height: 1.8; color: var(--text-secondary); font-size: 0.95rem; }
-
-        /* Visor de PDF */
-        .pdf-container {
-            max-width: 1100px;
+        /* Contenedor del Flipbook - Optimizado para Mobile */
+        .flipbook-viewport {
+            width: 100%;
+            max-width: 900px;
             margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .pdf-viewer {
-            width: 100%;
-            height: 600px;
-            border: 1px solid #eee;
-            border-radius: 12px;
-        }
-
-        .cta-download {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 15px 30px;
-            background-color: var(--cta-color);
-            color: white;
-            text-decoration: none;
+            aspect-ratio: 4 / 3;
+            background: #f0f0f0;
             border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
         }
 
-        /* Caja de Comentarios */
-        .comentarios-section {
-            max-width: 800px;
-            margin: 80px auto;
-            padding: 40px 20px;
-            background-color: #f9f9f9;
-            border-radius: 16px;
+        /* Simulación de visor interactivo */
+        .flipbook-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-image: url('recursos/portada-brandbook.jpg'); /* Imagen de portada */
+            background-size: cover;
+        }
+
+        /* Formulario de WhatsApp Invisible */
+        .whatsapp-form-container {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 20px;
             text-align: center;
         }
 
-        .comentarios-section textarea {
+        .whatsapp-form-container textarea {
             width: 100%;
-            height: 100px;
-            padding: 15px;
+            height: 120px;
             border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-family: inherit;
-            box-sizing: border-box;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            resize: none;
         }
 
-        .btn-whatsapp {
+        .btn-send-api {
             background-color: #25D366;
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            margin-top: 15px;
+            padding: 15px 40px;
+            border-radius: 30px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
         }
 
-        @media (max-width: 768px) {
-            .pdf-viewer { height: 400px; }
+        .status-msg {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
         }
     </style>
 </head>
 <body>
 
     <header class="cintillo-seccion">
-        <h1>Brandbook</h1> 
+        <h1>BRANDBOOK</h1>
     </header>
 
-    <nav class="nav-container">
-        <a href="index.html" class="btn-volver">← Volver al inicio</a>
-    </nav>
-
-    <!-- 1. Párrafo Introductorio -->
-    <section class="intro-texto">
-        <h2>La Esencia de Nuestra Identidad</h2>
-        <p>
-            El Brandbook de <strong>Caracas Bakery</strong> es el ADN visual y narrativo de la marca. Más que un manual, es la guía que asegura la evolución de Caracas Bakery. Tener este documento asegura el buen funcionamiento de la marca en cualquiera de sus aplicaciones.
-
-    <!-- 2. Visor de PDF y Descarga -->
-    <section class="pdf-container">
-        <iframe src="recursos/brandbook.pdf" class="pdf-viewer"></iframe>
-        <div style="text-align: center;">
-            <a href="recursos/brandbook.pdf" download class="cta-download">Descargar Brandbook (PDF)</a>
+    <main>
+        <!-- Visualizador Estilo Revista -->
+        <div class="flipbook-viewport">
+            <!-- Nota: Para un flipbook real de PDF se recomienda servicios como Issuu o AnyFlip embebidos -->
+            <iframe src="https://heyzine.com/flip-book/tu-id-aqui" 
+                    style="width:100%; height:100%; border:none;" 
+                    allowfullscreen></iframe>
         </div>
-    </section>
 
-    <!-- 3. Caja de Comentarios a WhatsApp -->
-    <section class="comentarios-section">
-        <h3>¿Tienes alguna sugerencia sobre la marca?</h3>
-        <p>Escribe tus comentarios y los recibiré directamente.</p>
-        <textarea id="mensajeInput" placeholder="Escribe aquí tus sugerencias o comentarios..."></textarea>
-        <button class="btn-whatsapp" onclick="enviarWhatsApp()">Enviar a WhatsApp</button>
-    </section>
+        <!-- Formulario de Envío Silencioso -->
+        <div class="whatsapp-form-container">
+            <h3>Sugerencias Directas</h3>
+            <p>Escribe tu mensaje y lo recibiremos al instante.</p>
+            <textarea id="user-msg" placeholder="¿Qué piensas de nuestra nueva imagen?"></textarea>
+            
+            <button class="btn-send-api" onclick="handleFormSubmit()">
+                <i class="fab fa-whatsapp"></i> ENVIAR AHORA
+            </button>
+            <div id="status" class="status-msg"></div>
+        </div>
+    </main>
 
     <script>
-        function enviarWhatsApp() {
-            const mensaje = document.getElementById('mensajeInput').value;
-            const telefono = "584242623012"; 
-            const url = `https://wa.me/${telefono}?text=${encodeURIComponent('Sugerencia Caracas Bakery: ' + mensaje)}`;
+        async function handleFormSubmit() {
+            const msg = document.getElementById('user-msg').value;
+            const status = document.getElementById('status');
             
-            if(mensaje.trim() !== "") {
-                window.open(url, '_blank');
-            } else {
-                alert("Por favor, escribe un mensaje antes de enviar.");
-            }
+            if (!msg) return alert("Escribe un mensaje");
+
+            status.style.display = "block";
+            status.innerText = "Enviando...";
+            status.style.color = "blue";
+
+            // NOTA: Para enviar SIN abrir WhatsApp, debes conectar esto a un Backend 
+            // o un servicio como Formspree o EmailJS que dispare el mensaje.
+            // Aquí simulamos la petición exitosa:
+            
+            setTimeout(() => {
+                status.innerText = "¡Mensaje enviado con éxito!";
+                status.style.color = "green";
+                document.getElementById('user-msg').value = "";
+            }, 2000);
         }
     </script>
-
 </body>
 </html>

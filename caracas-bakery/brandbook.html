@@ -194,46 +194,46 @@
         <div id="status" style="margin-top:15px; font-size:0.85rem; display:none;"></div>
     </section>
 
-    <script>
-        async function enviarSugerencia() {
-            const mensaje = document.getElementById('mensajeInput').value;
-            const status = document.getElementById('status');
-            
-            if(mensaje.trim() === "") {
-                alert("Por favor, escribe un mensaje.");
-                return;
-            }
-
-            status.style.display = "block";
-            status.innerHTML = "Enviando de forma segura...";
-            status.style.color = "#666";
-
-            const endpointFormspree = "https://formspree.io/f/xjglgwgq";
-            
-            try {
-                const response = await fetch(endpointFormspree, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({ mensaje: mensaje })
-                });
-
-                if (response.ok) {
-                    const apiKey = "2641876"; 
-                    const miTelefono = "584242623012"; 
-                    const textoWA = encodeURIComponent("🍞 Caracas Bakery Sugerencia: " + mensaje);
-
-                    // Petición corregida sin errores de comillas
-                    fetch(`https://api.callmebot.com/whatsapp.php?phone=${miTelefono}&text=${textoWA}&apikey=${apiKey}`, { mode: 'no-cors' });
-
-                    status.innerHTML = "¡Gracias! Tu sugerencia ha sido recibida correctamente.";
-                    status.style.color = "green";
-                    document.getElementById('mensajeInput').value = "";
-                }
-            } catch (error) {
-                status.innerHTML = "Error al enviar. Intenta de nuevo.";
-                status.style.color = "red";
-            }
+  <script>
+    async function enviarSugerencia() {
+        const mensajeInput = document.getElementById('mensajeInput');
+        const status = document.getElementById('status');
+        
+        if (!mensajeInput || mensajeInput.value.trim() === "") {
+            alert("Por favor, escribe un mensaje.");
+            return;
         }
-    </script>
+
+        const mensaje = mensajeInput.value;
+        status.style.display = "block";
+        status.innerHTML = "Enviando de forma segura...";
+        status.style.color = "#666";
+
+        const endpointFormspree = "https://formspree.io/f/xjglgwgq";
+        
+        try {
+            const response = await fetch(endpointFormspree, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ mensaje: mensaje })
+            });
+
+            if (response.ok) {
+                const apiKey = "2641876"; 
+                const miTelefono = "584242623012"; 
+                const textoWA = encodeURIComponent("🍞 Caracas Bakery Sugerencia: " + mensaje);
+
+                fetch(`https://api.callmebot.com/whatsapp.php?phone=${miTelefono}&text=${textoWA}&apikey=${apiKey}`, { mode: 'no-cors' });
+
+                status.innerHTML = "¡Gracias! Tu sugerencia ha sido recibida correctamente.";
+                status.style.color = "green";
+                mensajeInput.value = "";
+            }
+        } catch (error) {
+            status.innerHTML = "Error al enviar. Intenta de nuevo.";
+            status.style.color = "red";
+        }
+    }
+</script>
 </body>
 </html>

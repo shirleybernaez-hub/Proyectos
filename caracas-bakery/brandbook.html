@@ -22,7 +22,6 @@
             color: var(--text-main);
         }
 
-        /* Cintillo Superior */
         .cintillo-seccion {
             width: 100%;
             background-color: var(--accent);
@@ -39,7 +38,6 @@
             letter-spacing: 4px;
         }
 
-        /* Navegación */
         .nav-container {
             max-width: 1100px;
             margin: 10px auto 0 auto;
@@ -55,9 +53,6 @@
             transition: color 0.3s ease;
         }
 
-        .btn-volver:hover { color: var(--text-main); }
-
-        /* Texto de Introducción ajustado para el cliente */
         .intro-texto {
             max-width: 800px;
             margin: 40px auto;
@@ -68,30 +63,28 @@
         .intro-texto h2 { font-size: 1.2rem; margin-bottom: 15px; }
         .intro-texto p { line-height: 1.8; color: var(--text-secondary); font-size: 0.95rem; }
 
-        /* --- NUEVA TÉCNICA DE RECORTE MEJORADA --- */
+        /* MÁSCARA TÉCNICA REFORZADA */
         .flipbook-viewport {
-            position: relative; /* Clave para el posicionamiento absoluto del iframe */
+            position: relative;
             width: 100%;
             max-width: 1100px;
             margin: 20px auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-            overflow: hidden; /* Actúa como la máscara */
-            height: 550px;    /* Altura visible (un poco más corta para cortar más) */
+            overflow: hidden; /* Corta el logo de Heyzine */
+            height: 520px;    /* Reducimos la altura para forzar el recorte */
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            background: #fff;
         }
 
         .fp-iframe {
-            position: absolute; /* Posicionamiento exacto dentro de la máscara */
-            top: -2px;          /* Empuja el iframe un poco hacia arriba */
+            position: absolute;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 610px;    /* El iframe es más alto para esconder el logo abajo */
-            border: 1px solid #eee;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            height: 580px;    /* El iframe es mucho más alto que el contenedor */
+            border: none;
         }
 
-        /* Botón de Descarga */
         .download-container {
             text-align: center;
             margin: 40px 0 60px 0;
@@ -106,12 +99,8 @@
             border-radius: 8px;
             font-size: 0.9rem;
             font-weight: 600;
-            transition: transform 0.2s ease;
         }
 
-        .cta-download:hover { transform: scale(1.02); }
-
-        /* Sección de Sugerencias */
         .comentarios-section {
             max-width: 700px;
             margin: 80px auto;
@@ -129,8 +118,6 @@
             border: 1px solid #ddd;
             border-radius: 12px;
             margin-top: 20px;
-            font-family: inherit;
-            box-sizing: border-box;
             resize: none;
         }
 
@@ -148,15 +135,11 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: opacity 0.3s ease;
         }
 
-        .btn-enviar:hover { opacity: 0.9; }
-
         @media (max-width: 768px) {
-            .cintillo-seccion { padding: 60px 0; }
-            .flipbook-viewport { height: 400px; }
-            .fp-iframe { height: 460px; }
+            .flipbook-viewport { height: 380px; }
+            .fp-iframe { height: 440px; }
         }
     </style>
 </head>
@@ -177,9 +160,8 @@
         </p>
     </section>
 
-    <!-- Visualizador con recorte de logo (máscara CSS) -->
     <div class="flipbook-viewport">
-        <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="fp-iframe" 
+        <iframe allowfullscreen="allowfullscreen" scrolling="no" class="fp-iframe" 
                 src="https://heyzine.com/flip-book/df9c08b9a7.html"></iframe>
     </div>
 
@@ -191,14 +173,10 @@
 
     <section class="comentarios-section">
         <h3>¿Tienes alguna sugerencia?</h3>
-        <p>Escribe tu comentario y lo recibiremos de inmediato de forma anónima.</p>
-        
-        <textarea id="mensajeInput" placeholder="Tu opinión ayuda a que Caracas Bakery siga creciendo..."></textarea>
-        
+        <textarea id="mensajeInput" placeholder="Escrieb aqui tus comentarios..."></textarea>
         <button class="btn-enviar" onclick="enviarSugerencia()">
             <i class="fas fa-paper-plane"></i> ENVIAR SUGERENCIA
         </button>
-        
         <div id="status" style="margin-top:15px; font-size:0.85rem; display:none;"></div>
     </section>
 
@@ -206,7 +184,6 @@
         async function enviarSugerencia() {
             const mensajeInput = document.getElementById('mensajeInput');
             const status = document.getElementById('status');
-            
             if(!mensajeInput || mensajeInput.value.trim() === "") {
                 alert("Por favor, escribe un mensaje.");
                 return;
@@ -217,10 +194,8 @@
             status.innerHTML = "Enviando de forma segura...";
             status.style.color = "#666";
 
-            const endpointFormspree = "https://formspree.io/f/xjglgwgq";
-            
             try {
-                const response = await fetch(endpointFormspree, {
+                const response = await fetch("https://formspree.io/f/xjglgwgq", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify({ mensaje: mensaje })
@@ -230,8 +205,6 @@
                     const apiKey = "2641876"; 
                     const miTelefono = "584242623012"; 
                     const textoWA = encodeURIComponent("🍞 Caracas Bakery Sugerencia: " + mensaje);
-
-                    // Petición silenciosa a WhatsApp (CallMeBot)
                     fetch(`https://api.callmebot.com/whatsapp.php?phone=${miTelefono}&text=${textoWA}&apikey=${apiKey}`, { mode: 'no-cors' });
 
                     status.innerHTML = "¡Gracias! Tu sugerencia ha sido recibida correctamente.";
@@ -239,7 +212,7 @@
                     mensajeInput.value = "";
                 }
             } catch (error) {
-                status.innerHTML = "Error al enviar. Intenta de nuevo.";
+                status.innerHTML = "Error al enviar.";
                 status.style.color = "red";
             }
         }

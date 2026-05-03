@@ -84,6 +84,16 @@
             height: 580px;    /* El iframe es mucho más alto que el contenedor */
             border: none;
         }
+        .bloqueador-logo {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 150px;
+            height: 40px;
+            background-color: #f8f8f8; /* Color gris claro del fondo de Heyzine */
+            z-index: 99;
+            pointer-events: none;
+        }
 
         .download-container {
             text-align: center;
@@ -173,7 +183,7 @@
 
     <section class="comentarios-section">
         <h3>¿Tienes alguna sugerencia?</h3>
-        <textarea id="mensajeInput" placeholder="Escrieb aqui tus comentarios..."></textarea>
+        <textarea id="mensajeInput" placeholder="Escribe aqui tus comentarios..."></textarea>
         <button class="btn-enviar" onclick="enviarSugerencia()">
             <i class="fas fa-paper-plane"></i> ENVIAR SUGERENCIA
         </button>

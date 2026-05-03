@@ -69,29 +69,26 @@
             width: 100%;
             max-width: 1100px;
             margin: 20px auto;
-            overflow: hidden; /* Corta el logo de Heyzine */
-            height: 520px;    /* Reducimos la altura para forzar el recorte */
+            overflow: hidden; 
+            height: 600px; 
             border-radius: 12px;
+            overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            background: #fff;
         }
 
         .fp-iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 580px;    /* El iframe es mucho más alto que el contenedor */
-            border: none;
+           width: 100%;
+           height: 100%;
+           border: none;
         }
         .bloqueador-logo {
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 150px;
-            height: 40px;
-            background-color: #f8f8f8; /* Color gris claro del fondo de Heyzine */
-            z-index: 99;
+            width: 160px;
+            height: 45px;
+            background-color: #f8f8f8; 
+            z-index: 9999;
             pointer-events: none;
         }
 
@@ -171,8 +168,9 @@
     </section>
 
     <div class="flipbook-viewport">
-        <iframe allowfullscreen="allowfullscreen" scrolling="no" class="fp-iframe" 
-                src="https://heyzine.com/flip-book/df9c08b9a7.html"></iframe>
+        <iframe scrolling="no" class="fp-iframe" src="https://heyzine.com/flip-book/df9c08b9a7.html"></iframe>
+    
+    <div class="bloqueador-logo"></div>
     </div>
 
     <div class="download-container">

@@ -208,7 +208,6 @@
             status.innerHTML = "Enviando de forma segura...";
             status.style.color = "#666";
 
-            // 1. Envío a Formspree (Respaldo correo)
             const endpointFormspree = "https://formspree.io/f/xjglgwgq";
             
             try {
@@ -219,12 +218,11 @@
                 });
 
                 if (response.ok) {
-                    // 2. Envío a WhatsApp (CallMeBot)
-                    const apiKey = "2641876"; /
+                    const apiKey = "2641876"; 
                     const miTelefono = "584242623012"; 
                     const textoWA = encodeURIComponent("🍞 Caracas Bakery Sugerencia: " + mensaje);
 
-                    // Petición silenciosa a WhatsApp
+                    // Petición corregida sin errores de comillas
                     fetch(`https://api.callmebot.com/whatsapp.php?phone=${miTelefono}&text=${textoWA}&apikey=${apiKey}`, { mode: 'no-cors' });
 
                     status.innerHTML = "¡Gracias! Tu sugerencia ha sido recibida correctamente.";

@@ -72,11 +72,12 @@
         box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     }
 
-    /* --- ESTILO CORREGIDO CON URL CODIFICADA --- */
+   
     .card-brandbook {
         position: relative;
+        background-color: #f4f4f4; /* Color de respaldo si la imagen falla */
         background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
-                          url("./recursos/paleta de colores.jpg"); /* Nota el ./ al inicio */
+                          url("recursos/paleta.jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -84,6 +85,10 @@
         overflow: hidden;
     }
 
+    .card-brandbook:hover {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)), 
+                          url("recursos/paleta.jpg");
+    }
     .card-brandbook:hover {
         background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)), 
                           url('recursos/paleta%20de%20colores.jpg');

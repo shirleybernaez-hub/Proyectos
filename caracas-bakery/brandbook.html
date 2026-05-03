@@ -57,7 +57,7 @@
 
         .btn-volver:hover { color: var(--text-main); }
 
-        /* Texto de Introducción */
+        /* Texto de Introducción ajustado para el cliente */
         .intro-texto {
             max-width: 800px;
             margin: 40px auto;
@@ -68,13 +68,15 @@
         .intro-texto h2 { font-size: 1.2rem; margin-bottom: 15px; }
         .intro-texto p { line-height: 1.8; color: var(--text-secondary); font-size: 0.95rem; }
 
-        /* Contenedor del Flipbook */
+        /* AJUSTE PARA OCULTAR LOGO DE HEYZINE */
         .flipbook-viewport {
             width: 100%;
             max-width: 1100px;
             margin: 20px auto;
             padding: 0 20px;
             box-sizing: border-box;
+            overflow: hidden; /* Corta el logo que sobresale */
+            height: 560px;    /* Altura visible */
         }
 
         .fp-iframe {
@@ -82,7 +84,8 @@
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             width: 100%;
-            height: 600px;
+            height: 620px;    /* Más alto para empujar el logo abajo */
+            margin-top: -5px; 
         }
 
         /* Botón de Descarga */
@@ -149,7 +152,8 @@
 
         @media (max-width: 768px) {
             .cintillo-seccion { padding: 60px 0; }
-            .fp-iframe { height: 400px !important; }
+            .flipbook-viewport { height: 420px; }
+            .fp-iframe { height: 480px; }
         }
     </style>
 </head>
@@ -164,11 +168,13 @@
     </nav>
 
     <section class="intro-texto">
-        
+        <h2>El Propósito de Nuestra Identidad</h2>
         <p>
-            El Brandbook de <strong>Caracas Bakery</strong> es el ADN visual y narrativo de su identidad. Más que un manual, establece reglas claras para el uso del logotipo, paleta de colores, tipografía e iconografía que definen la esencia de la marca.
+            El Brandbook de <strong>Caracas Bakery</strong> es el ADN visual y narrativo de su identidad. Más que un manual, este documento establece las pautas maestras para el uso del logotipo, la paleta cromática, la tipografía y la iconografía que definen la esencia de su negocio.
+        </p>
     </section>
 
+    <!-- Visualizador con recorte de logo -->
     <div class="flipbook-viewport">
         <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="fp-iframe" 
                 src="https://heyzine.com/flip-book/df9c08b9a7.html"></iframe>
@@ -182,9 +188,9 @@
 
     <section class="comentarios-section">
         <h3>¿Tienes alguna sugerencia?</h3>
+        <p>Escribe tu comentario y lo recibiremos de inmediato de forma anónima.</p>
         
-        
-        <textarea id="mensajeInput" placeholder="Escribe aquí tus comentarios..."></textarea>
+        <textarea id="mensajeInput" placeholder="Tu opinión ayuda a que Caracas Bakery siga creciendo..."></textarea>
         
         <button class="btn-enviar" onclick="enviarSugerencia()">
             <i class="fas fa-paper-plane"></i> ENVIAR SUGERENCIA
@@ -193,46 +199,47 @@
         <div id="status" style="margin-top:15px; font-size:0.85rem; display:none;"></div>
     </section>
 
-  <script>
-    async function enviarSugerencia() {
-        const mensajeInput = document.getElementById('mensajeInput');
-        const status = document.getElementById('status');
-        
-        if (!mensajeInput || mensajeInput.value.trim() === "") {
-            alert("Por favor, escribe un mensaje.");
-            return;
-        }
-
-        const mensaje = mensajeInput.value;
-        status.style.display = "block";
-        status.innerHTML = "Enviando de forma segura...";
-        status.style.color = "#666";
-
-        const endpointFormspree = "https://formspree.io/f/xjglgwgq";
-        
-        try {
-            const response = await fetch(endpointFormspree, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify({ mensaje: mensaje })
-            });
-
-            if (response.ok) {
-                const apiKey = "2641876"; 
-                const miTelefono = "584242623012"; 
-                const textoWA = encodeURIComponent("🍞 Caracas Bakery Sugerencia: " + mensaje);
-
-                fetch(`https://api.callmebot.com/whatsapp.php?phone=${miTelefono}&text=${textoWA}&apikey=${apiKey}`, { mode: 'no-cors' });
-
-                status.innerHTML = "¡Gracias! Tu sugerencia ha sido recibida correctamente.";
-                status.style.color = "green";
-                mensajeInput.value = "";
+    <script>
+        async function enviarSugerencia() {
+            const mensajeInput = document.getElementById('mensajeInput');
+            const status = document.getElementById('status');
+            
+            if(!mensajeInput || mensajeInput.value.trim() === "") {
+                alert("Por favor, escribe un mensaje.");
+                return;
             }
-        } catch (error) {
-            status.innerHTML = "Error al enviar. Intenta de nuevo.";
-            status.style.color = "red";
+
+            const mensaje = mensajeInput.value;
+            status.style.display = "block";
+            status.innerHTML = "Enviando de forma segura...";
+            status.style.color = "#666";
+
+            const endpointFormspree = "https://formspree.io/f/xjglgwgq";
+            
+            try {
+                const response = await fetch(endpointFormspree, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ mensaje: mensaje })
+                });
+
+                if (response.ok) {
+                    const apiKey = "2641876"; 
+                    const miTelefono = "584242623012"; 
+                    const textoWA = encodeURIComponent("🍞 Caracas Bakery Sugerencia: " + mensaje);
+
+                    // Petición silenciosa a WhatsApp
+                    fetch(`https://api.callmebot.com/whatsapp.php?phone=${miTelefono}&text=${textoWA}&apikey=${apiKey}`, { mode: 'no-cors' });
+
+                    status.innerHTML = "¡Gracias! Tu sugerencia ha sido recibida correctamente.";
+                    status.style.color = "green";
+                    mensajeInput.value = "";
+                }
+            } catch (error) {
+                status.innerHTML = "Error al enviar. Intenta de nuevo.";
+                status.style.color = "red";
+            }
         }
-    }
-</script>
+    </script>
 </body>
 </html>

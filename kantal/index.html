@@ -11,45 +11,35 @@
 
         /* REPLICANDO EFECTO CARACAS BAKERY */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(25px);
-                filter: blur(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-                filter: blur(0px);
-            }
+            from { opacity: 0; transform: translateY(25px); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0px); }
         }
 
         header {
             width: 100%;
-            padding: 60px 0 30px 0; /* Espaciado inicial */
+            padding: 50px 0 20px 0; 
             text-align: center;
             position: fixed;
             top: 0;
             left: 0;
             z-index: 1000;
             background-color: rgba(255, 255, 255, 0);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Estado al hacer scroll como en Bakery */
         header.scrolled {
-            padding: 10px 0;
-            background-color: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
-            border-bottom: 1px solid #f0f0f0;
+            padding: 15px 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid #f2f2f2;
         }
 
         .logo-kantal {
-            /* Logo más grande en mobile como pediste */
-            width: 280px; 
-            md:width: 500px;
-            max-width: 85%;
+            /* Aumentado tamaño inicial */
+            width: 320px; 
+            md:width: 580px;
+            max-width: 90%;
             height: auto;
             display: inline-block;
             animation: fadeInUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -57,22 +47,21 @@
         }
 
         header.scrolled .logo-kantal {
-            width: 140px; /* Reducción elegante al bajar */
+            /* Logo un poco más grande en modo sticky para que no se pierda */
+            width: 180px; 
         }
 
-        /* Ajuste de contenedor para eliminar espacios en blanco estéticos */
         .content-wrapper {
             max-width: 1200px;
             margin: 0 auto;
-            /* Compensación del header fijo (ajustado para móvil) */
-            padding: 220px 20px 80px 20px; 
+            padding: 240px 20px 80px 20px; 
             transition: padding 0.4s ease;
         }
 
         @media (max-width: 768px) {
-            .content-wrapper { padding-top: 180px; }
-            .logo-kantal { width: 240px; } /* Tamaño optimizado móvil */
-            header.scrolled .logo-kantal { width: 110px; }
+            .content-wrapper { padding-top: 200px; }
+            .logo-kantal { width: 280px; } 
+            header.scrolled .logo-kantal { width: 140px; }
         }
 
         /* Estilo de Chat Gemini */
@@ -91,18 +80,9 @@
             border-color: #e5e7eb;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        .chat-field {
-            background: transparent;
-            border: none;
-            outline: none;
-            flex-grow: 1;
-            font-size: 14px;
-        }
+        .chat-field { background: transparent; border: none; outline: none; flex-grow: 1; font-size: 14px; }
         
-        .btn-download {
-            transition: all 0.3s ease;
-            border: 2px solid black;
-        }
+        .btn-download { transition: all 0.3s ease; border: 2px solid black; }
         .btn-download:hover { background: black; color: white; }
     </style>
 </head>
@@ -113,19 +93,19 @@
     </header>
 
     <div class="content-wrapper">
-        <!-- Títulos Centrados -->
-        <header class="relative bg-transparent text-center mb-16 p-0 shadow-none border-none">
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2">FICHAS TÉCNICAS</h2>
-            <p class="text-zinc-400 text-[10px] md:text-[13px] uppercase tracking-[0.5em] mb-12">Documentación Oficial de Productos</p>
+        <!-- Títulos Centrados y Reducidos -->
+        <header class="relative bg-transparent text-center mb-12 p-0 shadow-none border-none">
+            <!-- Tamaño de fuente reducido para mejorar la estética -->
+            <h2 class="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-2">FICHAS TÉCNICAS</h2>
+            <p class="text-zinc-400 text-[9px] md:text-[11px] uppercase tracking-[0.4em] mb-10">Documentación Oficial de Productos</p>
             
             <div class="w-full text-left">
-                <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight mb-1">Línea de Perros y Gatos</h3>
-                <div class="h-1 w-24 bg-black"></div>
+                <h3 class="text-lg md:text-xl font-black uppercase tracking-tight mb-1">Línea de Perros y Gatos</h3>
+                <div class="h-1 w-20 bg-black"></div>
             </div>
         </header>
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            
             <!-- Ficha 01: Enjuague Desenredante -->
             <article class="flex flex-col group">
                 <h4 class="text-[11px] font-bold uppercase tracking-[0.1em] mb-4">Enjuague Desenredante</h4>
@@ -142,7 +122,6 @@
                         Descargar PDF
                     </a>
 
-                    <!-- Chat Form Estilo Gemini -->
                     <form class="chat-form">
                         <div class="chat-input-container">
                             <label class="cursor-pointer text-zinc-400 hover:text-black">
@@ -150,38 +129,32 @@
                                 <input type="file" name="upload" class="hidden">
                             </label>
                             <input type="text" name="message" placeholder="Escribe tus comentarios" class="chat-field">
-                            <button type="submit" class="text-zinc-400 hover:text-black transition-colors">
+                            <button type="submit" class="text-zinc-400 hover:text-black">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                             </button>
                         </div>
                     </form>
                 </div>
             </article>
-
         </section>
     </div>
 
     <script>
-        // Control de Scroll idéntico a Caracas Bakery
         window.addEventListener('scroll', function() {
             const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
+            if (window.scrollY > 40) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
         });
 
-        // Lógica de Envío AJAX (Sin salir de la página)
         document.querySelectorAll('.chat-form').forEach(form => {
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const input = form.querySelector('.chat-field');
                 input.placeholder = "Enviando...";
-                
                 const formData = new FormData(form);
-                formData.append('_subject', "Comentario Ficha Kantal");
-
                 try {
                     await fetch('https://formspree.io/f/xvzlravo', {
                         method: 'POST',
@@ -191,9 +164,7 @@
                     input.value = "";
                     input.placeholder = "¡Recibido!";
                     setTimeout(() => input.placeholder = "Escribe tus comentarios", 3000);
-                } catch (err) {
-                    input.placeholder = "Error";
-                }
+                } catch (err) { input.placeholder = "Error"; }
             });
         });
     </script>

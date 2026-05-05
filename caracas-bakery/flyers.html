@@ -63,10 +63,11 @@
         .flyer-item {
             background: white;
             border-radius: 32px;
-            padding: 25px;
+            padding: 30px; /* Aumentado para dar aire igual que en la referencia */
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
         }
 
         .version-badge {
@@ -82,26 +83,21 @@
             align-self: center;
         }
 
-        /* AJUSTE PARA EVITAR DESBORDE */
         .image-container {
             width: 100%;
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 25px;
-            background-color: var(--cb-cream);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            line-height: 0;
         }
 
         .image-container img {
             width: 100%;
             height: auto;
             display: block;
-            object-fit: cover; /* Cambiado a cover para que llene el contenedor sin deformarse */
         }
 
-        .comment-section { margin-bottom: 20px; }
+        .comment-section { margin-bottom: 25px; }
 
         .comment-box {
             display: flex;
@@ -144,18 +140,27 @@
             display: none;
         }
 
+        /* BOTÓN ESTÁNDAR UNIFICADO (IGUAL A LOGOTIPOS) */
         .download-btn {
             display: block;
             width: 100%;
-            padding: 16px;
-            border: 2px solid var(--cb-tan);
+            padding: 18px 0; /* Ajustado para el tamaño de la referencia */
+            background-color: transparent;
+            border: 1.5px solid var(--cb-tan);
             color: var(--cb-tan);
             text-decoration: none;
             border-radius: 50px;
-            font-size: 0.85rem;
+            font-size: 0.9rem; /* Un poco más grande para legibilidad */
             font-weight: 700;
-            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
             text-align: center;
+        }
+
+        .download-btn:hover {
+            background-color: var(--cb-tan);
+            color: white;
+            box-shadow: 0 5px 15px rgba(185, 147, 108, 0.3);
         }
 
         @media (max-width: 768px) { .flyers-comparison { grid-template-columns: 1fr; } }
@@ -177,7 +182,9 @@
             <!-- VERSIÓN 1 -->
             <article class="flyer-item">
                 <span class="version-badge">Versión 1.0</span>
-                <div class="image-container"><img src="recursos/flyers/FlyerCB_AbrilV1.jpg"></div>
+                <div class="image-container">
+                    <img src="recursos/flyers/FlyerCB_AbrilV1.jpg" alt="Flyer V1">
+                </div>
                 <div class="comment-section">
                     <form onsubmit="botWhatsApp(event, '1.0', 'input-v1', 'status-v1')">
                         <div class="comment-box">
@@ -195,7 +202,9 @@
             <!-- VERSIÓN 2 -->
             <article class="flyer-item">
                 <span class="version-badge">Versión 2.0</span>
-                <div class="image-container"><img src="recursos/flyers/FlyerCB_AbrilV2.jpg"></div>
+                <div class="image-container">
+                    <img src="recursos/flyers/FlyerCB_AbrilV2.jpg" alt="Flyer V2">
+                </div>
                 <div class="comment-section">
                     <form onsubmit="botWhatsApp(event, '2.0', 'input-v2', 'status-v2')">
                         <div class="comment-box">
@@ -213,7 +222,9 @@
             <!-- VERSIÓN 3 -->
             <article class="flyer-item">
                 <span class="version-badge">Versión 3.0</span>
-                <div class="image-container"><img src="recursos/flyers/FlyerCB_AbrilV3.jpg"></div>
+                <div class="image-container">
+                    <img src="recursos/flyers/FlyerCB_AbrilV3.jpg" alt="Flyer V3">
+                </div>
                 <div class="comment-section">
                     <form onsubmit="botWhatsApp(event, '3.0', 'input-v3', 'status-v3')">
                         <div class="comment-box">
@@ -238,7 +249,7 @@
             const comment = input.value;
 
             status.style.display = "block";
-            status.innerText = "Enviando comentario...";
+            status.innerText = "Enviando...";
             status.style.color = "var(--cb-stone)";
 
             const phone = "584242623012";
@@ -249,13 +260,13 @@
 
             fetch(url, { mode: 'no-cors' })
                 .then(() => {
-                    status.innerText = "¡Comentario enviado!";
+                    status.innerText = "¡Enviado!";
                     status.style.color = "var(--cb-tan)";
                     input.value = "";
                     setTimeout(() => { status.style.display = "none"; }, 4000);
                 })
                 .catch(() => {
-                    status.innerText = "Error al conectar con el bot.";
+                    status.innerText = "Error.";
                     status.style.color = "#dc3545";
                 });
         }

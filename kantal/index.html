@@ -12,11 +12,14 @@
         .reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Ajuste para que las fichas sean más pequeñas y quepan varias */
+        /* Grid optimizado para 3 columnas en desktop */
         .grid-fichas {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 60px 40px;
+        }
+        @media (min-width: 768px) {
+            .grid-fichas { grid-template-columns: repeat(3, 1fr); }
         }
         
         .btn-download {
@@ -29,49 +32,50 @@
 <body class="antialiased">
 
     <!-- HERO: Logo masivo -->
-    <section class="h-[45vh] flex flex-col justify-center items-center text-center px-6">
+    <section class="h-[40vh] flex flex-col justify-center items-center text-center px-6">
         <div class="reveal">
             <img src="logo/logokantal.svg" alt="Kantal" class="w-80 md:w-[650px] h-auto">
         </div>
     </section>
 
     <!-- CUERPO DE LA PÁGINA -->
-    <main class="max-w-7xl mx-auto py-4 px-6">
+    <main class="max-w-7xl mx-auto py-8 px-6">
         
-        <!-- Bloque de Títulos Alineados a la Izquierda y más arriba -->
-        <header class="mb-12 text-left">
-            <h2 class="text-3xl md:text-4xl font-black tracking-tighter uppercase">FICHAS TÉCNICAS</h2>
-            <p class="text-zinc-400 text-[9px] uppercase tracking-[0.5em] mb-8">Documentación Oficial de Productos</p>
+        <!-- Bloque de Títulos Centrados y más grandes -->
+        <header class="mb-20 text-center flex flex-col items-center">
+            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2">FICHAS TÉCNICAS</h2>
+            <p class="text-zinc-400 text-[11px] md:text-[13px] uppercase tracking-[0.5em] mb-16">Documentación Oficial de Productos</p>
             
-            <div class="inline-block">
+            <!-- Línea de categoría alineada a la izquierda del grid -->
+            <div class="w-full text-left inline-block">
                 <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight mb-1">Línea de Perros y Gatos</h3>
-                <div class="h-1 w-full bg-black"></div>
+                <div class="h-1 w-32 bg-black"></div>
             </div>
         </header>
 
-        <!-- Cuadrícula de Fichas (Caben 3 o más por fila) -->
+        <!-- Cuadrícula de Fichas (Caben 3 por fila) -->
         <section class="grid-fichas">
             
             <!-- Ficha 01: Enjuague Desenderante -->
             <article class="flex flex-col items-start group">
-                <!-- Nombre del producto a la izquierda -->
-                <h4 class="text-[13px] font-bold uppercase tracking-[0.1em] mb-4 text-left">Enjuague Desenderante</h4>
+                <!-- Nombre del producto -->
+                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] mb-4 text-left h-8">Enjuague Desenderante</h4>
                 
-                <!-- Imagen en formato pequeño (Escala JPG) -->
-                <div class="w-full bg-[#fcfcfc] p-4 mb-6 border border-zinc-50 shadow-sm transition-all duration-500 group-hover:shadow-md">
+                <!-- Imagen compacta -->
+                <div class="w-full bg-[#fcfcfc] p-4 mb-6 border border-zinc-100 shadow-sm transition-all duration-500 group-hover:shadow-md">
                     <img src="fichas/perrosygatos/Enjuage desenderante.jpg" 
-                         alt="Ficha Técnica Enjuague" 
+                         alt="Ficha Técnica" 
                          class="w-full h-auto object-contain">
                 </div>
 
-                <!-- Botón de Descarga alineado a la izquierda -->
+                <!-- Botón de Descarga -->
                 <a href="fichas/perrosygatos/Enjuage desenderante.pdf" download 
-                   class="btn-download px-8 py-3 text-[9px] font-black uppercase tracking-[0.2em]">
+                   class="btn-download px-6 py-3 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center">
                     Descargar PDF
                 </a>
             </article>
 
-            <!-- Aquí puedes duplicar el bloque <article> para las siguientes fichas -->
+            <!-- Espacio para Ficha 02 y 03 (Duplicar bloque anterior cuando tengas los archivos) -->
 
         </section>
 

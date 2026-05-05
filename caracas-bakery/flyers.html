@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flyers | Caracas Bakery</title>
+    <style>
+        /* Paleta de colores oficial colores.jpg */
+        :root {
+            --cb-tan: #B9936C;
+            --cb-charcoal: #434244;
+            --cb-stone: #BDB5AD;
+            --cb-cream: #EBE1D5;
+            --bg-light: #FAFAFA;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif; /* Usando Inter para consistencia */
+            background-color: var(--bg-light);
+            color: var(--cb-charcoal);
+        }
+
+        /* Breadcrumbs estilo Logotipos y Brandbook */
+        .nav-back {
+            padding: 40px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .nav-back a {
+            text-decoration: none;
+            color: var(--cb-tan);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-back a:hover { opacity: 0.7; }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 80px 20px;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--cb-stone);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Grid de Flyers */
+        .flyers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        /* Estilo de Tarjeta para cada Flyer */
+        .flyer-card {
+            background: white;
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .flyer-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Contenedor de previsualización (Portrait) */
+        .preview-box {
+            width: 100%;
+            height: 400px; /* Altura para flyers en vertical */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            background-color: var(--cb-cream); /* Usando Cream para el fondo de previsualización */
+            border: 1px solid #eee;
+        }
+
+        .flyer-card img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .flyer-card:hover img {
+            transform: scale(1.03); /* Efecto zoom sutil al hover */
+        }
+
+        .content-info {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .version-tag {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--cb-tan);
+            display: block;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .content-info strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--cb-charcoal);
+        }
+
+        /* Botón de descarga estilo Outline */
+        .download-btn {
+            display: block;
+            padding: 14px;
+            text-align: center;
+            background-color: transparent;
+            border: 1.5px solid var(--cb-tan);
+            color: var(--cb-tan);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download-btn:hover {
+            background-color: var(--cb-tan);
+            color: white;
+            box-shadow: 0 5px 15px rgba(185, 147, 108, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .flyers-grid { grid-template-columns: 1fr; }
+            .preview-box { height: 350px; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Breadcrumbs estilo Logos y Brandbook -->
+    <nav class="nav-back">
+        <a href="index.html">← Volver al Panel</a>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Piezas Promocionales</h1>
+            <p class="subtitle">Descarga los flyers y material de eventos de Caracas Bakery.</p>
+        </header>
+
+        <main class="flyers-grid">
+            
+            <!-- FLYER VERSIÓN 1 -->
+            <div class="flyer-card">
+                <div class="preview-box">
+                    <!-- Ruta exacta de tu captura de pantalla -->
+                    <img src="recursos/flyers/FlyerCB_AbrilV1.jpg" alt="Preview Flyer Abril V1">
+                </div>
+                
+                <div class="content-info">
+                    <span class="version-tag">Versión 1</span>
+                    <strong>Flyer Abril - "Pizzas Artesanales"</strong>
+                </div>
+
+                <a href="recursos/flyers/FlyerCB_AbrilV1.jpg" download class="download-btn">Descargar Flyer V1</a>
+            </div>
+
+            <!-- FLYER VERSIÓN 2 -->
+            <div class="flyer-card">
+                <div class="preview-box">
+                    <!-- Ruta exacta de tu captura de pantalla -->
+                    <img src="recursos/flyers/FlyerCB_AbrilV2.jpg" alt="Preview Flyer Abril V2">
+                </div>
+                
+                <div class="content-info">
+                    <span class="version-tag">Versión 2</span>
+                    <strong>Flyer Abril - Variante 2</strong>
+                </div>
+
+                <a href="recursos/flyers/FlyerCB_AbrilV2.jpg" download class="download-btn">Descargar Flyer V2</a>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

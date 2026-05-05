@@ -34,7 +34,10 @@
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
+            transition: opacity 0.3s ease;
         }
+
+        .nav-back a:hover { opacity: 0.7; }
 
         .container {
             max-width: 1200px;
@@ -59,17 +62,13 @@
             color: var(--cb-stone);
             font-size: 0.9rem;
             margin-bottom: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
 
-        /* Grid Optimizado para Comparación */
+        /* Grid Optimizado para 3 columnas en Desktop */
         .flyers-comparison {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
             align-items: start;
         }
 
@@ -79,6 +78,8 @@
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
             transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .flyer-item:hover {
@@ -95,6 +96,7 @@
             font-weight: 700;
             margin-bottom: 20px;
             text-transform: uppercase;
+            align-self: center;
         }
 
         .image-container {
@@ -103,7 +105,7 @@
             overflow: hidden;
             margin-bottom: 25px;
             background-color: var(--cb-cream);
-            line-height: 0; /* Quita espacio extra inferior */
+            line-height: 0;
         }
 
         .image-container img {
@@ -117,6 +119,7 @@
             text-align: left;
             margin-bottom: 25px;
             padding: 0 10px;
+            flex-grow: 1;
         }
 
         .flyer-info h3 {
@@ -127,8 +130,9 @@
 
         .flyer-info p {
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--cb-stone);
+            line-height: 1.4;
         }
 
         .download-btn {
@@ -145,11 +149,13 @@
             text-transform: uppercase;
             transition: all 0.3s ease;
             box-sizing: border-box;
+            letter-spacing: 1px;
         }
 
         .download-btn:hover {
             background-color: var(--cb-tan);
             color: white;
+            box-shadow: 0 5px 15px rgba(185, 147, 108, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -157,7 +163,7 @@
                 grid-template-columns: 1fr;
             }
             .flyer-item {
-                padding: 15px;
+                padding: 20px;
             }
             h1 { font-size: 2rem; }
         }
@@ -172,9 +178,7 @@
     <div class="container">
         <header>
             <h1>Flyers</h1>
-            <div class="helper-text">
-                <span>Versiones disponibles para la campaña de Abril</span>
-            </div>
+            <p class="helper-text">Comparativa de versiones para la campaña de Abril</p>
         </header>
 
         <main class="flyers-comparison">
@@ -183,11 +187,11 @@
             <article class="flyer-item">
                 <span class="version-badge">Versión 1.0</span>
                 <div class="image-container">
-                    <img src="recursos/flyers/FlyerCB_AbrilV1.jpg" alt="Flyer Caracas Bakery Abril V1">
+                    <img src="recursos/flyers/FlyerCB_AbrilV1.jpg" alt="Flyer Abril V1">
                 </div>
                 <div class="flyer-info">
                     <h3>Pizzas Artesanales</h3>
-                    <p>Enfoque en fotografía de producto y branding principal.</p>
+                    <p>Enfoque en fotografía de producto y composición de marca principal.</p>
                 </div>
                 <a href="recursos/flyers/FlyerCB_AbrilV1.jpg" download class="download-btn">Descargar JPG</a>
             </article>
@@ -196,13 +200,26 @@
             <article class="flyer-item">
                 <span class="version-badge">Versión 2.0</span>
                 <div class="image-container">
-                    <img src="recursos/flyers/FlyerCB_AbrilV2.jpg" alt="Flyer Caracas Bakery Abril V2">
+                    <img src="recursos/flyers/FlyerCB_AbrilV2.jpg" alt="Flyer Abril V2">
                 </div>
                 <div class="flyer-info">
-                    <h3>Variante Promocional</h3>
-                    <p>Diseño optimizado para legibilidad en redes sociales.</p>
+                    <h3>Variante Informativa</h3>
+                    <p>Diseño optimizado para legibilidad rápida y Call to Action en redes sociales.</p>
                 </div>
                 <a href="recursos/flyers/FlyerCB_AbrilV2.jpg" download class="download-btn">Descargar JPG</a>
+            </article>
+
+            <!-- VERSIÓN 3 -->
+            <article class="flyer-item">
+                <span class="version-badge">Versión 3.0</span>
+                <div class="image-container">
+                    <img src="recursos/flyers/FlyerCB_AbrilV3.jpg" alt="Flyer Abril V3">
+                </div>
+                <div class="flyer-info">
+                    <h3>Opción Alternativa</h3>
+                    <p>Nueva propuesta visual con ajustes en la jerarquía de elementos y colores.</p>
+                </div>
+                <a href="recursos/flyers/FlyerCB_AbrilV3.jpg" download class="download-btn">Descargar JPG</a>
             </article>
 
         </main>

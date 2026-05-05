@@ -12,70 +12,89 @@
         .reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Grid optimizado para 3 columnas en desktop */
         .grid-fichas {
             display: grid;
             grid-template-columns: repeat(1, 1fr);
-            gap: 60px 40px;
+            gap: 50px 40px;
         }
         @media (min-width: 768px) {
             .grid-fichas { grid-template-columns: repeat(3, 1fr); }
         }
         
-        .btn-download {
+        .btn-action {
             transition: all 0.3s ease;
             border: 1.5px solid black;
         }
-        .btn-download:hover { background: black; color: white; }
+        .btn-action:hover { background: black; color: white; }
+
+        /* Estilo caja de comentarios */
+        .comment-input {
+            border: none;
+            border-bottom: 1px solid #e5e7eb;
+            outline: none;
+            width: 100%;
+            padding: 8px 0;
+            font-size: 11px;
+            transition: border-color 0.3s;
+        }
+        .comment-input:focus { border-color: #000; }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- HERO: Logo masivo -->
-    <section class="h-[40vh] flex flex-col justify-center items-center text-center px-6">
+    <!-- HERO: Ajustado espacio mobile -->
+    <section class="h-[30vh] md:h-[40vh] flex flex-col justify-center items-center text-center px-6">
         <div class="reveal">
-            <img src="logo/logokantal.svg" alt="Kantal" class="w-80 md:w-[650px] h-auto">
+            <img src="logo/logokantal.svg" alt="Kantal" class="w-64 md:w-[650px] h-auto">
         </div>
     </section>
 
     <!-- CUERPO DE LA PÁGINA -->
-    <main class="max-w-7xl mx-auto py-8 px-6">
+    <main class="max-w-7xl mx-auto py-4 px-6">
         
-        <!-- Bloque de Títulos Centrados y más grandes -->
-        <header class="mb-20 text-center flex flex-col items-center">
+        <!-- Bloque de Títulos -->
+        <header class="mb-12 md:mb-20 text-center flex flex-col items-center">
             <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2">FICHAS TÉCNICAS</h2>
-            <p class="text-zinc-400 text-[11px] md:text-[13px] uppercase tracking-[0.5em] mb-16">Documentación Oficial de Productos</p>
+            <p class="text-zinc-400 text-[10px] md:text-[13px] uppercase tracking-[0.4em] mb-12 md:mb-16">Documentación Oficial de Productos</p>
             
-            <!-- Línea de categoría alineada a la izquierda del grid -->
             <div class="w-full text-left inline-block">
                 <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight mb-1">Línea de Perros y Gatos</h3>
                 <div class="h-1 w-32 bg-black"></div>
             </div>
         </header>
 
-        <!-- Cuadrícula de Fichas (Caben 3 por fila) -->
+        <!-- Cuadrícula de Fichas -->
         <section class="grid-fichas">
             
-            <!-- Ficha 01: Enjuague Desenderante -->
+            <!-- Ficha 01: Enjuague Desenredante (Corregido) -->
             <article class="flex flex-col items-start group">
-                <!-- Nombre del producto -->
-                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] mb-4 text-left h-8">Enjuague Desenderante</h4>
+                <h4 class="text-[11px] font-bold uppercase tracking-[0.1em] mb-4 text-left">Enjuague Desenredante</h4>
                 
-                <!-- Imagen compacta -->
-                <div class="w-full bg-[#fcfcfc] p-4 mb-6 border border-zinc-100 shadow-sm transition-all duration-500 group-hover:shadow-md">
-                    <img src="fichas/perrosygatos/Enjuage desenderante.jpg" 
+                <div class="w-full bg-[#fcfcfc] p-4 mb-4 border border-zinc-100 shadow-sm transition-all duration-500 group-hover:shadow-md">
+                    <img src="fichas/perrosygatos/Enjuage desenredante.jpg" 
                          alt="Ficha Técnica" 
                          class="w-full h-auto object-contain">
                 </div>
 
-                <!-- Botón de Descarga -->
-                <a href="fichas/perrosygatos/Enjuage desenderante.pdf" download 
-                   class="btn-download px-6 py-3 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center">
-                    Descargar PDF
-                </a>
-            </article>
+                <div class="w-full flex flex-col gap-4">
+                    <!-- Botón Descarga -->
+                    <a href="fichas/perrosygatos/Enjuage desenredante.pdf" download 
+                       class="btn-action px-6 py-3 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center">
+                        Descargar PDF
+                    </a>
 
-            <!-- Espacio para Ficha 02 y 03 (Duplicar bloque anterior cuando tengas los archivos) -->
+                    <!-- Formulario de Comentarios -->
+                    <form action="https://formspree.io/f/xvzlravo" method="POST" class="relative mt-2">
+                        <input type="hidden" name="_subject" value="Nuevo comentario: Enjuague Desenredante">
+                        <div class="flex items-center gap-2">
+                            <input type="text" name="message" required placeholder="Escribe tus comentarios" class="comment-input">
+                            <button type="submit" class="hover:scale-110 transition-transform">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </article>
 
         </section>
 

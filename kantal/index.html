@@ -12,68 +12,73 @@
         .reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Contenedor que respeta el tamaño natural del JPG */
-        .jpg-frame {
-            width: fit-content;
-            margin: 0 auto;
+        /* Ajuste para que las fichas sean más pequeñas y quepan varias */
+        .grid-fichas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
         }
         
         .btn-download {
             transition: all 0.3s ease;
-            border: 2px solid black;
+            border: 1.5px solid black;
         }
         .btn-download:hover { background: black; color: white; }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- HERO: Logo de mayor impacto sin eslogan -->
-    <section class="h-[55vh] flex flex-col justify-center items-center text-center px-6">
+    <!-- HERO: Logo masivo -->
+    <section class="h-[45vh] flex flex-col justify-center items-center text-center px-6">
         <div class="reveal">
-            <!-- Logo más grande estilo Caracas Bakery -->
             <img src="logo/logokantal.svg" alt="Kantal" class="w-80 md:w-[650px] h-auto">
         </div>
     </section>
 
     <!-- CUERPO DE LA PÁGINA -->
-    <main class="max-w-6xl mx-auto py-12 px-6">
+    <main class="max-w-7xl mx-auto py-4 px-6">
         
-        <!-- Bloque de Títulos Centrados -->
-        <header class="mb-24 text-center flex flex-col items-center">
-            <h2 class="text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4">FICHAS TÉCNICAS</h2>
-            <p class="text-zinc-400 text-[10px] uppercase tracking-[0.6em] mb-16">Documentación Oficial de Productos</p>
+        <!-- Bloque de Títulos Alineados a la Izquierda y más arriba -->
+        <header class="mb-12 text-left">
+            <h2 class="text-3xl md:text-4xl font-black tracking-tighter uppercase">FICHAS TÉCNICAS</h2>
+            <p class="text-zinc-400 text-[9px] uppercase tracking-[0.5em] mb-8">Documentación Oficial de Productos</p>
             
-            <div class="flex flex-col items-center">
-                <h3 class="text-2xl md:text-4xl font-black uppercase tracking-tight mb-2">Línea de Perros y Gatos</h3>
-                <div class="h-1.5 w-24 bg-black"></div>
+            <div class="inline-block">
+                <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight mb-1">Línea de Perros y Gatos</h3>
+                <div class="h-1 w-full bg-black"></div>
             </div>
         </header>
 
-        <!-- Sección de Producto -->
-        <section class="flex flex-col items-center text-center">
-            <!-- Nombre del producto después de la línea -->
-            <h4 class="text-[18px] font-bold uppercase tracking-[0.2em] mb-12">Enjuague Desenderante</h4>
+        <!-- Cuadrícula de Fichas (Caben 3 o más por fila) -->
+        <section class="grid-fichas">
             
-            <!-- Imagen al tamaño real del JPG -->
-            <div class="jpg-frame mb-12">
-                <img src="fichas/perrosygatos/Enjuage desenderante.jpg" 
-                     alt="Ficha Técnica" 
-                     class="max-w-full h-auto shadow-2xl transition-transform duration-500 hover:scale-[1.01]">
-            </div>
+            <!-- Ficha 01: Enjuague Desenderante -->
+            <article class="flex flex-col items-start group">
+                <!-- Nombre del producto a la izquierda -->
+                <h4 class="text-[13px] font-bold uppercase tracking-[0.1em] mb-4 text-left">Enjuague Desenderante</h4>
+                
+                <!-- Imagen en formato pequeño (Escala JPG) -->
+                <div class="w-full bg-[#fcfcfc] p-4 mb-6 border border-zinc-50 shadow-sm transition-all duration-500 group-hover:shadow-md">
+                    <img src="fichas/perrosygatos/Enjuage desenderante.jpg" 
+                         alt="Ficha Técnica Enjuague" 
+                         class="w-full h-auto object-contain">
+                </div>
 
-            <!-- Botón de Descarga -->
-            <div class="mb-32">
+                <!-- Botón de Descarga alineado a la izquierda -->
                 <a href="fichas/perrosygatos/Enjuage desenderante.pdf" download 
-                   class="btn-download px-16 py-5 text-[10px] font-black uppercase tracking-[0.3em] inline-block">
+                   class="btn-download px-8 py-3 text-[9px] font-black uppercase tracking-[0.2em]">
                     Descargar PDF
                 </a>
-            </div>
+            </article>
+
+            <!-- Aquí puedes duplicar el bloque <article> para las siguientes fichas -->
+
         </section>
 
     </main>
 
-    <footer class="py-20 text-center border-t border-zinc-50">
-        <p class="text-zinc-300 text-[10px] font-bold uppercase tracking-[0.5em]">Kantal Food 2026</p>
+    <footer class="py-20 text-center border-t border-zinc-50 mt-20">
+        <p class="text-zinc-300 text-[9px] font-bold uppercase tracking-[0.4em]">Kantal Food 2026</p>
     </footer>
 
 </body>

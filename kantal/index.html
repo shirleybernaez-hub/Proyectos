@@ -7,20 +7,36 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; }
+        body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         
-        .reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* EFECTO REVEAL ESTILO CARACAS BAKERY */
+        .mask-container {
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        .grid-fichas {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            gap: 50px 40px;
+        .bakery-reveal {
+            animation: bakeryEffect 1.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+            transform: translateY(100%) scale(1.1);
+            filter: blur(10px);
+            opacity: 0;
         }
-        @media (min-width: 768px) {
-            .grid-fichas { grid-template-columns: repeat(3, 1fr); }
+
+        @keyframes bakeryEffect {
+            0% {
+                transform: translateY(100%) scale(1.1);
+                filter: blur(10px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                filter: blur(0px);
+                opacity: 1;
+            }
         }
-        
+
         /* Estética de Chat Estilo Gemini */
         .chat-input-container {
             background-color: #f0f2f5;
@@ -43,38 +59,27 @@
             font-size: 13px;
             padding: 8px 0;
         }
-        .icon-btn {
-            color: #5f6368;
-            transition: color 0.2s;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
+        .icon-btn { color: #5f6368; transition: color 0.2s; cursor: pointer; display: flex; align-items: center; }
         .icon-btn:hover { color: #000; }
         
-        .btn-download {
-            transition: all 0.3s ease;
-            border: 1.5px solid black;
-        }
+        .btn-download { transition: all 0.3s ease; border: 1.5px solid black; }
         .btn-download:hover { background: black; color: white; }
-
-        /* Feedback de envío */
-        .sent-success { color: #10b981 !important; transform: scale(1.1); }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- HERO -->
-    <section class="h-[30vh] md:h-[35vh] flex flex-col justify-center items-center text-center px-6">
-        <div class="reveal">
-            <img src="logo/logokantal.svg" alt="Kantal" class="w-64 md:w-[600px] h-auto">
+    <!-- HERO: Efecto de Máscara Bakery -->
+    <section class="h-[55vh] md:h-[65vh] flex flex-col justify-center items-center text-center px-4">
+        <div class="mask-container w-full h-full">
+            <!-- Tamaño masivo optimizado -->
+            <img src="logo/logokantal.svg" alt="Kantal" class="bakery-reveal w-80 md:w-[750px] h-auto">
         </div>
     </section>
 
-    <!-- CUERPO -->
-    <main class="max-w-7xl mx-auto py-4 px-6">
+    <!-- CUERPO DE LA PÁGINA -->
+    <main class="max-w-7xl mx-auto py-2 px-6">
         
-        <header class="mb-12 md:mb-16 text-center flex flex-col items-center">
+        <header class="mb-12 md:mb-20 text-center flex flex-col items-center">
             <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2">FICHAS TÉCNICAS</h2>
             <p class="text-zinc-400 text-[10px] md:text-[12px] uppercase tracking-[0.4em] mb-12">Documentación Oficial de Productos</p>
             
@@ -84,16 +89,16 @@
             </div>
         </header>
 
-        <section class="grid-fichas">
+        <!-- Grid de Fichas (3 columnas en desktop) -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24">
             
-            <!-- Ficha 01: Enjuague Desenredante -->
-            <article class="flex flex-col items-start">
+            <article class="flex flex-col items-start group">
                 <h4 class="text-[11px] font-bold uppercase tracking-[0.1em] mb-4">Enjuague Desenredante</h4>
                 
                 <div class="w-full bg-[#fcfcfc] p-4 mb-4 border border-zinc-100 shadow-sm rounded-xl">
                     <img src="fichas/perrosygatos/Enjuage desenredante.jpg" 
                          alt="Ficha Técnica" 
-                         class="w-full h-auto object-contain">
+                         class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105">
                 </div>
 
                 <div class="w-full flex flex-col gap-6">
@@ -102,18 +107,15 @@
                         Descargar PDF
                     </a>
 
-                    <!-- Formulario con AJAX (Sin Salir de la Página) -->
-                    <form id="form-desenredante" class="chat-form">
+                    <!-- Caja de Comentarios Estilo Chat Gemini -->
+                    <form class="chat-form">
                         <input type="hidden" name="_subject" value="Comentario: Enjuague Desenredante">
-                        
                         <div class="chat-input-container">
                             <label class="icon-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
                                 <input type="file" name="upload" class="hidden">
                             </label>
-
                             <input type="text" name="message" required placeholder="Escribe tus comentarios" class="chat-field">
-
                             <button type="submit" class="icon-btn submit-trigger">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                             </button>
@@ -126,9 +128,7 @@
     </main>
 
     <script>
-        // Lógica para enviar sin recargar la página (AJAX)
         const forms = document.querySelectorAll('.chat-form');
-        
         forms.forEach(form => {
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -145,15 +145,11 @@
 
                     if (response.ok) {
                         input.value = '';
-                        input.placeholder = '¡Enviado con éxito!';
-                        btn.classList.add('sent-success');
-                        setTimeout(() => {
-                            input.placeholder = 'Escribe tus comentarios';
-                            btn.classList.remove('sent-success');
-                        }, 3000);
+                        input.placeholder = '¡Enviado!';
+                        setTimeout(() => { input.placeholder = 'Escribe tus comentarios'; }, 3000);
                     }
                 } catch (error) {
-                    input.placeholder = 'Error al enviar';
+                    input.placeholder = 'Error';
                 }
             });
         });

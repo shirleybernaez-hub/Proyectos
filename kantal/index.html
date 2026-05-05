@@ -5,26 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Recursos de Marca</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        .playfair { font-family: 'Playfair Display', serif; }
         
-        /* Animación Logo y Slogan */
+        /* Animaciones */
         .reveal-logo { animation: revealScale 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .reveal-slogan { opacity: 0; animation: fadeIn 1s ease-out 1s forwards; }
 
         @keyframes revealScale {
-            from { opacity: 0; transform: scale(0.95); filter: blur(10px); }
+            from { opacity: 0; transform: scale(0.98); filter: blur(8px); }
             to { opacity: 1; transform: scale(1); filter: blur(0); }
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Efecto Hover Caracas Bakery Style */
-        .resource-card { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .resource-card:hover { transform: translateY(-8px); }
+        /* Tarjetas de recursos */
+        .resource-card { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .resource-card:hover { transform: translateY(-10px); }
+        
+        .image-container {
+            background-color: #f9f9f9;
+            position: relative;
+        }
         .image-container::after {
-            content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.03); opacity: 1; transition: opacity 0.3s;
+            content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.02); transition: opacity 0.3s;
         }
         .resource-card:hover .image-container::after { opacity: 0; }
     </style>
@@ -32,54 +36,51 @@
 <body>
 
     <!-- HERO: Identidad Kantal -->
-    <section class="h-[70vh] flex flex-col justify-center items-center text-center px-6 border-b border-zinc-50">
-        <div class="relative mb-8">
-            <!-- Logo principal corregido ruta -->
-            <img src="recurso/kantal/logo/logo.png" alt="Kantal" class="reveal-logo w-48 md:w-64">
+    <section class="h-[60vh] flex flex-col justify-center items-center text-center px-6">
+        <div class="relative mb-6">
+            <!-- Ruta corregida: index ya está en kantal, entra directo a logo -->
+            <img src="logo/logo.png" alt="Kantal" class="reveal-logo w-48 md:w-56">
         </div>
         <div class="reveal-slogan">
-            <!-- Slogan en PNG como pediste para el efecto -->
-            <img src="recurso/kantal/logo/slogankantal.png" alt="Tradicionalmente Sano" class="w-32 md:w-40 mx-auto opacity-70">
+            <img src="logo/slogankantal.png" alt="Tradicionalmente Sano" class="w-36 md:w-44 mx-auto opacity-80">
         </div>
     </section>
 
     <!-- CONTENIDO: Fichas Técnicas -->
-    <main class="max-w-6xl mx-auto py-24 px-6">
-        <header class="mb-20 text-center">
-            <h2 class="playfair text-5xl md:text-6xl mb-4 italic">Fichas Técnicas</h2>
-            <p class="text-zinc-400 text-[10px] uppercase tracking-[0.5em]">Repositorio de Recursos Oficiales</p>
+    <main class="max-w-5xl mx-auto py-20 px-6">
+        <header class="mb-24 text-center">
+            <!-- Tipografía Inter Bold sin Serif -->
+            <h2 class="text-5xl md:text-7xl font-extrabold tracking-tighter mb-4 uppercase">Ficha Técnica</h2>
+            <p class="text-zinc-400 text-[10px] uppercase tracking-[0.6em]">Documentación Oficial de Producto</p>
         </header>
 
         <!-- Grid de Categorías -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
             
             <!-- Categoría: Perros y Gatos -->
             <div class="resource-card group">
-                <div class="relative image-container overflow-hidden bg-zinc-50 aspect-[4/5] md:aspect-square flex items-center justify-center p-8">
-                    <!-- Ruta de imagen corregida -->
-                    <img src="recurso/kantal/fichas/perrosygatos/ficha_perros_gatos.jpg" 
+                <div class="image-container overflow-hidden aspect-[4/5] flex items-center justify-center p-12">
+                    <!-- Ruta corregida: entra directo a fichas -->
+                    <img src="fichas/perrosygatos/ficha_perros_gatos.jpg" 
                          alt="Ficha Perros y Gatos" 
                          class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-1000">
                 </div>
                 
-                <div class="mt-10 flex flex-col items-center">
-                    <h3 class="text-[12px] font-bold uppercase tracking-[0.3em] mb-6">01. Perros y Gatos</h3>
-                    <!-- Botón Minimalista Estilo Agency -->
-                    <a href="recurso/kantal/fichas/perrosygatos/ficha_perros_gatos.pdf" download 
-                       class="border border-black px-12 py-4 text-[9px] uppercase tracking-[0.3em] font-semibold hover:bg-black hover:text-white transition-all duration-300">
-                        Descargar PDF
+                <div class="mt-8 flex flex-col items-start">
+                    <h3 class="text-[13px] font-extrabold uppercase tracking-[0.2em] mb-4">Línea Perros y Gatos</h3>
+                    <a href="fichas/perrosygatos/ficha_perros_gatos.pdf" download 
+                       class="group/btn relative inline-flex items-center overflow-hidden border border-black px-10 py-4 transition-all">
+                        <span class="relative z-10 text-[9px] uppercase tracking-[0.3em] font-bold group-hover/btn:text-white transition-colors duration-300">Descargar PDF</span>
+                        <div class="absolute inset-0 bg-black translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300"></div>
                     </a>
                 </div>
             </div>
 
-            <!-- Aquí podrías añadir más categorías siguiendo la misma estructura -->
-
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="py-20 border-t border-zinc-50 text-center">
-        <p class="text-zinc-300 text-[9px] uppercase tracking-[0.4em]">Kantal Food © 2026</p>
+    <footer class="py-16 text-center border-t border-zinc-50">
+        <p class="text-zinc-300 text-[9px] uppercase tracking-[0.5em]">Kantal © 2026</p>
     </footer>
 
 </body>

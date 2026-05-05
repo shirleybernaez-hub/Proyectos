@@ -14,49 +14,29 @@
             to { opacity: 1; transform: translateY(0); filter: blur(0px); }
         }
 
-        /* HEADER: Blindado con z-index y fondo blanco sólido */
+        /* HEADER ESTÁTICO: Sin posición fixed ni scroll */
         header#main-header {
             width: 100%;
-            padding: 40px 0 20px 0; 
+            padding: 60px 0 40px 0; 
             text-align: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 9999; 
             background-color: #ffffff;
-            transition: all 0.5s ease;
-        }
-
-        header#main-header.scrolled {
-            padding: 12px 0;
-            background-color: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid #eee;
         }
 
         .logo-kantal {
             height: auto;
             display: inline-block;
             animation: fadeInUp 1.2s ease-out forwards;
-            transition: width 0.5s ease;
             width: 280px; /* Tamaño móvil */
         }
 
         @media (min-width: 768px) {
             .logo-kantal { width: 500px; }
-            header.scrolled .logo-kantal { width: 160px; }
         }
 
-        /* CONTENEDOR: Espacio suficiente para que el texto no choque con el header fijo */
         .content-wrapper {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 280px 20px 80px 20px; 
-        }
-
-        @media (max-width: 768px) {
-            .content-wrapper { padding-top: 220px; }
-            header.scrolled .logo-kantal { width: 130px; }
+            padding: 0 20px 80px 20px; 
         }
 
         .chat-input-container {
@@ -75,7 +55,6 @@
 <body>
 
     <header id="main-header">
-        <!-- RUTA CORREGIDA: logo/logokantal.svg -->
         <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal Logo">
     </header>
 
@@ -88,6 +67,7 @@
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-10">
             <article class="flex flex-col group">
+                <!-- Alineación a la izquierda corregida -->
                 <div class="text-left mb-6">
                     <h3 class="text-lg md:text-xl font-black mb-1">Línea de perros y gatos</h3>
                     <div class="h-1 w-16 bg-black mb-6"></div>
@@ -119,15 +99,7 @@
     </div>
 
     <script>
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 40) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
+        // Solo lógica de envío AJAX para comentarios
         document.querySelectorAll('.chat-form').forEach(form => {
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();

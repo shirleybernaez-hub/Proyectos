@@ -8,6 +8,12 @@
     :root {
         --bg-color: #FFFFFF;
         --accent: #f4f4f4;
+        /* Colores de la paleta colores.jpg */
+        --cb-tan: #B9936C;
+        --cb-cream: #EBE1D5;
+        --cb-charcoal: #434244;
+        --cb-taupe: #8C7E74;
+        --cb-stone: #BDB5AD;
     }
 
     body {
@@ -24,7 +30,6 @@
     }
 
     .logo-bakery {
-        /* Logo aumentado según tu solicitud */
         max-height: 120px; 
         width: auto;
         transition: transform 0.3s ease;
@@ -39,7 +44,6 @@
     .bento-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        /* Reducimos un poco la altura base para que quepan más filas cómodamente */
         grid-auto-rows: 220px; 
         gap: 20px;
     }
@@ -56,13 +60,36 @@
         align-items: flex-end;
         text-align: right;
         box-sizing: border-box;
-        transition: transform 0.3s ease, background-color 0.3s ease;
+        transition: transform 0.3s ease, filter 0.3s ease;
     }
 
     .bento-item:hover {
         transform: scale(1.02);
-        background-color: #f0f0f0;
+        filter: brightness(0.95);
     }
+
+    /* Aplicación de colores según colores.jpg */
+    
+    /* 1. BRANDBOOK - Tan con opacidad baja */
+    .color-1 { background-color: rgba(185, 147, 108, 0.25) !important; color: #6d4c2b; }
+    
+    /* 2. LOGOTIPOS - Cream */
+    .color-2 { background-color: var(--cb-cream) !important; }
+    
+    /* 3. MENÚ - Charcoal (Texto Blanco) */
+    .color-3 { background-color: var(--cb-charcoal) !important; color: #FFFFFF !important; }
+    .color-3 p { color: #FFFFFF; opacity: 0.8 !important; }
+    
+    /* 4. FLYERS - Taupe (Texto Blanco) */
+    .color-4 { background-color: var(--cb-taupe) !important; color: #FFFFFF !important; }
+    .color-4 p { color: #FFFFFF; opacity: 0.8 !important; }
+    
+    /* 5. MERCH - Stone */
+    .color-5 { background-color: var(--cb-stone) !important; }
+    
+    /* 6. STICKERS - Repetimos Tan (Sólido) */
+    .color-6 { background-color: var(--cb-tan) !important; color: #FFFFFF !important; }
+    .color-6 p { color: #FFFFFF; opacity: 0.8 !important; }
 
     .bento-item h3 {
         margin: 0;
@@ -78,7 +105,6 @@
         opacity: 0.6;
     }
 
-    /* Jerarquía de tamaños para acomodar las nuevas cards */
     .item-large { grid-column: span 2; grid-row: span 2; }
     .item-wide { grid-column: span 2; }
 
@@ -101,50 +127,50 @@
 <div class="grid-container">
     <main class="bento-grid">
         
-        <!-- 1. BRANDBOOK -->
-        <a href="brandbook.html" class="bento-item item-large">
+        <!-- 1. BRANDBOOK (Tan con opacidad) -->
+        <a href="brandbook.html" class="bento-item item-large color-1">
             <h3>BRANDBOOK</h3>
             <p>Manual de identidad completo</p>
         </a>
 
-        <!-- 2. LOGOTIPOS (Texto simplificado) -->
-        <a href="logos.html" class="bento-item">
+        <!-- 2. LOGOTIPOS (Cream) -->
+        <a href="logos.html" class="bento-item color-2">
             <h3>LOGOTIPOS</h3>
             <p>Variantes (PNG, SVG, JPG)</p>
         </a>
 
-        <!-- 3. MENÚ (Subtítulo actualizado) -->
-        <a href="menu.html" class="bento-item">
+        <!-- 3. MENÚ (Charcoal / Texto Blanco) -->
+        <a href="menu.html" class="bento-item color-3">
             <h3>MENÚ</h3>
             <p>Menú digital, CB y pizzas</p>
         </a>
 
-        <!-- 4. FLYERS (Nueva) -->
-        <a href="flyers.html" class="bento-item">
+        <!-- 4. FLYERS (Taupe / Texto Blanco) -->
+        <a href="flyers.html" class="bento-item color-4">
             <h3>FLYERS</h3>
             <p>Promociones y eventos</p>
         </a>
 
-        <!-- 5. MERCH (Nueva) -->
-        <a href="merch.html"  class="bento-item">
+        <!-- 5. MERCH (Stone) -->
+        <a href="merch.html"  class="bento-item color-5">
             <h3>MERCH</h3>
             <p>Franelas y delantales</p>
         </a>
 
-        <!-- 6. STICKERS -->
-        <a href="stickers.html" class="bento-item">
+        <!-- 6. STICKERS (Tan Sólido) -->
+        <a href="stickers.html" class="bento-item color-6">
             <h3>STICKERS</h3>
             <p>Diseños para empaque</p>
         </a>
 
-        <!-- 7. PATRONES -->
-        <a href="patrones.html" class="bento-item item-wide">
+        <!-- 7. PATRONES (Cream) -->
+        <a href="patrones.html" class="bento-item item-wide color-2">
             <h3>PATRONES</h3>
             <p>Texturas de marca e identidad visual</p>
         </a>
 
-        <!-- 8. ROTULACIONES -->
-        <a href="rotulaciones.html"  class="bento-item">
+        <!-- 8. ROTULACIONES (Stone) -->
+        <a href="rotulaciones.html"  class="bento-item color-5">
             <h3>ROTULACIONES</h3>
             <p>Piezas gráficas para decoración</p>
         </a>

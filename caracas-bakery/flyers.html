@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flyers | Caracas Bakery</title>
     <style>
-        /* Paleta oficial de colores.jpg */
         :root {
             --cb-tan: #B9936C;
             --cb-charcoal: #434244;
@@ -22,7 +21,6 @@
             color: var(--cb-charcoal);
         }
 
-        /* Breadcrumbs estilo ONSHIFT */
         .nav-back {
             padding: 40px 20px;
             max-width: 1200px;
@@ -48,9 +46,7 @@
             text-align: center;
         }
 
-        header {
-            margin-bottom: 50px;
-        }
+        header { margin-bottom: 50px; }
 
         h1 {
             font-size: 2.5rem;
@@ -60,13 +56,6 @@
             text-transform: uppercase;
         }
 
-        .helper-text {
-            color: var(--cb-stone);
-            font-size: 0.9rem;
-            margin-bottom: 40px;
-        }
-
-        /* Grid para 3 columnas en Desktop */
         .flyers-comparison {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -79,14 +68,12 @@
             border-radius: 32px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
+            transition: transform 0.3s ease;
         }
 
-        .flyer-item:hover {
-            transform: translateY(-5px);
-        }
+        .flyer-item:hover { transform: translateY(-5px); }
 
         .version-badge {
             display: inline-block;
@@ -107,21 +94,11 @@
             overflow: hidden;
             margin-bottom: 25px;
             background-color: var(--cb-cream);
-            line-height: 0;
         }
 
-        .image-container img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: contain;
-        }
+        .image-container img { width: 100%; height: auto; display: block; }
 
-        /* --- Caja de Comentarios Estilo Chat In-Page --- */
-        .comment-section {
-            margin-bottom: 20px;
-            text-align: left;
-        }
+        .comment-section { margin-bottom: 20px; text-align: left; }
 
         .comment-box {
             display: flex;
@@ -130,13 +107,6 @@
             border-radius: 20px;
             padding: 10px 15px;
             border: 1px solid #EAEAEA;
-            transition: all 0.3s ease;
-        }
-
-        .comment-box:focus-within {
-            border-color: var(--cb-tan);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(185, 147, 108, 0.1);
         }
 
         .comment-box input {
@@ -144,10 +114,8 @@
             background: transparent;
             border: none;
             outline: none;
-            font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
             padding: 5px;
-            color: var(--cb-charcoal);
         }
 
         .send-btn {
@@ -160,35 +128,24 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: transform 0.2s ease, background 0.2s ease;
-            margin-left: 10px;
             flex-shrink: 0;
+            margin-left: 10px;
         }
 
-        .send-btn:hover {
-            transform: scale(1.1);
-            background: var(--cb-charcoal);
-        }
-
-        .send-btn svg {
-            width: 18px;
-            height: 18px;
-            color: white;
-        }
+        .send-btn svg { width: 18px; color: white; }
 
         .status-msg {
             font-size: 0.7rem;
             margin-top: 8px;
             font-weight: 600;
-            display: none;
             text-align: center;
+            display: none;
         }
 
         .download-btn {
             display: block;
             width: 100%;
             padding: 16px;
-            background-color: transparent;
             border: 2px solid var(--cb-tan);
             color: var(--cb-tan);
             text-decoration: none;
@@ -196,23 +153,10 @@
             font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-            letter-spacing: 1px;
             text-align: center;
         }
 
-        .download-btn:hover {
-            background-color: var(--cb-tan);
-            color: white;
-            box-shadow: 0 5px 15px rgba(185, 147, 108, 0.3);
-        }
-
-        @media (max-width: 768px) {
-            .flyers-comparison { grid-template-columns: 1fr; }
-            .flyer-item { padding: 20px; }
-            h1 { font-size: 2rem; }
-        }
+        @media (max-width: 768px) { .flyers-comparison { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -224,127 +168,96 @@
     <div class="container">
         <header>
             <h1>Flyers</h1>
-            <p class="helper-text">Envía tus comentarios sobre cada versión para realizar ajustes.</p>
+            <p style="color: var(--cb-stone);">Envía tus comentarios directamente a nuestro equipo.</p>
         </header>
 
         <main class="flyers-comparison">
-            
             <!-- VERSIÓN 1 -->
             <article class="flyer-item">
                 <span class="version-badge">Versión 1.0</span>
-                <div class="image-container">
-                    <img src="recursos/flyers/FlyerCB_AbrilV1.jpg" alt="Flyer Abril V1">
-                </div>
-                
+                <div class="image-container"><img src="recursos/flyers/FlyerCB_AbrilV1.jpg"></div>
                 <div class="comment-section">
-                    <form onsubmit="submitComment(event, '1.0', 'input-v1', 'status-v1')">
+                    <form onsubmit="botWhatsApp(event, '1.0', 'input-v1', 'status-v1')">
                         <div class="comment-box">
-                            <input type="text" id="input-v1" placeholder="¿Qué te parece la V1?" required>
+                            <input type="text" id="input-v1" placeholder="Comentarios sobre V1..." required>
                             <button type="submit" class="send-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" /></svg>
                             </button>
                         </div>
                         <div id="status-v1" class="status-msg"></div>
                     </form>
                 </div>
-
                 <a href="recursos/flyers/FlyerCB_AbrilV1.jpg" download class="download-btn">Descargar JPG</a>
             </article>
 
             <!-- VERSIÓN 2 -->
             <article class="flyer-item">
                 <span class="version-badge">Versión 2.0</span>
-                <div class="image-container">
-                    <img src="recursos/flyers/FlyerCB_AbrilV2.jpg" alt="Flyer Abril V2">
-                </div>
-
+                <div class="image-container"><img src="recursos/flyers/FlyerCB_AbrilV2.jpg"></div>
                 <div class="comment-section">
-                    <form onsubmit="submitComment(event, '2.0', 'input-v2', 'status-v2')">
+                    <form onsubmit="botWhatsApp(event, '2.0', 'input-v2', 'status-v2')">
                         <div class="comment-box">
-                            <input type="text" id="input-v2" placeholder="¿Qué te parece la V2?" required>
+                            <input type="text" id="input-v2" placeholder="Comentarios sobre V2..." required>
                             <button type="submit" class="send-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" /></svg>
                             </button>
                         </div>
                         <div id="status-v2" class="status-msg"></div>
                     </form>
                 </div>
-
                 <a href="recursos/flyers/FlyerCB_AbrilV2.jpg" download class="download-btn">Descargar JPG</a>
             </article>
 
             <!-- VERSIÓN 3 -->
             <article class="flyer-item">
                 <span class="version-badge">Versión 3.0</span>
-                <div class="image-container">
-                    <img src="recursos/flyers/FlyerCB_AbrilV3.jpg" alt="Flyer Abril V3">
-                </div>
-
+                <div class="image-container"><img src="recursos/flyers/FlyerCB_AbrilV3.jpg"></div>
                 <div class="comment-section">
-                    <form onsubmit="submitComment(event, '3.0', 'input-v3', 'status-v3')">
+                    <form onsubmit="botWhatsApp(event, '3.0', 'input-v3', 'status-v3')">
                         <div class="comment-box">
-                            <input type="text" id="input-v3" placeholder="¿Qué te parece la V3?" required>
+                            <input type="text" id="input-v3" placeholder="Comentarios sobre V3..." required>
                             <button type="submit" class="send-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" /></svg>
                             </button>
                         </div>
                         <div id="status-v3" class="status-msg"></div>
                     </form>
                 </div>
-
                 <a href="recursos/flyers/FlyerCB_AbrilV3.jpg" download class="download-btn">Descargar JPG</a>
             </article>
-
         </main>
     </div>
 
     <script>
-        async function submitComment(event, version, inputId, statusId) {
+        function botWhatsApp(event, version, inputId, statusId) {
             event.preventDefault();
             const input = document.getElementById(inputId);
             const status = document.getElementById(statusId);
             const comment = input.value;
 
-            // Estado de carga visual
             status.style.display = "block";
             status.innerText = "Enviando comentario...";
             status.style.color = "var(--cb-stone)";
 
-            try {
-                // Endpoint con tu ID de Formspree: mqenqolb
-                const response = await fetch("https://formspree.io/f/mqenqolb", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        Marca: "Caracas Bakery",
-                        Seccion: "Feedback Flyers",
-                        Version: version, 
-                        Mensaje: comment 
-                    })
-                });
+            const phone = "584242623012";
+            const apikey = "2641876";
+            const text = encodeURIComponent(`*Feedback Caracas Bakery*\n*Flyer:* ${version}\n*Comentario:* ${comment}`);
 
-                if (response.ok) {
-                    status.innerText = "¡Recibido! Revisaremos tus ajustes.";
-                    status.style.color = "var(--cb-tan)"; 
-                    input.value = ""; 
-                    
-                    // Ocultar mensaje después de unos segundos
+            const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${text}&apikey=${apikey}`;
+
+            // Usamos 'no-cors' para evitar errores de seguridad del navegador mientras la API procesa el mensaje
+            fetch(url, { mode: 'no-cors' })
+                .then(() => {
+                    status.innerText = "¡Comentario enviado!";
+                    status.style.color = "var(--cb-tan)";
+                    input.value = "";
                     setTimeout(() => { status.style.display = "none"; }, 4000);
-                } else {
-                    throw new Error();
-                }
-            } catch (error) {
-                status.innerText = "Error de conexión. Intenta de nuevo.";
-                status.style.color = "#dc3545";
-            }
+                })
+                .catch(() => {
+                    status.innerText = "Error al conectar con el bot.";
+                    status.style.color = "#dc3545";
+                });
         }
     </script>
-
 </body>
 </html>

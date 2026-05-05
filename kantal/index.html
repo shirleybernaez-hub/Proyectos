@@ -3,86 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kantal | Fichas Técnicas</title>
+    <title>KANTAL | Recursos de Marca</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #FDFDFB; color: #1A1A1A; font-family: 'Inter', sans-serif; }
+        body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .playfair { font-family: 'Playfair Display', serif; }
         
-        /* Efecto de aparición para el logo y slogan */
-        .fade-in-up {
-            animation: fadeInUp 1.5s ease-out forwards;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* Animación Logo y Slogan */
+        .reveal-logo { animation: revealScale 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .reveal-slogan { opacity: 0; animation: fadeIn 1s ease-out 1s forwards; }
 
-        .logo-container {
-            transition: all 0.5s ease;
+        @keyframes revealScale {
+            from { opacity: 0; transform: scale(0.95); filter: blur(10px); }
+            to { opacity: 1; transform: scale(1); filter: blur(0); }
         }
-        
-        .slogan-reveal {
-            overflow: hidden;
-            border-right: 1px solid #1a1a1a;
-            white-space: nowrap;
-            width: 0;
-            animation: typing 2s steps(40, end) 1s forwards, blink-caret 0.75s step-end infinite;
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #1a1a1a } }
+        /* Efecto Hover Caracas Bakery Style */
+        .resource-card { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .resource-card:hover { transform: translateY(-8px); }
+        .image-container::after {
+            content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.03); opacity: 1; transition: opacity 0.3s;
+        }
+        .resource-card:hover .image-container::after { opacity: 0; }
     </style>
 </head>
 <body>
 
-    <!-- Hero: Logo y Slogan Central -->
-    <section class="h-screen flex flex-col justify-center items-center text-center px-6">
-        <div class="logo-container fade-in-up">
-            <!-- Referencia al logo que ya tienes -->
-            <img src="recursos/kantal/logo.png" alt="Kantal Logo" class="w-64 md:w-80 mb-4">
-            <div class="flex justify-center">
-                <p class="slogan-reveal playfair italic text-xl md:text-2xl tracking-wide">Tradicionalmente sano</p>
-            </div>
+    <!-- HERO: Identidad Kantal -->
+    <section class="h-[70vh] flex flex-col justify-center items-center text-center px-6 border-b border-zinc-50">
+        <div class="relative mb-8">
+            <!-- Logo principal corregido ruta -->
+            <img src="recurso/kantal/logo/logo.png" alt="Kantal" class="reveal-logo w-48 md:w-64">
         </div>
-        
-        <!-- Flecha indicadora hacia abajo -->
-        <div class="absolute bottom-10 animate-bounce">
-            <span class="text-[10px] uppercase tracking-[0.3em] text-zinc-400">Deslizar para ver Fichas</span>
+        <div class="reveal-slogan">
+            <!-- Slogan en PNG como pediste para el efecto -->
+            <img src="recurso/kantal/logo/slogankantal.png" alt="Tradicionalmente Sano" class="w-32 md:w-40 mx-auto opacity-70">
         </div>
     </section>
 
-    <!-- Sección Ficha Técnica -->
-    <section class="max-w-4xl mx-auto py-24 px-6 border-t border-zinc-100">
-        <h2 class="playfair text-4xl md:text-5xl text-center mb-16">Ficha Técnica</h2>
+    <!-- CONTENIDO: Fichas Técnicas -->
+    <main class="max-w-6xl mx-auto py-24 px-6">
+        <header class="mb-20 text-center">
+            <h2 class="playfair text-5xl md:text-6xl mb-4 italic">Fichas Técnicas</h2>
+            <p class="text-zinc-400 text-[10px] uppercase tracking-[0.5em]">Repositorio de Recursos Oficiales</p>
+        </header>
 
-        <!-- Clasificación: Perros y Gatos -->
-        <div class="bg-white p-8 md:p-12 rounded-lg shadow-sm border border-zinc-50">
-            <h3 class="text-[11px] uppercase tracking-[0.4em] text-zinc-400 mb-8 font-bold text-center">PRODUCTOS PARA PERROS Y GATOS</h3>
+        <!-- Grid de Categorías -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             
-            <div class="flex flex-col items-center">
-                <!-- Imagen de la Ficha -->
-                <div class="w-full max-w-md bg-zinc-100 mb-8 overflow-hidden rounded-sm shadow-md">
-                    <img src="recursos/kantal/fichas/perrosygatos/ficha_perros_gatos.jpg" alt="Ficha Técnica Perros y Gatos" class="w-full h-auto hover:scale-105 transition-transform duration-700">
+            <!-- Categoría: Perros y Gatos -->
+            <div class="resource-card group">
+                <div class="relative image-container overflow-hidden bg-zinc-50 aspect-[4/5] md:aspect-square flex items-center justify-center p-8">
+                    <!-- Ruta de imagen corregida -->
+                    <img src="recurso/kantal/fichas/perrosygatos/ficha_perros_gatos.jpg" 
+                         alt="Ficha Perros y Gatos" 
+                         class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-1000">
                 </div>
-
-                <!-- Botón de Descarga -->
-                <a href="recursos/kantal/fichas/perrosygatos/ficha_perros_gatos.pdf" download 
-                   class="inline-flex items-center gap-4 bg-black text-white px-12 py-5 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-zinc-800 transition-all">
-                    <span>Descargar PDF</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                    </svg>
-                </a>
+                
+                <div class="mt-10 flex flex-col items-center">
+                    <h3 class="text-[12px] font-bold uppercase tracking-[0.3em] mb-6">01. Perros y Gatos</h3>
+                    <!-- Botón Minimalista Estilo Agency -->
+                    <a href="recurso/kantal/fichas/perrosygatos/ficha_perros_gatos.pdf" download 
+                       class="border border-black px-12 py-4 text-[9px] uppercase tracking-[0.3em] font-semibold hover:bg-black hover:text-white transition-all duration-300">
+                        Descargar PDF
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Footer Simple -->
-    <footer class="py-12 text-center text-zinc-400 text-[9px] uppercase tracking-[0.2em]">
-        © 2026 Kantal Food - Todos los derechos reservados.
+            <!-- Aquí podrías añadir más categorías siguiendo la misma estructura -->
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-20 border-t border-zinc-50 text-center">
+        <p class="text-zinc-300 text-[9px] uppercase tracking-[0.4em]">Kantal Food © 2026</p>
     </footer>
 
 </body>

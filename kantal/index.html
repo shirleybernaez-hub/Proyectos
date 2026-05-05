@@ -8,62 +8,72 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; }
+        
         .reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .btn-hover:hover { background-color: #000; color: #fff; }
+
+        /* Contenedor que respeta el tamaño natural del JPG */
+        .jpg-frame {
+            width: fit-content;
+            margin: 0 auto;
+        }
+        
+        .btn-download {
+            transition: all 0.3s ease;
+            border: 2px solid black;
+        }
+        .btn-download:hover { background: black; color: white; }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- HERO: Impacto visual estilo Caracas Bakery -->
-    <section class="h-[70vh] flex flex-col justify-center items-center text-center px-6">
-        <div class="mb-6">
-            <!-- Logo más grande para impacto inicial -->
-            <img src="logo/logokantal.svg" alt="Kantal" class="reveal w-64 md:w-[450px]">
-        </div>
-        <div class="opacity-60 reveal" style="animation-delay: 0.4s;">
-            <img src="logo/slogankantal.png" alt="Slogan" class="w-40 md:w-56 mx-auto">
+    <!-- HERO: Logo de mayor impacto sin eslogan -->
+    <section class="h-[55vh] flex flex-col justify-center items-center text-center px-6">
+        <div class="reveal">
+            <!-- Logo más grande estilo Caracas Bakery -->
+            <img src="logo/logokantal.svg" alt="Kantal" class="w-80 md:w-[650px] h-auto">
         </div>
     </section>
 
-    <!-- SECCIÓN DE RECURSOS -->
-    <main class="max-w-5xl mx-auto py-12 px-6">
-        <header class="mb-16 text-center">
-            <!-- Título más pequeño y con acento -->
+    <!-- CUERPO DE LA PÁGINA -->
+    <main class="max-w-6xl mx-auto py-12 px-6">
+        
+        <!-- Bloque de Títulos Centrados -->
+        <header class="mb-24 text-center flex flex-col items-center">
             <h2 class="text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4">FICHAS TÉCNICAS</h2>
-            <!-- Subtítulo recuperado -->
-            <p class="text-zinc-400 text-[10px] uppercase tracking-[0.6em]">Documentación Oficial de Producto</p>
+            <p class="text-zinc-400 text-[10px] uppercase tracking-[0.6em] mb-16">Documentación Oficial de Productos</p>
+            
+            <div class="flex flex-col items-center">
+                <h3 class="text-2xl md:text-4xl font-black uppercase tracking-tight mb-2">Línea de Perros y Gatos</h3>
+                <div class="h-1.5 w-24 bg-black"></div>
+            </div>
         </header>
 
-        <!-- Clasificación: Línea Perros y Gatos -->
-        <div class="mb-20">
-            <h3 class="text-[12px] font-bold uppercase tracking-[0.4em] mb-12 text-center md:text-left border-b border-zinc-100 pb-4">
-                Línea Perros y Gatos
-            </h3>
+        <!-- Sección de Producto -->
+        <section class="flex flex-col items-center text-center">
+            <!-- Nombre del producto después de la línea -->
+            <h4 class="text-[18px] font-bold uppercase tracking-[0.2em] mb-12">Enjuague Desenderante</h4>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-                <div class="group">
-                    <div class="bg-[#f9f9f9] aspect-[4/5] flex items-center justify-center p-8 transition-colors duration-500 group-hover:bg-[#f3f3f3]">
-                        <!-- Ruta exacta según tu captura -->
-                        <img src="fichas/perrosygatos/Enjuage desenderante.jpg" 
-                             alt="Enjuage Desenderante" 
-                             class="w-full h-full object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-105">
-                    </div>
-                    
-                    <div class="mt-8 flex flex-col items-center md:items-start">
-                        <p class="text-[11px] font-bold uppercase tracking-[0.1em] mb-4 text-zinc-500">Enjuage Desenderante</p>
-                        <a href="fichas/perrosygatos/Enjuage desenderante.pdf" download 
-                           class="btn-hover inline-block border-2 border-black px-12 py-4 text-[9px] font-black uppercase tracking-[0.2em] transition-all duration-300">
-                            Descargar PDF
-                        </a>
-                    </div>
-                </div>
+            <!-- Imagen al tamaño real del JPG -->
+            <div class="jpg-frame mb-12">
+                <img src="fichas/perrosygatos/Enjuage desenderante.jpg" 
+                     alt="Ficha Técnica" 
+                     class="max-w-full h-auto shadow-2xl transition-transform duration-500 hover:scale-[1.01]">
             </div>
-        </div>
+
+            <!-- Botón de Descarga -->
+            <div class="mb-32">
+                <a href="fichas/perrosygatos/Enjuage desenderante.pdf" download 
+                   class="btn-download px-16 py-5 text-[10px] font-black uppercase tracking-[0.3em] inline-block">
+                    Descargar PDF
+                </a>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="py-20 text-center text-zinc-300 text-[9px] font-bold uppercase tracking-[0.5em]">
-        Kantal Food 2026
+    <footer class="py-20 text-center border-t border-zinc-50">
+        <p class="text-zinc-300 text-[10px] font-bold uppercase tracking-[0.5em]">Kantal Food 2026</p>
     </footer>
 
 </body>

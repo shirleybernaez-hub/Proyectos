@@ -9,62 +9,60 @@
     <style>
         body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; margin: 0; }
 
-        /* REPLICANDO EFECTO CARACAS BAKERY */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(25px); filter: blur(10px); }
             to { opacity: 1; transform: translateY(0); filter: blur(0px); }
         }
 
-        header {
+        /* HEADER CORREGIDO: z-index superior para evitar que el texto se superponga */
+        header#main-header {
             width: 100%;
             padding: 50px 0 20px 0; 
             text-align: center;
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 1000;
-            background-color: rgba(255, 255, 255, 0);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        header.scrolled {
-            padding: 15px 0;
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid #f2f2f2;
-        }
-
-        .logo-kantal {
-            /* Aumentado tamaño inicial */
-            width: 320px; 
-            md:width: 580px;
-            max-width: 90%;
-            height: auto;
-            display: inline-block;
-            animation: fadeInUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            z-index: 9999; 
+            background-color: transparent;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        header.scrolled .logo-kantal {
-            /* Logo un poco más grande en modo sticky para que no se pierda */
-            width: 180px; 
+        header#main-header.scrolled {
+            padding: 12px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid #eee;
         }
 
+        .logo-kantal {
+            width: 320px; 
+            md:width: 550px;
+            max-width: 85%;
+            height: auto;
+            display: inline-block;
+            animation: fadeInUp 1.2s ease-out forwards;
+            transition: width 0.5s ease;
+        }
+
+        header.scrolled .logo-kantal {
+            width: 160px; /* Tamaño equilibrado en sticky */
+        }
+
+        /* CONTENEDOR: El padding evita que el contenido choque con el header fijo */
         .content-wrapper {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 240px 20px 80px 20px; 
-            transition: padding 0.4s ease;
+            padding: 260px 20px 80px 20px; 
         }
 
         @media (max-width: 768px) {
             .content-wrapper { padding-top: 200px; }
-            .logo-kantal { width: 280px; } 
-            header.scrolled .logo-kantal { width: 140px; }
+            .logo-kantal { width: 260px; } 
+            header.scrolled .logo-kantal { width: 130px; }
         }
 
-        /* Estilo de Chat Gemini */
+        /* FORMULARIO ESTILO GEMINI */
         .chat-input-container {
             background-color: #f3f4f6;
             border-radius: 24px;
@@ -72,13 +70,11 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            border: 1px solid transparent;
             transition: all 0.3s ease;
         }
         .chat-input-container:focus-within {
             background-color: #fff;
-            border-color: #e5e7eb;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 0 0 1px #ddd, 0 4px 12px rgba(0,0,0,0.05);
         }
         .chat-field { background: transparent; border: none; outline: none; flex-grow: 1; font-size: 14px; }
         
@@ -86,42 +82,34 @@
         .btn-download:hover { background: black; color: white; }
     </style>
 </head>
-<body class="antialiased">
+<body>
 
     <header id="main-header">
         <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal Logo">
     </header>
 
     <div class="content-wrapper">
-        <!-- Títulos Centrados y Reducidos -->
-        <header class="relative bg-transparent text-center mb-12 p-0 shadow-none border-none">
-            <!-- Tamaño de fuente reducido para mejorar la estética -->
-            <h2 class="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-2">FICHAS TÉCNICAS</h2>
-            <p class="text-zinc-400 text-[9px] md:text-[11px] uppercase tracking-[0.4em] mb-10">Documentación Oficial de Productos</p>
+        <!-- TITULOS: Ahora quedan debajo del Header por el z-index -->
+        <div class="text-center mb-16">
+            <!-- Reducción drástica del tamaño para que no compita con el logo -->
+            <h2 class="text-3xl md:text-4xl font-black tracking-tighter uppercase mb-2">Fichas Técnicas</h2>
+            <p class="text-zinc-400 text-[9px] md:text-[11px] uppercase tracking-[0.4em] mb-12">Documentación Oficial de Productos</p>
             
-            <div class="w-full text-left">
+            <div class="text-left max-w-4xl mx-auto">
                 <h3 class="text-lg md:text-xl font-black uppercase tracking-tight mb-1">Línea de Perros y Gatos</h3>
                 <div class="h-1 w-20 bg-black"></div>
             </div>
-        </header>
+        </div>
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <!-- Ficha 01: Enjuague Desenredante -->
+            <!-- Ficha 01 -->
             <article class="flex flex-col group">
                 <h4 class="text-[11px] font-bold uppercase tracking-[0.1em] mb-4">Enjuague Desenredante</h4>
-                
                 <div class="w-full bg-[#fcfcfc] p-4 mb-4 border border-zinc-100 shadow-sm rounded-2xl overflow-hidden">
-                    <img src="fichas/perrosygatos/Enjuage desenredante.jpg" 
-                         alt="Ficha" 
-                         class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105">
+                    <img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain transition-transform group-hover:scale-105">
                 </div>
-
                 <div class="flex flex-col gap-4">
-                    <a href="fichas/perrosygatos/Enjuage desenredante.pdf" download 
-                       class="btn-download px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full">
-                        Descargar PDF
-                    </a>
-
+                    <a href="fichas/perrosygatos/Enjuage desenredante.pdf" download class="btn-download px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
                     <form class="chat-form">
                         <div class="chat-input-container">
                             <label class="cursor-pointer text-zinc-400 hover:text-black">
@@ -154,11 +142,10 @@
                 e.preventDefault();
                 const input = form.querySelector('.chat-field');
                 input.placeholder = "Enviando...";
-                const formData = new FormData(form);
                 try {
                     await fetch('https://formspree.io/f/xvzlravo', {
                         method: 'POST',
-                        body: formData,
+                        body: new FormData(form),
                         headers: { 'Accept': 'application/json' }
                     });
                     input.value = "";
@@ -168,6 +155,5 @@
             });
         });
     </script>
-
 </body>
 </html>

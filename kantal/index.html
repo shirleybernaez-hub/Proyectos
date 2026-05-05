@@ -14,7 +14,7 @@
             to { opacity: 1; transform: translateY(0); filter: blur(0px); }
         }
 
-        /* HEADER: Z-index máximo para que sea intocable al hacer scroll */
+        /* HEADER: Z-index corregido para ser siempre superior */
         header#main-header {
             width: 100%;
             padding: 50px 0 20px 0; 
@@ -36,20 +36,24 @@
         }
 
         .logo-kantal {
-            width: 320px; 
-            md:width: 550px;
-            max-width: 85%;
             height: auto;
             display: inline-block;
             animation: fadeInUp 1.2s ease-out forwards;
             transition: width 0.5s ease;
+            /* Eliminadas las propiedades 'md:' que causaban error en VS Code */
+            width: 320px; 
         }
 
-        header.scrolled .logo-kantal {
-            width: 160px;
+        /* Media query correcta para desktop en CSS */
+        @media (min-width: 768px) {
+            .logo-kantal { width: 550px; }
+            header.scrolled .logo-kantal { width: 160px; }
         }
 
-        /* CONTENEDOR: Espaciado para el header fijo */
+        @media (max-width: 767px) {
+            header.scrolled .logo-kantal { width: 130px; }
+        }
+
         .content-wrapper {
             max-width: 1100px;
             margin: 0 auto;
@@ -58,11 +62,8 @@
 
         @media (max-width: 768px) {
             .content-wrapper { padding-top: 200px; }
-            .logo-kantal { width: 260px; } 
-            header.scrolled .logo-kantal { width: 130px; }
         }
 
-        /* FORMULARIO ESTILO CHAT */
         .chat-input-container {
             background-color: #f3f4f6;
             border-radius: 24px;
@@ -73,7 +74,6 @@
             transition: all 0.3s ease;
         }
         .chat-field { background: transparent; border: none; outline: none; flex-grow: 1; font-size: 14px; }
-        
         .btn-download { transition: all 0.3s ease; border: 2px solid black; }
         .btn-download:hover { background: black; color: white; }
     </style>
@@ -85,16 +85,15 @@
     </header>
 
     <div class="content-wrapper">
-        <!-- Títulos con Capitalización Corregida -->
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-black tracking-tighter uppercase mb-2">Fichas técnicas</h2>
             <p class="text-zinc-400 text-[10px] md:text-[12px] uppercase tracking-[0.4em] mb-12">Documentación oficial de productos</p>
         </div>
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <!-- Ficha 01: Alineación de textos corregida -->
             <article class="flex flex-col group">
-                <div class="mb-6">
+                <!-- Alineación y capitalización corregida -->
+                <div class="text-left mb-6">
                     <h3 class="text-lg md:text-xl font-black mb-1">Línea de perros y gatos</h3>
                     <div class="h-1 w-16 bg-black mb-6"></div>
                     <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-800">Enjuague desenredante</h4>

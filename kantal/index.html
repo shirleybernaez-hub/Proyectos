@@ -14,7 +14,7 @@
             to { opacity: 1; transform: translateY(0); filter: blur(0px); }
         }
 
-        /* HEADER: Z-index máximo y fondo controlado */
+        /* HEADER: Blindado con z-index y fondo blanco sólido */
         header#main-header {
             width: 100%;
             padding: 40px 0 20px 0; 
@@ -23,7 +23,7 @@
             top: 0;
             left: 0;
             z-index: 9999; 
-            background-color: white; /* Asegura que tape el texto al bajar */
+            background-color: #ffffff;
             transition: all 0.5s ease;
         }
 
@@ -39,7 +39,7 @@
             display: inline-block;
             animation: fadeInUp 1.2s ease-out forwards;
             transition: width 0.5s ease;
-            width: 280px; /* Tamaño mobile inicial */
+            width: 280px; /* Tamaño móvil */
         }
 
         @media (min-width: 768px) {
@@ -47,15 +47,15 @@
             header.scrolled .logo-kantal { width: 160px; }
         }
 
-        /* CONTENEDOR: Aumentado el padding-top para que NO se monte con el logo */
+        /* CONTENEDOR: Espacio suficiente para que el texto no choque con el header fijo */
         .content-wrapper {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 300px 20px 80px 20px; /* Más espacio para evitar solapamiento */
+            padding: 280px 20px 80px 20px; 
         }
 
         @media (max-width: 768px) {
-            .content-wrapper { padding-top: 240px; }
+            .content-wrapper { padding-top: 220px; }
             header.scrolled .logo-kantal { width: 130px; }
         }
 
@@ -75,11 +75,12 @@
 <body>
 
     <header id="main-header">
-        <img src="recursos/logo-kantal.svg" class="logo-kantal" alt="Kantal Logo">
+        <!-- RUTA CORREGIDA: logo/logokantal.svg -->
+        <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal Logo">
     </header>
 
     <div class="content-wrapper">
-        <!-- TITULOS -->
+        <!-- Títulos con capitalización corregida -->
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-black tracking-tighter uppercase mb-2">Fichas técnicas</h2>
             <p class="text-zinc-400 text-[10px] md:text-[12px] uppercase tracking-[0.4em] mb-12">Documentación oficial de productos</p>
@@ -125,6 +126,24 @@
             } else {
                 header.classList.remove('scrolled');
             }
+        });
+
+        document.querySelectorAll('.chat-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const input = form.querySelector('.chat-field');
+                input.placeholder = "Enviando...";
+                try {
+                    await fetch('https://formspree.io/f/xvzlravo', {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    input.value = "";
+                    input.placeholder = "¡Recibido!";
+                    setTimeout(() => input.placeholder = "Escribe tus comentarios", 3000);
+                } catch (err) { input.placeholder = "Error"; }
+            });
         });
     </script>
 </body>

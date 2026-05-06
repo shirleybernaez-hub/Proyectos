@@ -32,6 +32,7 @@
             padding: 0 20px 60px 20px; 
         }
 
+        /* BUSCADOR */
         .search-container {
             max-width: 600px;
             margin: 0 auto 30px auto;
@@ -53,6 +54,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
+        /* NAVEGACIÓN POR PESTAÑAS */
         .tabs-container {
             display: flex;
             overflow-x: auto;
@@ -90,6 +92,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* PRODUCT CARDS */
         .product-card {
             border: 1px solid #e5e7eb;
             border-radius: 24px;
@@ -129,10 +132,12 @@
             <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Documentación oficial de productos</p>
         </div>
 
+        <!-- BUSCADOR -->
         <div class="search-container">
             <input type="text" id="productSearch" class="search-input" placeholder="Buscar producto por nombre..." onkeyup="filterProducts()">
         </div>
 
+        <!-- NAVEGACIÓN -->
         <nav class="tabs-container" id="tabsNav">
             <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética</button>
             <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos</button>
@@ -144,10 +149,11 @@
             <button class="tab-button" onclick="openTab(event, 'cat-alimento')">Alimento Perros</button>
         </nav>
 
+        <!-- CATEGORÍA 01: LÍNEA COSMÉTICA -->
         <div id="cat-cosmetica" class="category-content active">
             <div class="mb-6"><h3 class="text-xl font-black uppercase">Línea Cosmética para Perros y Gatos</h3><div class="h-1 w-12 bg-black"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
+                <!-- Fichas Cosmética -->
                 <article class="product-card">
                     <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500 product-name">Enjuague desenredante</h4>
                     <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain"></div>
@@ -195,7 +201,95 @@
             </section>
         </div>
 
-        <div id="cat-productos" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
+        <!-- CATEGORÍA 02: PRODUCTOS PARA PERROS Y GATOS -->
+        <div id="cat-productos" class="category-content">
+            <div class="mb-6"><h3 class="text-xl font-black uppercase">Productos para Perros y Gatos</h3><div class="h-1 w-12 bg-black"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500 product-name">Champú antipulgas</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos perros/gatos/champu antipulgas.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/productos perros/gatos/champu antipulgas.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div></form>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500 product-name">Talco antipulgas</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos perros/gatos/talco antipulgas.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/productos perros/gatos/talco antipulgas.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div></form>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500 product-name">Jabón de azufre</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos perros/gatos/jabon de azufre.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/productos perros/gatos/jabon de azufre.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div></form>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500 product-name">Matagusanos</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos perros/gatos/matagusanos.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/productos perros/gatos/matagusanos.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div></form>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500 product-name">Matagusanos Ultra</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos perros/gatos/matagusanos ultra.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/productos perros/gatos/matagusanos ultra.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div></form>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500 product-name">Garrapaticida</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos perros/gatos/garrapaticida.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/productos perros/gatos/garrapaticida.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div></form>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500 product-name">Ciper baño</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos perros/gatos/ciper bano.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/productos perros/gatos/ciper bano.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div></form>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500 product-name">Antimordeduras</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos perros/gatos/antimordeduras.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/productos perros/gatos/antimordeduras.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div></form>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500 product-name">Repelente</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos perros/gatos/repelente.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/productos perros/gatos/repelente.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div></form>
+                    </div>
+                </article>
+            </section>
+        </div>
+
+        <!-- CATEGORÍAS ADICIONALES (Próximamente) -->
         <div id="cat-galletas" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
         <div id="cat-arena" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
         <div id="cat-aves" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
@@ -235,8 +329,8 @@
             }
 
             for (let i = 0; i < cards.length; i++) {
-                const name = cards[i].querySelector('.product-name').innerText.toLowerCase();
-                if (name.includes(filter)) {
+                const nameText = cards[i].querySelector('.product-name').innerText.toLowerCase();
+                if (nameText.includes(filter)) {
                     cards[i].classList.remove('hidden-by-search');
                 } else {
                     cards[i].classList.add('hidden-by-search');

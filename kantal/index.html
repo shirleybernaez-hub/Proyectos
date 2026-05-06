@@ -10,13 +10,14 @@
         body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; margin: 0; }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* HEADER: Ajustado para eliminar el espacio excesivo arriba y abajo */
         header#main-header {
             width: 100%;
-            padding: 40px 0 20px 0;
+            padding: 25px 0 10px 0; /* Espacio mínimo superior e inferior */
             text-align: center;
         }
 
@@ -24,18 +25,24 @@
             height: auto;
             display: inline-block;
             animation: fadeInUp 1s ease-out forwards;
-            /* Logo aumentado sustancialmente */
-            width: 280px; 
+            width: 250px; 
         }
 
         @media (min-width: 768px) {
-            .logo-kantal { width: 550px; }
+            .logo-kantal { width: 500px; }
         }
 
         .content-wrapper {
             max-width: 1300px;
             margin: 0 auto;
-            padding: 0 20px 60px 20px; 
+            padding: 0 20px 40px 20px; 
+        }
+
+        /* Títulos: Eliminados márgenes excesivos para pegar el texto al logo */
+        .titles-container {
+            margin-top: 5px; /* Pega los títulos al logo */
+            margin-bottom: 35px;
+            text-align: center;
         }
 
         .product-card {
@@ -45,8 +52,8 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            transition: all 0.3s ease;
             background: #fff;
+            transition: all 0.3s ease;
         }
         .product-card:hover { border-color: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
 
@@ -70,22 +77,21 @@
     </header>
 
     <div class="content-wrapper">
-        <!-- Títulos Superiores -->
-        <div class="text-center mb-12">
-            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-1">Fichas técnicas</h2>
+        <!-- Bloque de títulos pegado al logo -->
+        <div class="titles-container">
+            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase leading-tight mb-1">Fichas técnicas</h2>
             <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Documentación oficial de productos</p>
         </div>
 
-        <!-- Categoría General Alineada a la Izquierda -->
-        <div class="text-left mb-8 max-w-7xl mx-auto">
+        <!-- Categoría General -->
+        <div class="text-left mb-6">
             <h3 class="text-xl md:text-2xl font-black mb-1">Línea de perros y gatos</h3>
             <div class="h-1 w-20 bg-black"></div>
         </div>
 
-        <!-- Grid de 3 Cards -->
+        <!-- Grid de Cards -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            <!-- Card 01 -->
             <article class="product-card">
                 <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Enjuague desenredante</h4>
                 <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
@@ -103,31 +109,24 @@
                 </div>
             </article>
 
-            <!-- Card 02 -->
+            <!-- Cards adicionales de ejemplo -->
             <article class="product-card">
-                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Enjuague desenredante</h4>
-                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain" alt="Ficha Técnica">
+                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Producto Próximamente</h4>
+                <div class="w-full bg-[#f9f9f9] h-48 flex items-center justify-center rounded-xl">
+                    <span class="text-zinc-300 text-xs font-bold uppercase">Vista Previa</span>
                 </div>
-                <div class="flex flex-col gap-3">
-                    <a href="#" class="btn-download px-6 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
-                    <form class="chat-form">
-                        <div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div>
-                    </form>
+                <div class="mt-auto">
+                    <div class="btn-download px-6 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full opacity-30">Descargar PDF</div>
                 </div>
             </article>
 
-            <!-- Card 03 -->
             <article class="product-card">
-                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Enjuague desenredante</h4>
-                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain" alt="Ficha Técnica">
+                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Producto Próximamente</h4>
+                <div class="w-full bg-[#f9f9f9] h-48 flex items-center justify-center rounded-xl">
+                    <span class="text-zinc-300 text-xs font-bold uppercase">Vista Previa</span>
                 </div>
-                <div class="flex flex-col gap-3">
-                    <a href="#" class="btn-download px-6 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
-                    <form class="chat-form">
-                        <div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div>
-                    </form>
+                <div class="mt-auto">
+                    <div class="btn-download px-6 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full opacity-30">Descargar PDF</div>
                 </div>
             </article>
 

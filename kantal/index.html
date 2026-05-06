@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANTAL | Fichas Técnicas</title>
+    <title>KANTAL | Panel de Gestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -14,23 +14,19 @@
         .content-wrapper { max-width: 1300px; margin: 0 auto; padding: 0 20px 60px 20px; }
         .search-container { max-width: 600px; margin: 0 auto 30px auto; position: relative; }
         .search-input { width: 100%; padding: 14px 24px; border-radius: 30px; border: 1px solid #e5e7eb; background-color: #f9f9f9; font-size: 14px; outline: none; transition: all 0.3s ease; }
-        .search-input:focus { border-color: #000; background-color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .tabs-container { display: flex; overflow-x: auto; white-space: nowrap; gap: 8px; padding: 10px 0; margin-bottom: 30px; border-bottom: 1px solid #eee; scrollbar-width: none; }
-        .tabs-container::-webkit-scrollbar { display: none; }
-        .tab-button { padding: 8px 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 20px; border: 1px solid #e5e7eb; cursor: pointer; transition: all 0.3s ease; }
-        .tab-button.active { background-color: #000; color: #fff; border-color: #000; }
-        
-        /* ESTILO PARA SUBTÍTULOS DE CATEGORÍA */
         .category-title { color: #9E2300; }
-
+        .tabs-container { display: flex; overflow-x: auto; white-space: nowrap; gap: 8px; padding: 10px 0; margin-bottom: 30px; border-bottom: 1px solid #eee; scrollbar-width: none; }
+        .tab-button { padding: 8px 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; border-radius: 20px; border: 1px solid #e5e7eb; cursor: pointer; transition: all 0.3s ease; }
+        .tab-button.active { background-color: #000; color: #fff; border-color: #000; }
         .category-content { display: none; }
         .category-content.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .product-card { border: 1px solid #e5e7eb; border-radius: 24px; padding: 20px; background: #fff; display: flex; flex-direction: column; gap: 12px; transition: all 0.3s ease; }
-        .product-card.hidden-by-search { display: none; }
-        .product-card:hover { border-color: #000; box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
-        .chat-input-container { background-color: #f3f4f6; border-radius: 24px; padding: 12px 20px; display: flex; align-items: center; gap: 12px; min-height: 56px; }
-        .chat-field { background: transparent; border: none; outline: none; flex-grow: 1; font-size: 14px; }
+        .product-card { border: 1px solid #e5e7eb; border-radius: 24px; padding: 20px; background: #fff; display: flex; flex-direction: column; gap: 16px; }
+        .comment-box { background: #f9f9f9; border-radius: 16px; padding: 12px; margin-top: 10px; max-height: 200px; overflow-y: auto; font-size: 12px; }
+        .comment-item { border-bottom: 1px solid #eee; padding: 8px 0; display: flex; justify-content: space-between; align-items: center; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        .status-pending { background-color: #ef4444; }
+        .status-done { background-color: #22c55e; }
         .btn-download { border: 1.5px solid black; transition: all 0.3s ease; font-size: 9px; text-align: center; }
         .btn-download:hover { background: black; color: white; }
     </style>
@@ -43,148 +39,149 @@
 
     <div class="content-wrapper">
         <div class="text-center mb-6">
-            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-0">Fichas técnicas</h2>
-            <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Documentación oficial de productos</p>
+            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-0">Panel de Gestión de Fichas</h2>
+            <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Revisiones y Feedback en tiempo real</p>
         </div>
 
         <div class="search-container">
-            <input type="text" id="productSearch" class="search-input" placeholder="Buscar producto por nombre..." onkeyup="filterProducts()">
+            <input type="text" id="productSearch" class="search-input" placeholder="Buscar producto..." onkeyup="filterProducts()">
         </div>
 
         <nav class="tabs-container" id="tabsNav">
             <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética (6)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (10)</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (0)</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-arena')">Arena Gatos (0)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-aves')">Aves (1)</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-peces')">Peces/Tortugas (0)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-roedores')">Roedores (1)</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-alimento')">Alimento Perros (0)</button>
         </nav>
 
         <div id="cat-cosmetica" class="category-content active">
             <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Cosmética (6)</h3><div class="h-1 w-12 bg-black"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Enjuague desenredante</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3">
-                        <a href="fichas/perrosygatos/Enjuage desenredante.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a>
-                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form>
-                    </div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Champú cosmético</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/perrosygatos/champucosmetico.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/perrosygatos/champucosmetico.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Colonia cachorros</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/perrosygatos/coloniacachorros.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/perrosygatos/coloniacachorros.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Colonia perros y gatos</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/perrosygatos/coloniaperrosygatos.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/perrosygatos/coloniaperrosygatos.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Colonia machos</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/perrosygatos/coloniamachos.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/perrosygatos/coloniamachos.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Champú 180</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/perrosygatos/champu180.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/perrosygatos/champu180.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
+                <script>
+                    function renderCard(id, name, img, pdf, folder) {
+                        document.write(`
+                            <article class="product-card" data-id="${id}">
+                                <h4 class="text-[12px] font-bold uppercase product-name">${name}</h4>
+                                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/${folder}/${img}" class="w-full h-auto object-contain"></div>
+                                <a href="fichas/${folder}/${pdf}" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a>
+                                
+                                <div class="comment-section">
+                                    <p class="text-[10px] font-bold uppercase mb-2">Historial de cambios:</p>
+                                    <div id="list-${id}" class="comment-box text-zinc-500">Cargando comentarios...</div>
+                                    <div class="flex gap-2 mt-3">
+                                        <input type="text" id="input-${id}" placeholder="Escribir observación..." class="flex-grow bg-zinc-100 border-none rounded-full px-4 py-2 text-xs outline-none">
+                                        <button onclick="sendComment('${id}')" class="bg-black text-white rounded-full px-4 text-xs font-bold">Enviar</button>
+                                    </div>
+                                </div>
+                            </article>
+                        `);
+                    }
+                    
+                    renderCard('cosm-enjuague', 'Enjuague desenredante', 'Enjuage desenredante.jpg', 'Enjuage desenredante.pdf', 'perrosygatos');
+                    renderCard('cosm-champu', 'Champú cosmético', 'champucosmetico.jpg', 'champucosmetico.pdf', 'perrosygatos');
+                    renderCard('cosm-cachorros', 'Colonia cachorros', 'coloniacachorros.jpg', 'coloniacachorros.pdf', 'perrosygatos');
+                    renderCard('cosm-perrosgatos', 'Colonia perros y gatos', 'coloniaperrosygatos.jpg', 'coloniaperrosygatos.pdf', 'perrosygatos');
+                    renderCard('cosm-machos', 'Colonia machos', 'coloniamachos.jpg', 'coloniamachos.pdf', 'perrosygatos');
+                    renderCard('cosm-180', 'Champú 180', 'champu180.jpg', 'champu180.pdf', 'perrosygatos');
+                </script>
             </section>
         </div>
 
         <div id="cat-productos" class="category-content">
             <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Productos Perros y Gatos (10)</h3><div class="h-1 w-12 bg-black"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Antimordeduras</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos_perros_gatos/antimordeduras.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/productos_perros_gatos/antimordeduras.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Antiparasitario</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos_perros_gatos/antiparasitario.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/productos_perros_gatos/antiparasitario.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Champú Antipulgas</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos_perros_gatos/champu antipulgas.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/productos_perros_gatos/champu antipulgas.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Ciper Baño</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos_perros_gatos/Ciper bano.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/productos_perros_gatos/Ciper bano.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Garrapaticida</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos_perros_gatos/garrapaticida.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/productos_perros_gatos/garrapaticida.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Jabón de Azufre</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos_perros_gatos/jabon de azufre.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/productos_perros_gatos/jabon de azufre.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Matagusanos Ultra</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos_perros_gatos/matagusanos ultra.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/productos_perros_gatos/matagusanos ultra.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Matagusanos</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos_perros_gatos/matagusanos.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/productos_perros_gatos/matagusanos.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Repelente</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos_perros_gatos/repelente.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/productos_perros_gatos/repelente.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Talco Antipulgas</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/productos_perros_gatos/talco antipulgas.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/productos_perros_gatos/talco antipulgas.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
+                <script>
+                    renderCard('prod-antimord', 'Antimordeduras', 'antimordeduras.jpg', 'antimordeduras.pdf', 'productos_perros_gatos');
+                    renderCard('prod-antipara', 'Antiparasitario', 'antiparasitario.jpg', 'antiparasitario.pdf', 'productos_perros_gatos');
+                    renderCard('prod-ch-anti', 'Champú Antipulgas', 'champu antipulgas.jpg', 'champu antipulgas.pdf', 'productos_perros_gatos');
+                    renderCard('prod-ciper', 'Ciper Baño', 'Ciper bano.jpg', 'Ciper bano.pdf', 'productos_perros_gatos');
+                    renderCard('prod-garra', 'Garrapaticida', 'garrapaticida.jpg', 'garrapaticida.pdf', 'productos_perros_gatos');
+                    renderCard('prod-jabon', 'Jabón de Azufre', 'jabon de azufre.jpg', 'jabon de azufre.pdf', 'productos_perros_gatos');
+                    renderCard('prod-ultra', 'Matagusanos Ultra', 'matagusanos ultra.jpg', 'matagusanos ultra.pdf', 'productos_perros_gatos');
+                    renderCard('prod-mata', 'Matagusanos', 'matagusanos.jpg', 'matagusanos.pdf', 'productos_perros_gatos');
+                    renderCard('prod-repel', 'Repelente', 'repelente.jpg', 'repelente.pdf', 'productos_perros_gatos');
+                    renderCard('prod-talco', 'Talco Antipulgas', 'talco antipulgas.jpg', 'talco antipulgas.pdf', 'productos_perros_gatos');
+                </script>
             </section>
         </div>
 
         <div id="cat-aves" class="category-content">
             <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Aves (1)</h3><div class="h-1 w-12 bg-black"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Antiparasitario Pájaros</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/aves/antiparasitariopajaros.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/aves/antiparasitariopajaros.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
+                <script>renderCard('aves-anti', 'Antiparasitario Pájaros', 'antiparasitariopajaros.jpg', 'antiparasitariopajaros.pdf', 'aves');</script>
             </section>
         </div>
 
         <div id="cat-roedores" class="category-content">
             <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Roedores (1)</h3><div class="h-1 w-12 bg-black"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase product-name">Alimento Hamster</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/roedores/alimentohamster.jpg" class="w-full h-auto object-contain"></div>
-                    <div class="flex flex-col gap-3"><a href="fichas/roedores/alimentohamster.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
-                </article>
+                <script>renderCard('roe-hamster', 'Alimento Hamster', 'alimentohamster.jpg', 'alimentohamster.pdf', 'roedores');</script>
             </section>
         </div>
-
-        <div id="cat-galletas" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
-        <div id="cat-arena" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
-        <div id="cat-peces" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
-        <div id="cat-alimento" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
-
     </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCisKAs5PsiuP18OlpBS2PMdxh9IePKlR8",
+            authDomain: "kantal-fichas.firebaseapp.com",
+            projectId: "kantal-fichas",
+            storageBucket: "kantal-fichas.firebasestorage.app",
+            messagingSenderId: "69901829645",
+            appId: "1:69901829645:web:ba112e75efd6b7e1cc3744",
+            databaseURL: "https://kantal-fichas-default-rtdb.firebaseio.com/"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Función global para enviar comentarios
+        window.sendComment = function(productId) {
+            const input = document.getElementById(`input-${productId}`);
+            const text = input.value.trim();
+            if (text === "") return;
+
+            const commentRef = ref(db, `comments/${productId}`);
+            push(commentRef, {
+                text: text,
+                status: 'pending',
+                date: new Date().toLocaleString()
+            });
+            input.value = "";
+        };
+
+        // Escuchar comentarios en tiempo real para todos los productos
+        const productIds = ['cosm-enjuague', 'cosm-champu', 'cosm-cachorros', 'cosm-perrosgatos', 'cosm-machos', 'cosm-180', 'prod-antimord', 'prod-antipara', 'prod-ch-anti', 'prod-ciper', 'prod-garra', 'prod-jabon', 'prod-ultra', 'prod-mata', 'prod-repel', 'prod-talco', 'aves-anti', 'roe-hamster'];
+
+        productIds.forEach(id => {
+            const listDiv = document.getElementById(`list-${id}`);
+            onValue(ref(db, `comments/${id}`), (snapshot) => {
+                listDiv.innerHTML = "";
+                const data = snapshot.val();
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        const item = data[key];
+                        const div = document.createElement('div');
+                        div.className = "comment-item";
+                        div.innerHTML = `
+                            <span><span class="status-dot ${item.status === 'pending' ? 'status-pending' : 'status-done'}"></span>${item.text}</span>
+                            <span class="text-[8px] text-zinc-400">${item.date}</span>
+                        `;
+                        // Si tú haces clic en el comentario, se marca como resuelto
+                        div.onclick = () => {
+                            const newStatus = item.status === 'pending' ? 'done' : 'pending';
+                            update(ref(db, `comments/${id}/${key}`), { status: newStatus });
+                        };
+                        listDiv.appendChild(div);
+                    });
+                } else {
+                    listDiv.innerHTML = "Sin observaciones.";
+                }
+            });
+        });
+    </script>
 
     <script>
         function openTab(evt, tabId) {
@@ -196,50 +193,15 @@
             document.getElementById(tabId).classList.add("active");
             if(evt) evt.currentTarget.classList.add("active");
         }
-
         function filterProducts() {
             const input = document.getElementById('productSearch');
             const filter = input.value.toLowerCase();
             const cards = document.getElementsByClassName('product-card');
-            const contents = document.getElementsByClassName('category-content');
-            const tabsNav = document.getElementById('tabsNav');
-
-            if (filter.length > 0) {
-                tabsNav.style.opacity = "0.3";
-                tabsNav.style.pointerEvents = "none";
-                for (let content of contents) { content.style.display = "block"; }
-            } else {
-                tabsNav.style.opacity = "1";
-                tabsNav.style.pointerEvents = "auto";
-                const activeBtn = document.querySelector('.tab-button.active');
-                if (activeBtn) {
-                   const activeTabId = activeBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
-                   openTab(null, activeTabId);
-                }
-            }
-
             for (let i = 0; i < cards.length; i++) {
                 const name = cards[i].querySelector('.product-name').innerText.toLowerCase();
-                cards[i].classList.toggle('hidden-by-search', !name.includes(filter));
+                cards[i].style.display = name.includes(filter) ? "flex" : "none";
             }
         }
-
-        document.querySelectorAll('.chat-form').forEach(form => {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const input = form.querySelector('.chat-field');
-                input.placeholder = "Enviando...";
-                try {
-                    const response = await fetch('https://formspree.io/f/xvzlravo', {
-                        method: 'POST',
-                        body: new FormData(form),
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    if (response.ok) { input.value = ""; input.placeholder = "¡Recibido!"; }
-                    setTimeout(() => input.placeholder = "Escribe tus comentarios", 3000);
-                } catch (err) { input.placeholder = "Error"; }
-            });
-        });
     </script>
 </body>
 </html>

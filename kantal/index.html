@@ -3,32 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANTAL | Panel de Gestión</title>
+    <title>KANTAL | Panel de Gestión Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-        header#main-header { width: 100%; padding: 10px 0 0 0; text-align: center; }
-        .logo-kantal { height: auto; display: inline-block; width: 220px; margin-bottom: -15px; }
-        @media (min-width: 768px) { .logo-kantal { width: 450px; } }
-        .content-wrapper { max-width: 1300px; margin: 0 auto; padding: 0 20px 60px 20px; }
-        .search-container { max-width: 600px; margin: 0 auto 30px auto; position: relative; }
-        .search-input { width: 100%; padding: 14px 24px; border-radius: 30px; border: 1px solid #e5e7eb; background-color: #f9f9f9; font-size: 14px; outline: none; transition: all 0.3s ease; }
-        .category-title { color: #9E2300; }
-        .tabs-container { display: flex; overflow-x: auto; white-space: nowrap; gap: 8px; padding: 10px 0; margin-bottom: 30px; border-bottom: 1px solid #eee; scrollbar-width: none; }
-        .tab-button { padding: 8px 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; border-radius: 20px; border: 1px solid #e5e7eb; cursor: pointer; transition: all 0.3s ease; }
+        body { background-color: #fcfcfc; color: #000; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        header#main-header { width: 100%; padding: 15px 0; text-align: center; background: #fff; border-bottom: 1px solid #eee; }
+        .logo-kantal { height: auto; display: inline-block; width: 200px; }
+        @media (min-width: 768px) { .logo-kantal { width: 350px; } }
+        
+        .content-wrapper { max-width: 1400px; margin: 0 auto; padding: 20px 20px 80px 20px; }
+        
+        /* Buscador y Tabs */
+        .search-input { width: 100%; padding: 14px 24px; border-radius: 30px; border: 1px solid #e5e7eb; background-color: #f4f4f5; font-size: 14px; outline: none; transition: all 0.3s ease; }
+        .search-input:focus { border-color: #000; background-color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        
+        .tabs-container { display: flex; overflow-x: auto; white-space: nowrap; gap: 8px; padding: 15px 0; margin-bottom: 30px; border-bottom: 1px solid #eee; scrollbar-width: none; }
+        .tab-button { padding: 10px 22px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 25px; border: 1px solid #e5e7eb; cursor: pointer; transition: all 0.3s ease; background: #fff; }
         .tab-button.active { background-color: #000; color: #fff; border-color: #000; }
+        
+        /* Títulos de Categoría */
+        .category-title { color: #9E2300; letter-spacing: -0.02em; }
         .category-content { display: none; }
-        .category-content.active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .product-card { border: 1px solid #e5e7eb; border-radius: 24px; padding: 20px; background: #fff; display: flex; flex-direction: column; gap: 16px; }
-        .comment-box { background: #f9f9f9; border-radius: 16px; padding: 12px; margin-top: 10px; max-height: 200px; overflow-y: auto; font-size: 12px; }
-        .comment-item { border-bottom: 1px solid #eee; padding: 8px 0; display: flex; justify-content: space-between; align-items: center; }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-        .status-pending { background-color: #ef4444; }
-        .status-done { background-color: #22c55e; }
-        .btn-download { border: 1.5px solid black; transition: all 0.3s ease; font-size: 9px; text-align: center; }
+        .category-content.active { display: block; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Tarjeta de Producto */
+        .product-card { border: 1px solid #efefef; border-radius: 28px; padding: 24px; background: #fff; display: flex; flex-direction: column; gap: 18px; transition: box-shadow 0.3s ease; }
+        .product-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .btn-download { border: 1.5px solid black; transition: all 0.2s ease; font-size: 10px; font-weight: 800; text-align: center; text-transform: uppercase; }
         .btn-download:hover { background: black; color: white; }
+
+        /* Nuevo Diseño de Chat */
+        .chat-container { display: flex; flex-direction: column; gap: 8px; background: #f8f8f8; border-radius: 20px; padding: 15px; margin-top: 5px; }
+        .chat-feed { max-height: 180px; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; gap: 8px; }
+        .chat-bubble { padding: 10px 14px; border-radius: 15px; font-size: 12px; line-height: 1.4; position: relative; border-left: 4px solid #ef4444; background: #fff; cursor: pointer; transition: all 0.2s; }
+        .chat-bubble.done { border-left-color: #22c55e; opacity: 0.8; }
+        .chat-bubble .date { font-size: 8px; color: #aaa; margin-top: 4px; display: block; text-transform: uppercase; }
+        
+        .chat-input-wrapper { display: flex; gap: 8px; margin-top: 10px; background: #fff; padding: 6px; border-radius: 30px; border: 1px solid #eee; }
+        .chat-input { flex-grow: 1; border: none; outline: none; padding: 8px 15px; font-size: 12px; background: transparent; }
+        .btn-send { background: #000; color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+        .btn-send:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
@@ -38,86 +54,51 @@
     </header>
 
     <div class="content-wrapper">
-        <div class="text-center mb-6">
-            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-0">Panel de Gestión de Fichas</h2>
-            <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Revisiones y Feedback en tiempo real</p>
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-black tracking-tighter uppercase mb-1">Feedback de Fichas</h2>
+            <p class="text-zinc-400 text-[10px] uppercase tracking-[0.4em]">Gestión de cambios y revisiones</p>
         </div>
 
-        <div class="search-container">
-            <input type="text" id="productSearch" class="search-input" placeholder="Buscar producto..." onkeyup="filterProducts()">
+        <div class="max-w-2xl mx-auto mb-8">
+            <input type="text" id="productSearch" class="search-input" placeholder="Buscar producto por nombre..." onkeyup="filterProducts()">
         </div>
 
         <nav class="tabs-container" id="tabsNav">
             <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética (6)</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (10)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (9)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (0)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-arena')">Arena Gatos (0)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-aves')">Aves (1)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-peces')">Peces/Tortugas (0)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-roedores')">Roedores (1)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-alimento')">Alimento Perros (0)</button>
         </nav>
 
         <div id="cat-cosmetica" class="category-content active">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Cosmética (6)</h3><div class="h-1 w-12 bg-black"></div></div>
-            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <script>
-                    function renderCard(id, name, img, pdf, folder) {
-                        document.write(`
-                            <article class="product-card" data-id="${id}">
-                                <h4 class="text-[12px] font-bold uppercase product-name">${name}</h4>
-                                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/${folder}/${img}" class="w-full h-auto object-contain"></div>
-                                <a href="fichas/${folder}/${pdf}" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a>
-                                
-                                <div class="comment-section">
-                                    <p class="text-[10px] font-bold uppercase mb-2">Historial de cambios:</p>
-                                    <div id="list-${id}" class="comment-box text-zinc-500">Cargando comentarios...</div>
-                                    <div class="flex gap-2 mt-3">
-                                        <input type="text" id="input-${id}" placeholder="Escribir observación..." class="flex-grow bg-zinc-100 border-none rounded-full px-4 py-2 text-xs outline-none">
-                                        <button onclick="sendComment('${id}')" class="bg-black text-white rounded-full px-4 text-xs font-bold">Enviar</button>
-                                    </div>
-                                </div>
-                            </article>
-                        `);
-                    }
-                    
-                    renderCard('cosm-enjuague', 'Enjuague desenredante', 'Enjuage desenredante.jpg', 'Enjuage desenredante.pdf', 'perrosygatos');
-                    renderCard('cosm-champu', 'Champú cosmético', 'champucosmetico.jpg', 'champucosmetico.pdf', 'perrosygatos');
-                    renderCard('cosm-cachorros', 'Colonia cachorros', 'coloniacachorros.jpg', 'coloniacachorros.pdf', 'perrosygatos');
-                    renderCard('cosm-perrosgatos', 'Colonia perros y gatos', 'coloniaperrosygatos.jpg', 'coloniaperrosygatos.pdf', 'perrosygatos');
-                    renderCard('cosm-machos', 'Colonia machos', 'coloniamachos.jpg', 'coloniamachos.pdf', 'perrosygatos');
-                    renderCard('cosm-180', 'Champú 180', 'champu180.jpg', 'champu180.pdf', 'perrosygatos');
-                </script>
-            </section>
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Cosmética (6)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-cosmetica"></section>
         </div>
 
         <div id="cat-productos" class="category-content">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Productos Perros y Gatos (10)</h3><div class="h-1 w-12 bg-black"></div></div>
-            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <script>
-                    renderCard('prod-antimord', 'Antimordeduras', 'antimordeduras.jpg', 'antimordeduras.pdf', 'productos_perros_gatos');
-                    renderCard('prod-antipara', 'Antiparasitario', 'antiparasitario.jpg', 'antiparasitario.pdf', 'productos_perros_gatos');
-                    renderCard('prod-ch-anti', 'Champú Antipulgas', 'champu antipulgas.jpg', 'champu antipulgas.pdf', 'productos_perros_gatos');
-                    renderCard('prod-ciper', 'Ciper Baño', 'Ciper bano.jpg', 'Ciper bano.pdf', 'productos_perros_gatos');
-                    renderCard('prod-garra', 'Garrapaticida', 'garrapaticida.jpg', 'garrapaticida.pdf', 'productos_perros_gatos');
-                    renderCard('prod-jabon', 'Jabón de Azufre', 'jabon de azufre.jpg', 'jabon de azufre.pdf', 'productos_perros_gatos');
-                    renderCard('prod-ultra', 'Matagusanos Ultra', 'matagusanos ultra.jpg', 'matagusanos ultra.pdf', 'productos_perros_gatos');
-                    renderCard('prod-mata', 'Matagusanos', 'matagusanos.jpg', 'matagusanos.pdf', 'productos_perros_gatos');
-                    renderCard('prod-repel', 'Repelente', 'repelente.jpg', 'repelente.pdf', 'productos_perros_gatos');
-                    renderCard('prod-talco', 'Talco Antipulgas', 'talco antipulgas.jpg', 'talco antipulgas.pdf', 'productos_perros_gatos');
-                </script>
-            </section>
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Productos Perros y Gatos (9)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-productos"></section>
         </div>
 
         <div id="cat-aves" class="category-content">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Aves (1)</h3><div class="h-1 w-12 bg-black"></div></div>
-            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <script>renderCard('aves-anti', 'Antiparasitario Pájaros', 'antiparasitariopajaros.jpg', 'antiparasitariopajaros.pdf', 'aves');</script>
-            </section>
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Aves (1)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-aves"></section>
         </div>
 
         <div id="cat-roedores" class="category-content">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Roedores (1)</h3><div class="h-1 w-12 bg-black"></div></div>
-            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <script>renderCard('roe-hamster', 'Alimento Hamster', 'alimentohamster.jpg', 'alimentohamster.pdf', 'roedores');</script>
-            </section>
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Roedores (1)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-roedores"></section>
         </div>
+
+        <div id="cat-galletas" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
+        <div id="cat-arena" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
+        <div id="cat-peces" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
+        <div id="cat-alimento" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
+
     </div>
 
     <script type="module">
@@ -137,69 +118,131 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Función global para enviar comentarios
-        window.sendComment = function(productId) {
-            const input = document.getElementById(`input-${productId}`);
-            const text = input.value.trim();
-            if (text === "") return;
+        // Renderizado de tarjetas
+        function createProductCard(id, name, img, pdf, folder, targetGrid) {
+            const html = `
+                <article class="product-card" data-name="${name}">
+                    <h4 class="text-[13px] font-bold uppercase tracking-tight">${name}</h4>
+                    <div class="w-full bg-[#fcfcfc] p-2 rounded-2xl border border-zinc-50">
+                        <img src="fichas/${folder}/${img}" class="w-full h-auto object-contain rounded-lg">
+                    </div>
+                    <a href="fichas/${folder}/${pdf}" download class="btn-download px-6 py-3 rounded-full">Descargar PDF</a>
+                    
+                    <div class="chat-container">
+                        <div id="chat-${id}" class="chat-feed">
+                            <span class="text-[10px] text-zinc-400 italic">Cargando chat...</span>
+                        </div>
+                        <div class="chat-input-wrapper">
+                            <input type="text" id="input-${id}" placeholder="Escribir comentario..." class="chat-input">
+                            <button onclick="window.sendChat('${id}')" class="btn-send">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `;
+            document.getElementById(targetGrid).insertAdjacentHTML('beforeend', html);
+            listenComments(id);
+        }
 
-            const commentRef = ref(db, `comments/${productId}`);
-            push(commentRef, {
-                text: text,
+        // Enviar Chat
+        window.sendChat = function(id) {
+            const val = document.getElementById(`input-${id}`).value.trim();
+            if(!val) return;
+            push(ref(db, `chats/${id}`), {
+                text: val,
                 status: 'pending',
-                date: new Date().toLocaleString()
+                date: new Date().toLocaleString('es-ES', { hour:'2-digit', minute:'2-digit', day:'2-digit', month:'short' })
             });
-            input.value = "";
+            document.getElementById(`input-${id}`).value = "";
         };
 
-        // Escuchar comentarios en tiempo real para todos los productos
-        const productIds = ['cosm-enjuague', 'cosm-champu', 'cosm-cachorros', 'cosm-perrosgatos', 'cosm-machos', 'cosm-180', 'prod-antimord', 'prod-antipara', 'prod-ch-anti', 'prod-ciper', 'prod-garra', 'prod-jabon', 'prod-ultra', 'prod-mata', 'prod-repel', 'prod-talco', 'aves-anti', 'roe-hamster'];
-
-        productIds.forEach(id => {
-            const listDiv = document.getElementById(`list-${id}`);
-            onValue(ref(db, `comments/${id}`), (snapshot) => {
-                listDiv.innerHTML = "";
-                const data = snapshot.val();
-                if (data) {
+        // Escuchar Chat
+        function listenComments(id) {
+            onValue(ref(db, `chats/${id}`), (snap) => {
+                const feed = document.getElementById(`chat-${id}`);
+                feed.innerHTML = "";
+                const data = snap.val();
+                if(data) {
                     Object.keys(data).forEach(key => {
-                        const item = data[key];
-                        const div = document.createElement('div');
-                        div.className = "comment-item";
-                        div.innerHTML = `
-                            <span><span class="status-dot ${item.status === 'pending' ? 'status-pending' : 'status-done'}"></span>${item.text}</span>
-                            <span class="text-[8px] text-zinc-400">${item.date}</span>
+                        const msg = data[key];
+                        const bubble = document.createElement('div');
+                        bubble.className = `chat-bubble ${msg.status === 'done' ? 'done' : ''}`;
+                        bubble.innerHTML = `
+                            <p>${msg.text}</p>
+                            <span class="date">${msg.date} • ${msg.status === 'pending' ? '🔴 Pendiente' : '🟢 Resuelto'}</span>
                         `;
-                        // Si tú haces clic en el comentario, se marca como resuelto
-                        div.onclick = () => {
-                            const newStatus = item.status === 'pending' ? 'done' : 'pending';
-                            update(ref(db, `comments/${id}/${key}`), { status: newStatus });
+                        bubble.onclick = () => {
+                            const newStatus = msg.status === 'pending' ? 'done' : 'pending';
+                            update(ref(db, `chats/${id}/${key}`), { status: newStatus });
                         };
-                        listDiv.appendChild(div);
+                        feed.appendChild(bubble);
                     });
+                    feed.scrollTop = feed.scrollHeight;
                 } else {
-                    listDiv.innerHTML = "Sin observaciones.";
+                    feed.innerHTML = `<span class="text-[10px] text-zinc-300 uppercase font-bold tracking-tighter">Sin comentarios aún</span>`;
                 }
             });
-        });
+        }
+
+        // CARGA DE PRODUCTOS
+        // Cosmética (6)
+        const cosm = [
+            ['c1', 'Enjuague desenredante', 'Enjuage desenredante.jpg', 'Enjuage desenredante.pdf', 'perrosygatos'],
+            ['c2', 'Champú cosmético', 'champucosmetico.jpg', 'champucosmetico.pdf', 'perrosygatos'],
+            ['c3', 'Colonia cachorros', 'coloniacachorros.jpg', 'coloniacachorros.pdf', 'perrosygatos'],
+            ['c4', 'Colonia perros y gatos', 'coloniaperrosygatos.jpg', 'coloniaperrosygatos.pdf', 'perrosygatos'],
+            ['c5', 'Colonia machos', 'coloniamachos.jpg', 'coloniamachos.pdf', 'perrosygatos'],
+            ['c6', 'Champú 180', 'champu180.jpg', 'champu180.pdf', 'perrosygatos']
+        ];
+        cosm.forEach(p => createProductCard(...p, 'grid-cosmetica'));
+
+        // Perros/Gatos (9)
+        const prods = [
+            ['p1', 'Antimordeduras', 'antimordeduras.jpg', 'antimordeduras.pdf', 'productos_perros_gatos'],
+            ['p2', 'Antiparasitario', 'antiparasitario.jpg', 'antiparasitario.pdf', 'productos_perros_gatos'],
+            ['p3', 'Champú Antipulgas', 'champu antipulgas.jpg', 'champu antipulgas.pdf', 'productos_perros_gatos'],
+            ['p4', 'Ciper Baño', 'Ciper bano.jpg', 'Ciper bano.pdf', 'productos_perros_gatos'],
+            ['p5', 'Garrapaticida', 'garrapaticida.jpg', 'garrapaticida.pdf', 'productos_perros_gatos'],
+            ['p6', 'Jabón de Azufre', 'jabon de azufre.jpg', 'jabon de azufre.pdf', 'productos_perros_gatos'],
+            ['p7', 'Matagusanos Ultra', 'matagusanos ultra.jpg', 'matagusanos ultra.pdf', 'productos_perros_gatos'],
+            ['p8', 'Matagusanos', 'matagusanos.jpg', 'matagusanos.pdf', 'productos_perros_gatos'],
+            ['p9', 'Repelente', 'repelente.jpg', 'repelente.pdf', 'productos_perros_gatos'],
+            ['p10', 'Talco Antipulgas', 'talco antipulgas.jpg', 'talco antipulgas.pdf', 'productos_perros_gatos']
+        ];
+        prods.forEach(p => createProductCard(...p, 'grid-productos'));
+
+        // Aves y Roedores
+        createProductCard('a1', 'Antiparasitario Pájaros', 'antiparasitariopajaros.jpg', 'antiparasitariopajaros.pdf', 'aves', 'grid-aves');
+        createProductCard('r1', 'Alimento Hamster', 'alimentohamster.jpg', 'alimentohamster.pdf', 'roedores', 'grid-roedores');
     </script>
 
     <script>
         function openTab(evt, tabId) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("category-content");
-            for (i = 0; i < tabcontent.length; i++) { tabcontent[i].classList.remove("active"); }
-            tablinks = document.getElementsByClassName("tab-button");
-            for (i = 0; i < tablinks.length; i++) { tablinks[i].classList.remove("active"); }
+            const contents = document.getElementsByClassName("category-content");
+            for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
+            const buttons = document.getElementsByClassName("tab-button");
+            for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
             document.getElementById(tabId).classList.add("active");
-            if(evt) evt.currentTarget.classList.add("active");
+            evt.currentTarget.classList.add("active");
         }
+
         function filterProducts() {
-            const input = document.getElementById('productSearch');
-            const filter = input.value.toLowerCase();
+            const filter = document.getElementById('productSearch').value.toLowerCase();
             const cards = document.getElementsByClassName('product-card');
-            for (let i = 0; i < cards.length; i++) {
-                const name = cards[i].querySelector('.product-name').innerText.toLowerCase();
-                cards[i].style.display = name.includes(filter) ? "flex" : "none";
+            const sections = document.getElementsByClassName('category-content');
+            
+            if(filter) {
+                for(let s of sections) s.classList.add('active');
+                for(let c of cards) {
+                    const name = c.getAttribute('data-name').toLowerCase();
+                    c.style.display = name.includes(filter) ? "flex" : "none";
+                }
+            } else {
+                const activeTab = document.querySelector('.tab-button.active').getAttribute('onclick').match(/'([^']+)'/)[1];
+                for(let s of sections) s.classList.remove('active');
+                document.getElementById(activeTab).classList.add('active');
+                for(let c of cards) c.style.display = "flex";
             }
         }
     </script>

@@ -32,7 +32,7 @@
             padding: 0 20px 60px 20px; 
         }
 
-        /* NAVEGACIÓN POR CATEGORÍAS (TABS) */
+        /* NAVEGACIÓN POR PESTAÑAS */
         .tabs-container {
             display: flex;
             overflow-x: auto;
@@ -46,7 +46,7 @@
         .tabs-container::-webkit-scrollbar { display: none; }
 
         .tab-button {
-            padding: 8px 16px;
+            padding: 8px 20px;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
@@ -62,7 +62,6 @@
             border-color: #000;
         }
 
-        /* CONTROL DE VISIBILIDAD */
         .category-content { display: none; }
         .category-content.active { display: block; animation: fadeIn 0.5s ease; }
 
@@ -71,7 +70,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ESTILO DE CARD Y CHAT */
+        /* PRODUCT CARDS */
         .product-card {
             border: 1px solid #e5e7eb;
             border-radius: 24px;
@@ -80,7 +79,10 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            transition: all 0.3s ease;
         }
+        .product-card:hover { border-color: #000; box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
+
         .chat-input-container {
             background-color: #f3f4f6;
             border-radius: 24px;
@@ -107,7 +109,7 @@
             <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Documentación oficial de productos</p>
         </div>
 
-        <!-- MENÚ DE CATEGORÍAS -->
+        <!-- NAVEGACIÓN -->
         <nav class="tabs-container">
             <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética</button>
             <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos</button>
@@ -121,38 +123,107 @@
 
         <!-- CONTENIDO: LÍNEA COSMÉTICA -->
         <div id="cat-cosmetica" class="category-content active">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase">Línea Cosmética</h3><div class="h-1 w-12 bg-black"></div></div>
+            <div class="mb-6">
+                <h3 class="text-xl font-black uppercase">Línea Cosmética para Perros y Gatos</h3>
+                <div class="h-1 w-12 bg-black"></div>
+            </div>
+            
             <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Aquí van las 5 cards que ya tenemos de Perros y Gatos -->
+                <!-- 01: Enjuague -->
                 <article class="product-card">
-                    <h4 class="text-[12px] font-bold uppercase text-zinc-500">Enjuague desenredante</h4>
-                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto"></div>
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Enjuague desenredante</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+                        <img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain">
+                    </div>
                     <div class="flex flex-col gap-3">
-                        <a href="fichas/perrosygatos/Enjuage desenredante.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a>
-                        <form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div></form>
+                        <a href="fichas/perrosygatos/Enjuage desenredante.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form">
+                            <div class="chat-input-container">
+                                <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                                <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+                            </div>
+                        </form>
+                    </div>
+                </article>
+
+                <!-- 02: Champú -->
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Champú cosmético</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+                        <img src="fichas/perrosygatos/champucosmetico.jpg" class="w-full h-auto object-contain">
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/perrosygatos/champucosmetico.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form">
+                            <div class="chat-input-container">
+                                <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                                <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+                            </div>
+                        </form>
+                    </div>
+                </article>
+
+                <!-- 03: Colonia Cachorros -->
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia cachorros</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+                        <img src="fichas/perrosygatos/coloniacachorros..jpg" class="w-full h-auto object-contain">
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/perrosygatos/coloniacachorros.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form">
+                            <div class="chat-input-container">
+                                <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                                <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+                            </div>
+                        </form>
+                    </div>
+                </article>
+
+                <!-- 04: Colonia Perros y Gatos -->
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia perros y gatos</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+                        <img src="fichas/perrosygatos/coloniaperrosygatos.jpg" class="w-full h-auto object-contain">
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/perrosygatos/coloniaperrosygatos.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form">
+                            <div class="chat-input-container">
+                                <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                                <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+                            </div>
+                        </form>
+                    </div>
+                </article>
+
+                <!-- 05: Colonia Machos -->
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia machos</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+                        <img src="fichas/perrosygatos/coloniamachos.jpg" class="w-full h-auto object-contain">
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <a href="fichas/perrosygatos/coloniamachos.pdf" download class="btn-download px-6 py-2.5 font-black uppercase rounded-full">Descargar PDF</a>
+                        <form class="chat-form">
+                            <div class="chat-input-container">
+                                <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                                <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+                            </div>
+                        </form>
                     </div>
                 </article>
             </section>
         </div>
 
-        <!-- CONTENIDO: PRODUCTOS PERROS Y GATOS -->
-        <div id="cat-productos" class="category-content">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase">Productos para Perros y Gatos</h3><div class="h-1 w-12 bg-black"></div></div>
-            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <p class="text-zinc-400 italic text-sm">Cargando fichas técnicas...</p>
-            </section>
-        </div>
-
-        <!-- Las demás categorías siguen la misma estructura de ID -->
-        <div id="cat-galletas" class="category-content">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase">Súper Galletas</h3><div class="h-1 w-12 bg-black"></div></div>
-            <p class="text-zinc-400 italic text-sm">Próximamente...</p>
-        </div>
-
-        <div id="cat-arena" class="category-content">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase">Arena para Gatos</h3><div class="h-1 w-12 bg-black"></div></div>
-            <p class="text-zinc-400 italic text-sm">Próximamente...</p>
-        </div>
+        <!-- CATEGORÍAS VACÍAS (Para completar después) -->
+        <div id="cat-productos" class="category-content"><div class="p-10 text-center text-zinc-400">Cargando productos...</div></div>
+        <div id="cat-galletas" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
+        <div id="cat-arena" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
+        <div id="cat-aves" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
+        <div id="cat-peces" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
+        <div id="cat-roedores" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
+        <div id="cat-alimento" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
 
     </div>
 
@@ -165,6 +236,7 @@
             for (i = 0; i < tablinks.length; i++) { tablinks[i].classList.remove("active"); }
             document.getElementById(tabId).classList.add("active");
             evt.currentTarget.classList.add("active");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         document.querySelectorAll('.chat-form').forEach(form => {

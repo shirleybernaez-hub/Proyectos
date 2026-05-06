@@ -49,12 +49,12 @@
         <nav class="tabs-container" id="tabsNav">
             <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética (6)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (10)</button>
-            <button class="tab-button">Súper Galletas (0)</button>
-            <button class="tab-button">Arena Gatos (0)</button>
-            <button class="tab-button">Aves (0)</button>
-            <button class="tab-button">Peces/Tortugas (0)</button>
-            <button class="tab-button">Roedores (0)</button>
-            <button class="tab-button">Alimento Perros (0)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (0)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-arena')">Arena Gatos (0)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-aves')">Aves (1)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-peces')">Peces/Tortugas (0)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-roedores')">Roedores (1)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-alimento')">Alimento Perros (0)</button>
         </nav>
 
         <div id="cat-cosmetica" class="category-content active">
@@ -97,7 +97,7 @@
         </div>
 
         <div id="cat-productos" class="category-content">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase">Productos para Perros y Gatos (10)</h3><div class="h-1 w-12 bg-black"></div></div>
+            <div class="mb-6"><h3 class="text-xl font-black uppercase">Productos Perros y Gatos (10)</h3><div class="h-1 w-12 bg-black"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <article class="product-card">
                     <h4 class="text-[12px] font-bold uppercase product-name">Antimordeduras</h4>
@@ -151,6 +151,34 @@
                 </article>
             </section>
         </div>
+
+        <div id="cat-aves" class="category-content">
+            <div class="mb-6"><h3 class="text-xl font-black uppercase">Línea Aves (1)</h3><div class="h-1 w-12 bg-black"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase product-name">Antiparasitario Pájaros</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/aves/antiparasitariopajaros.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3"><a href="fichas/aves/antiparasitariopajaros.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
+                </article>
+            </section>
+        </div>
+
+        <div id="cat-roedores" class="category-content">
+            <div class="mb-6"><h3 class="text-xl font-black uppercase">Línea Roedores (1)</h3><div class="h-1 w-12 bg-black"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <article class="product-card">
+                    <h4 class="text-[12px] font-bold uppercase product-name">Alimento Hamster</h4>
+                    <div class="w-full bg-[#f9f9f9] p-3 rounded-xl"><img src="fichas/roedores/alimentohamster.jpg" class="w-full h-auto object-contain"></div>
+                    <div class="flex flex-col gap-3"><a href="fichas/roedores/alimentohamster.pdf" download class="btn-download px-6 py-2.5 font-black rounded-full">Descargar PDF</a><form class="chat-form"><div class="chat-input-container"><input type="text" placeholder="Escribe tus comentarios" class="chat-field"><button type="submit" class="text-zinc-400">➤</button></div></form></div>
+                </article>
+            </section>
+        </div>
+
+        <div id="cat-galletas" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
+        <div id="cat-arena" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
+        <div id="cat-peces" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
+        <div id="cat-alimento" class="category-content"><div class="p-10 text-center text-zinc-400">Próximamente...</div></div>
+
     </div>
 
     <script>

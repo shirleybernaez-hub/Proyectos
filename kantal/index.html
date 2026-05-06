@@ -7,55 +7,49 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; margin: 0; }
+        body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* HEADER: Ajustado para eliminar el espacio excesivo arriba y abajo */
+        /* HEADER: Espacio superior e inferior mínimo */
         header#main-header {
             width: 100%;
-            padding: 25px 0 10px 0; /* Espacio mínimo superior e inferior */
+            padding: 10px 0 0 0; /* Casi pegado al borde superior */
             text-align: center;
         }
 
         .logo-kantal {
             height: auto;
             display: inline-block;
-            animation: fadeInUp 1s ease-out forwards;
-            width: 250px; 
+            width: 220px; 
+            margin-bottom: -10px; /* Sube los títulos hacia el logo */
         }
 
         @media (min-width: 768px) {
-            .logo-kantal { width: 500px; }
+            .logo-kantal { width: 480px; }
         }
 
+        /* CONTENEDOR PRINCIPAL: Eliminado el padding excesivo */
         .content-wrapper {
             max-width: 1300px;
             margin: 0 auto;
-            padding: 0 20px 40px 20px; 
+            padding: 0 20px 20px 20px; 
         }
 
-        /* Títulos: Eliminados márgenes excesivos para pegar el texto al logo */
+        /* TITULOS: Compactados totalmente */
         .titles-container {
-            margin-top: 5px; /* Pega los títulos al logo */
-            margin-bottom: 35px;
+            margin-top: 0; 
+            margin-bottom: 25px;
             text-align: center;
         }
 
         .product-card {
             border: 1px solid #e5e7eb;
             border-radius: 24px;
-            padding: 24px;
+            padding: 20px;
+            background: #fff;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            background: #fff;
-            transition: all 0.3s ease;
+            gap: 12px;
         }
-        .product-card:hover { border-color: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
 
         .chat-input-container {
             background-color: #f3f4f6;
@@ -77,21 +71,18 @@
     </header>
 
     <div class="content-wrapper">
-        <!-- Bloque de títulos pegado al logo -->
         <div class="titles-container">
-            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase leading-tight mb-1">Fichas técnicas</h2>
+            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-0">Fichas técnicas</h2>
             <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Documentación oficial de productos</p>
         </div>
 
-        <!-- Categoría General -->
-        <div class="text-left mb-6">
+        <!-- Categoría y Cards suben gracias a la reducción de márgenes -->
+        <div class="text-left mb-5">
             <h3 class="text-xl md:text-2xl font-black mb-1">Línea de perros y gatos</h3>
             <div class="h-1 w-20 bg-black"></div>
         </div>
 
-        <!-- Grid de Cards -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
             <article class="product-card">
                 <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Enjuague desenredante</h4>
                 <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
@@ -101,56 +92,37 @@
                     <a href="fichas/perrosygatos/Enjuage desenredante.pdf" download class="btn-download px-6 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
                     <form class="chat-form">
                         <div class="chat-input-container">
-                            <label class="cursor-pointer text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg><input type="file" name="upload" class="hidden"></label>
-                            <input type="text" name="message" placeholder="Escribe tus comentarios" class="chat-field">
-                            <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+                            <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                            <button type="submit" class="text-zinc-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                            </button>
                         </div>
                     </form>
                 </div>
             </article>
 
-            <!-- Cards adicionales de ejemplo -->
+            <!-- Card 02 -->
             <article class="product-card">
-                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Producto Próximamente</h4>
-                <div class="w-full bg-[#f9f9f9] h-48 flex items-center justify-center rounded-xl">
-                    <span class="text-zinc-300 text-xs font-bold uppercase">Vista Previa</span>
+                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Enjuague desenredante</h4>
+                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+                    <img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain" alt="Ficha Técnica">
                 </div>
                 <div class="mt-auto">
-                    <div class="btn-download px-6 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full opacity-30">Descargar PDF</div>
+                    <div class="btn-download px-6 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full opacity-40">Descargar PDF</div>
                 </div>
             </article>
 
+            <!-- Card 03 -->
             <article class="product-card">
-                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Producto Próximamente</h4>
-                <div class="w-full bg-[#f9f9f9] h-48 flex items-center justify-center rounded-xl">
-                    <span class="text-zinc-300 text-xs font-bold uppercase">Vista Previa</span>
+                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Enjuague desenredante</h4>
+                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+                    <img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain" alt="Ficha Técnica">
                 </div>
                 <div class="mt-auto">
-                    <div class="btn-download px-6 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full opacity-30">Descargar PDF</div>
+                    <div class="btn-download px-6 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] w-full text-center rounded-full opacity-40">Descargar PDF</div>
                 </div>
             </article>
-
         </section>
     </div>
-
-    <script>
-        document.querySelectorAll('.chat-form').forEach(form => {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const input = form.querySelector('.chat-field');
-                input.placeholder = "Enviando...";
-                try {
-                    await fetch('https://formspree.io/f/xvzlravo', {
-                        method: 'POST',
-                        body: new FormData(form),
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    input.value = "";
-                    input.placeholder = "¡Recibido!";
-                    setTimeout(() => input.placeholder = "Escribe tus comentarios", 3000);
-                } catch (err) { input.placeholder = "Error"; }
-            });
-        });
-    </script>
 </body>
 </html>

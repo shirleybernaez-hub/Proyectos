@@ -9,6 +9,7 @@
     <style>
         body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
 
+        /* HEADER COMPACTO */
         header#main-header {
             width: 100%;
             padding: 10px 0 0 0;
@@ -19,25 +20,40 @@
             height: auto;
             display: inline-block;
             width: 220px; 
-            margin-bottom: -10px;
+            margin-bottom: -15px; /* Sube los títulos hacia el logo */
         }
 
         @media (min-width: 768px) {
-            .logo-kantal { width: 480px; }
+            .logo-kantal { width: 450px; }
         }
 
         .content-wrapper {
             max-width: 1300px;
             margin: 0 auto;
-            padding: 0 20px 40px 20px; 
+            padding: 0 20px 60px 20px; 
         }
 
         .titles-container {
             margin-top: 0; 
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             text-align: center;
         }
 
+        /* JERARQUÍA DE CATEGORÍA REFINADA */
+        .category-title {
+            font-size: 1.25rem; 
+            font-weight: 900;
+            margin-bottom: 4px;
+            text-align: left;
+        }
+        .category-underline {
+            height: 3px;
+            width: 40px;
+            background-color: #000;
+            margin-bottom: 24px;
+        }
+
+        /* ESTILO DE CARD */
         .product-card {
             border: 1px solid #e5e7eb;
             border-radius: 24px;
@@ -50,6 +66,7 @@
         }
         .product-card:hover { border-color: #000; box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
 
+        /* CAJA DE COMENTARIOS MEJORADA */
         .chat-input-container {
             background-color: #f3f4f6;
             border-radius: 24px;
@@ -60,6 +77,7 @@
             min-height: 56px;
         }
         .chat-field { background: transparent; border: none; outline: none; flex-grow: 1; font-size: 14px; }
+        
         .btn-download { border: 1.5px solid black; transition: all 0.3s ease; font-size: 9px; }
         .btn-download:hover { background: black; color: white; }
     </style>
@@ -71,23 +89,25 @@
     </header>
 
     <div class="content-wrapper">
+        <!-- TÍTULOS PRINCIPALES -->
         <div class="titles-container">
             <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-0">Fichas técnicas</h2>
             <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Documentación oficial de productos</p>
         </div>
 
-        <div class="text-left mb-5">
-            <h3 class="text-xl md:text-2xl font-black mb-1">Línea cosmética para Perros y gatos</h3>
-            <div class="h-1 w-20 bg-black"></div>
+        <!-- CATEGORÍA 01 -->
+        <div class="max-w-7xl mx-auto">
+            <h3 class="category-title">Línea cosmética para perros y gatos</h3>
+            <div class="category-underline"></div>
         </div>
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
             
-            <!-- 01: Enjuague desenredante -->
+            <!-- Ficha: Enjuague -->
             <article class="product-card">
                 <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Enjuague desenredante</h4>
                 <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain" alt="Enjuague">
+                    <img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain">
                 </div>
                 <div class="flex flex-col gap-3">
                     <a href="fichas/perrosygatos/Enjuage desenredante.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
@@ -100,11 +120,11 @@
                 </div>
             </article>
 
-            <!-- 02: Champu cosmetico (verificar si lleva tilde en el archivo) -->
+            <!-- Ficha: Champú -->
             <article class="product-card">
                 <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Champú cosmético</h4>
                 <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <img src="fichas/perrosygatos/champucosmetico.jpg" class="w-full h-auto object-contain" alt="Champu">
+                    <img src="fichas/perrosygatos/champucosmetico.jpg" class="w-full h-auto object-contain">
                 </div>
                 <div class="flex flex-col gap-3">
                     <a href="fichas/perrosygatos/champucosmetico.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
@@ -117,11 +137,11 @@
                 </div>
             </article>
 
-            <!-- 03: Colonia cachorros -->
+            <!-- Ficha: Colonia Cachorros -->
             <article class="product-card">
                 <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia cachorros</h4>
                 <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <img src="fichas/perrosygatos/coloniacachorros.jpg" class="w-full h-auto object-contain" alt="Colonia Cachorros">
+                    <img src="fichas/perrosygatos/coloniacachorros..jpg" class="w-full h-auto object-contain">
                 </div>
                 <div class="flex flex-col gap-3">
                     <a href="fichas/perrosygatos/coloniacachorros.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
@@ -134,11 +154,11 @@
                 </div>
             </article>
 
-            <!-- 04: Colonia perros y gatos -->
+            <!-- Ficha: Colonia Perros y Gatos -->
             <article class="product-card">
                 <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia perros y gatos</h4>
                 <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <img src="fichas/perrosygatos/coloniaperrosygatos.jpg" class="w-full h-auto object-contain" alt="Colonia Perros y Gatos">
+                    <img src="fichas/perrosygatos/coloniaperrosygatos.jpg" class="w-full h-auto object-contain">
                 </div>
                 <div class="flex flex-col gap-3">
                     <a href="fichas/perrosygatos/coloniaperrosygatos.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
@@ -151,11 +171,11 @@
                 </div>
             </article>
 
+            <!-- Ficha: Colonia Machos -->
             <article class="product-card">
                 <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia machos</h4>
                 <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <!-- Ajustado a lo que muestra el Finder: coloniamachos.jpg -->
-                    <img src="fichas/perrosygatos/coloniamachos.jpg" class="w-full h-auto object-contain" alt="Colonia Machos">
+                    <img src="fichas/perrosygatos/coloniamachos.jpg" class="w-full h-auto object-contain">
                 </div>
                 <div class="flex flex-col gap-3">
                     <a href="fichas/perrosygatos/coloniamachos.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
@@ -167,8 +187,19 @@
                     </form>
                 </div>
             </article>
-
         </section>
+
+        <!-- ESPACIO PARA SIGUIENTES CATEGORÍAS (Ejemplo: Productos para perros y gatos) -->
+        <!-- 
+        <div class="max-w-7xl mx-auto mt-12">
+            <h3 class="category-title">Productos para perros y gatos</h3>
+            <div class="category-underline"></div>
+        </div>
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            ... cards ...
+        </section> 
+        -->
+
     </div>
 
     <script>
@@ -187,7 +218,7 @@
                         input.value = "";
                         input.placeholder = "¡Recibido!";
                     } else {
-                        input.placeholder = "Error al enviar";
+                        input.placeholder = "Error";
                     }
                     setTimeout(() => input.placeholder = "Escribe tus comentarios", 3000);
                 } catch (err) { input.placeholder = "Error"; }

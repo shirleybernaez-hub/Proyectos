@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANTAL | Panel de Gestión Pro</title>
+    <title>KANTAL | Panel de Gestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
@@ -14,7 +14,6 @@
         
         .content-wrapper { max-width: 1400px; margin: 0 auto; padding: 20px 20px 80px 20px; }
         
-        /* Buscador y Tabs */
         .search-input { width: 100%; padding: 14px 24px; border-radius: 30px; border: 1px solid #e5e7eb; background-color: #f4f4f5; font-size: 14px; outline: none; transition: all 0.3s ease; }
         .search-input:focus { border-color: #000; background-color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         
@@ -22,29 +21,25 @@
         .tab-button { padding: 10px 22px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 25px; border: 1px solid #e5e7eb; cursor: pointer; transition: all 0.3s ease; background: #fff; }
         .tab-button.active { background-color: #000; color: #fff; border-color: #000; }
         
-        /* Títulos de Categoría */
         .category-title { color: #9E2300; letter-spacing: -0.02em; }
         .category-content { display: none; }
         .category-content.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Tarjeta de Producto */
         .product-card { border: 1px solid #efefef; border-radius: 28px; padding: 24px; background: #fff; display: flex; flex-direction: column; gap: 18px; transition: box-shadow 0.3s ease; }
         .product-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .btn-download { border: 1.5px solid black; transition: all 0.2s ease; font-size: 10px; font-weight: 800; text-align: center; text-transform: uppercase; }
         .btn-download:hover { background: black; color: white; }
 
-        /* Nuevo Diseño de Chat */
         .chat-container { display: flex; flex-direction: column; gap: 8px; background: #f8f8f8; border-radius: 20px; padding: 15px; margin-top: 5px; }
         .chat-feed { max-height: 180px; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; gap: 8px; }
-        .chat-bubble { padding: 10px 14px; border-radius: 15px; font-size: 12px; line-height: 1.4; position: relative; border-left: 4px solid #ef4444; background: #fff; cursor: pointer; transition: all 0.2s; }
+        .chat-bubble { padding: 10px 14px; border-radius: 15px; font-size: 12px; line-height: 1.4; border-left: 4px solid #ef4444; background: #fff; cursor: pointer; transition: all 0.2s; }
         .chat-bubble.done { border-left-color: #22c55e; opacity: 0.8; }
         .chat-bubble .date { font-size: 8px; color: #aaa; margin-top: 4px; display: block; text-transform: uppercase; }
         
         .chat-input-wrapper { display: flex; gap: 8px; margin-top: 10px; background: #fff; padding: 6px; border-radius: 30px; border: 1px solid #eee; }
         .chat-input { flex-grow: 1; border: none; outline: none; padding: 8px 15px; font-size: 12px; background: transparent; }
         .btn-send { background: #000; color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
-        .btn-send:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
@@ -55,8 +50,8 @@
 
     <div class="content-wrapper">
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-black tracking-tighter uppercase mb-1">Feedback de Fichas</h2>
-            <p class="text-zinc-400 text-[10px] uppercase tracking-[0.4em]">Gestión de cambios y revisiones</p>
+            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-0">Fichas Técnicas</h2>
+            <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Documentación oficial de productos</p>
         </div>
 
         <div class="max-w-2xl mx-auto mb-8">
@@ -65,7 +60,7 @@
 
         <nav class="tabs-container" id="tabsNav">
             <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética (6)</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (9)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (10)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (0)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-arena')">Arena Gatos (0)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-aves')">Aves (1)</button>
@@ -80,7 +75,7 @@
         </div>
 
         <div id="cat-productos" class="category-content">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Productos Perros y Gatos (9)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Productos Perros y Gatos (10)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-productos"></section>
         </div>
 
@@ -98,7 +93,6 @@
         <div id="cat-arena" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
         <div id="cat-peces" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
         <div id="cat-alimento" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
-
     </div>
 
     <script type="module">
@@ -118,7 +112,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Renderizado de tarjetas
         function createProductCard(id, name, img, pdf, folder, targetGrid) {
             const html = `
                 <article class="product-card" data-name="${name}">
@@ -127,11 +120,8 @@
                         <img src="fichas/${folder}/${img}" class="w-full h-auto object-contain rounded-lg">
                     </div>
                     <a href="fichas/${folder}/${pdf}" download class="btn-download px-6 py-3 rounded-full">Descargar PDF</a>
-                    
                     <div class="chat-container">
-                        <div id="chat-${id}" class="chat-feed">
-                            <span class="text-[10px] text-zinc-400 italic">Cargando chat...</span>
-                        </div>
+                        <div id="chat-${id}" class="chat-feed"></div>
                         <div class="chat-input-wrapper">
                             <input type="text" id="input-${id}" placeholder="Escribir comentario..." class="chat-input">
                             <button onclick="window.sendChat('${id}')" class="btn-send">
@@ -145,7 +135,6 @@
             listenComments(id);
         }
 
-        // Enviar Chat
         window.sendChat = function(id) {
             const val = document.getElementById(`input-${id}`).value.trim();
             if(!val) return;
@@ -157,7 +146,6 @@
             document.getElementById(`input-${id}`).value = "";
         };
 
-        // Escuchar Chat
         function listenComments(id) {
             onValue(ref(db, `chats/${id}`), (snap) => {
                 const feed = document.getElementById(`chat-${id}`);
@@ -185,8 +173,7 @@
             });
         }
 
-        // CARGA DE PRODUCTOS
-        // Cosmética (6)
+        // CARGA DE PRODUCTOS ACTUALIZADOS
         const cosm = [
             ['c1', 'Enjuague desenredante', 'Enjuage desenredante.jpg', 'Enjuage desenredante.pdf', 'perrosygatos'],
             ['c2', 'Champú cosmético', 'champucosmetico.jpg', 'champucosmetico.pdf', 'perrosygatos'],
@@ -197,7 +184,6 @@
         ];
         cosm.forEach(p => createProductCard(...p, 'grid-cosmetica'));
 
-        // Perros/Gatos (9)
         const prods = [
             ['p1', 'Antimordeduras', 'antimordeduras.jpg', 'antimordeduras.pdf', 'productos_perros_gatos'],
             ['p2', 'Antiparasitario', 'antiparasitario.jpg', 'antiparasitario.pdf', 'productos_perros_gatos'],
@@ -212,7 +198,6 @@
         ];
         prods.forEach(p => createProductCard(...p, 'grid-productos'));
 
-        // Aves y Roedores
         createProductCard('a1', 'Antiparasitario Pájaros', 'antiparasitariopajaros.jpg', 'antiparasitariopajaros.pdf', 'aves', 'grid-aves');
         createProductCard('r1', 'Alimento Hamster', 'alimentohamster.jpg', 'alimentohamster.pdf', 'roedores', 'grid-roedores');
     </script>

@@ -1,195 +1,90 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANTAL | Fichas Técnicas</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        body { background-color: #ffffff; color: #000; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-
-        header#main-header {
-            width: 100%;
-            padding: 10px 0 0 0;
-            text-align: center;
-        }
-
-        .logo-kantal {
-            height: auto;
-            display: inline-block;
-            width: 220px; 
-            margin-bottom: -10px;
-        }
-
-        @media (min-width: 768px) {
-            .logo-kantal { width: 480px; }
-        }
-
-        .content-wrapper {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 20px 40px 20px; 
-        }
-
-        .titles-container {
-            margin-top: 0; 
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .product-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 24px;
-            padding: 20px;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: all 0.3s ease;
-        }
-        .product-card:hover { border-color: #000; box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
-
-        .chat-input-container {
-            background-color: #f3f4f6;
-            border-radius: 24px;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-height: 56px;
-        }
-        .chat-field { background: transparent; border: none; outline: none; flex-grow: 1; font-size: 14px; }
-        .btn-download { border: 1.5px solid black; transition: all 0.3s ease; font-size: 9px; }
-        .btn-download:hover { background: black; color: white; }
-    </style>
-</head>
-<body>
-
-    <header id="main-header">
-        <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal Logo">
-    </header>
-
-    <div class="content-wrapper">
-        <div class="titles-container">
-            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-0">Fichas técnicas</h2>
-            <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Documentación oficial de productos</p>
+<!-- Grid de Cards Corregido -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    
+    <!-- 01: Enjuague desenredante -->
+    <article class="product-card">
+        <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Enjuague desenredante</h4>
+        <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+            <img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain" alt="Enjuague">
         </div>
-
-        <div class="text-left mb-5">
-            <h3 class="text-xl md:text-2xl font-black mb-1">Línea de perros y gatos</h3>
-            <div class="h-1 w-20 bg-black"></div>
+        <div class="flex flex-col gap-3">
+            <a href="fichas/perrosygatos/Enjuage desenredante.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
+            <form class="chat-form">
+                <div class="chat-input-container">
+                    <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                    <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+                </div>
+            </form>
         </div>
+    </article>
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <!-- 01: Enjuague desenredante -->
-            <article class="product-card">
-                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Enjuague desenredante</h4>
-                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <img src="fichas/perrosygatos/Enjuage desenredante.jpg" class="w-full h-auto object-contain" alt="Enjuague">
+    <!-- 02: Champu cosmetico (Corregido según imagen) -->
+    <article class="product-card">
+        <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Champú cosmético</h4>
+        <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+            <img src="fichas/perrosygatos/champucosmetico.jpg" class="w-full h-auto object-contain" alt="Champu">
+        </div>
+        <div class="flex flex-col gap-3">
+            <a href="fichas/perrosygatos/champucosmetico.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
+            <form class="chat-form">
+                <div class="chat-input-container">
+                    <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                    <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
                 </div>
-                <div class="flex flex-col gap-3">
-                    <a href="fichas/perrosygatos/Enjuage desenredante.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
-                    <form class="chat-form">
-                        <div class="chat-input-container">
-                            <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
-                            <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
-                        </div>
-                    </form>
-                </div>
-            </article>
+            </form>
+        </div>
+    </article>
 
-            <!-- 02: Champu cosmetico -->
-            <article class="product-card">
-                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Champú cosmético</h4>
-                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <img src="fichas/perrosygatos/champucosmetico.jpg" class="w-full h-auto object-contain" alt="Champu">
+    <!-- 03: Colonia cachorros (CORRECCIÓN DOBLE PUNTO) -->
+    <article class="product-card">
+        <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia cachorros</h4>
+        <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+            <!-- Nota: Tu archivo se llama coloniacachorros..jpg en la captura -->
+            <img src="fichas/perrosygatos/coloniacachorros..jpg" class="w-full h-auto object-contain" alt="Colonia Cachorros">
+        </div>
+        <div class="flex flex-col gap-3">
+            <a href="fichas/perrosygatos/coloniacachorros.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
+            <form class="chat-form">
+                <div class="chat-input-container">
+                    <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                    <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
                 </div>
-                <div class="flex flex-col gap-3">
-                    <a href="fichas/perrosygatos/champucosmetico.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
-                    <form class="chat-form">
-                        <div class="chat-input-container">
-                            <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
-                            <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
-                        </div>
-                    </form>
-                </div>
-            </article>
+            </form>
+        </div>
+    </article>
 
-            <!-- 03: Colonia cachorros -->
-            <article class="product-card">
-                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia cachorros</h4>
-                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <img src="fichas/perrosygatos/coloniacachorros.jpg" class="w-full h-auto object-contain" alt="Colonia Cachorros">
+    <!-- 04: Colonia perros y gatos -->
+    <article class="product-card">
+        <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia perros y gatos</h4>
+        <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+            <img src="fichas/perrosygatos/coloniaperrosygatos.jpg" class="w-full h-auto object-contain" alt="Colonia Perros y Gatos">
+        </div>
+        <div class="flex flex-col gap-3">
+            <a href="fichas/perrosygatos/coloniaperrosygatos.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
+            <form class="chat-form">
+                <div class="chat-input-container">
+                    <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                    <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
                 </div>
-                <div class="flex flex-col gap-3">
-                    <a href="fichas/perrosygatos/coloniacachorros.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
-                    <form class="chat-form">
-                        <div class="chat-input-container">
-                            <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
-                            <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
-                        </div>
-                    </form>
-                </div>
-            </article>
+            </form>
+        </div>
+    </article>
 
-            <!-- 04: Colonia perros y gatos -->
-            <article class="product-card">
-                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia perros y gatos</h4>
-                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <img src="fichas/perrosygatos/coloniaperrosygatos.jpg" class="w-full h-auto object-contain" alt="Colonia Perros y Gatos">
+    <!-- 05: Colonia machos (Corregido) -->
+    <article class="product-card">
+        <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia machos</h4>
+        <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
+            <img src="fichas/perrosygatos/coloniamachos.jpg" class="w-full h-auto object-contain" alt="Colonia Machos">
+        </div>
+        <div class="flex flex-col gap-3">
+            <a href="fichas/perrosygatos/coloniamachos.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
+            <form class="chat-form">
+                <div class="chat-input-container">
+                    <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
+                    <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
                 </div>
-                <div class="flex flex-col gap-3">
-                    <a href="fichas/perrosygatos/coloniaperrosygatos.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
-                    <form class="chat-form">
-                        <div class="chat-input-container">
-                            <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
-                            <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
-                        </div>
-                    </form>
-                </div>
-            </article>
+            </form>
+        </div>
+    </article>
 
-            <!-- 05: Colonia machos -->
-            <article class="product-card">
-                <h4 class="text-[12px] font-bold uppercase tracking-[0.1em] text-zinc-500">Colonia machos</h4>
-                <div class="w-full bg-[#f9f9f9] p-3 rounded-xl">
-                    <!-- Ajustado según captura: oloniamachos.jpg -->
-                    <img src="fichas/perrosygatos/oloniamachos.jpg" class="w-full h-auto object-contain" alt="Colonia Machos">
-                </div>
-                <div class="flex flex-col gap-3">
-                    <a href="fichas/perrosygatos/coloniamachos.pdf" download class="btn-download px-6 py-2.5 font-black uppercase tracking-[0.2em] w-full text-center rounded-full">Descargar PDF</a>
-                    <form class="chat-form">
-                        <div class="chat-input-container">
-                            <input type="text" placeholder="Escribe tus comentarios" class="chat-field">
-                            <button type="submit" class="text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
-                        </div>
-                    </form>
-                </div>
-            </article>
-
-        </section>
-    </div>
-
-    <script>
-        document.querySelectorAll('.chat-form').forEach(form => {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const input = form.querySelector('.chat-field');
-                input.placeholder = "Enviando...";
-                try {
-                    await fetch('https://formspree.io/f/xvzlravo', {
-                        method: 'POST',
-                        body: new FormData(form),
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    input.value = "";
-                    input.placeholder = "¡Recibido!";
-                    setTimeout(() => input.placeholder = "Escribe tus comentarios", 3000);
-                } catch (err) { input.placeholder = "Error"; }
-            });
-        });
-    </script>
-</body>
-</html>
+</section>

@@ -1,4 +1,4 @@
-// --- VISTA TV REFINADA (SIN ITALIC / JERARQUÍA CORREGIDA) ---
+// --- VISTA TV REESTABLECIDA Y RE-AJUSTADA (MESA PEQUEÑA / QR CON MARGEN) ---
   if (isTV) {
     return (
       <div className="h-screen w-screen bg-[#050505] text-white flex overflow-hidden font-sans">
@@ -13,29 +13,32 @@
               <div className="flex-1 flex items-center justify-center p-20 pt-0">
                 <img src={LogoBilliard} alt="Logo" className="w-full max-w-lg object-contain" />
               </div>
+              
+              {/* Bloque Blanco Inferior */}
               <div className="h-64 bg-white text-black flex items-center px-16 gap-12">
-                {/* QR Centrado */}
-                <div className="w-48 h-48 bg-white rounded-xl shadow-2xl border border-black/5 flex items-center justify-center">
-                  <QRCodeSVG value={qrUrl} size={160} />
+                {/* QR con contenedor de seguridad para que no pegue a los bordes */}
+                <div className="w-48 h-48 bg-[#f5f5f5] rounded-xl flex items-center justify-center p-6 border border-black/5">
+                  <QRCodeSVG value={qrUrl} size={140} />
                 </div>
+                
                 <div className="flex flex-col justify-center">
-                  {/* Mesa Disponible más pequeño */}
-                  <p className="text-xl font-normal tracking-widest uppercase mb-1 opacity-40">
+                  {/* Texto de Mesa: Reducido drásticamente */}
+                  <p className="text-sm font-normal tracking-[0.2em] uppercase mb-1 opacity-50">
                     Mesa {mesaId.replace("mesa", "")} Disponible
                   </p>
-                  {/* Escanea para comenzar más grande y sin italic */}
-                  <p className="text-4xl font-black tracking-tighter uppercase">
+                  {/* Texto Escanea: Protagonista y sin itálicas */}
+                  <p className="text-4xl font-black tracking-tighter uppercase leading-tight">
                     Escanea para comenzar
                   </p>
                 </div>
               </div>
             </div>
+
             <div className="w-[40%] h-full bg-[#1A1A1A] flex flex-col p-12 text-center text-white">
                <div className="w-full h-full rounded-2xl bg-[#222] border border-white/5 flex flex-col items-center justify-end p-20 relative">
                   <span className="absolute top-10 text-[10px] tracking-[0.5em] text-white/20 uppercase font-bold">
                     Espacio Disponible
                   </span>
-                  {/* Publicidad abajo, gris y font normal */}
                   <p className="text-gray-500 text-6xl font-normal tracking-[0.1em] uppercase mb-10">
                     PUBLICIDAD
                   </p>
@@ -43,6 +46,7 @@
             </div>
           </div>
         ) : (
+          /* Resto del código del marcador vivo (se mantiene igual) */
           <div className="flex-1 flex flex-col p-8 gap-8 relative text-white">
             <div className="flex justify-between items-center px-4">
               <div className="flex items-center gap-4 bg-green-500/10 px-6 py-2 rounded-full border border-green-500/20">
@@ -50,7 +54,6 @@
                 <span className="text-sm tracking-[0.5em] text-green-500 uppercase font-black">En Vivo</span>
               </div>
               <div className="bg-[#111] border border-white/10 px-16 py-4 rounded-xl shadow-2xl">
-                {/* Sin italic en el tiempo */}
                 <span className="text-6xl font-mono font-normal text-[#D4AF37] tracking-[0.2em]">{tiempoReal}</span>
               </div>
               <div className="w-[120px]"></div>

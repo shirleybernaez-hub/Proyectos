@@ -83,44 +83,33 @@ export default function App() {
     return (
       <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative">
         {!enPartida ? (
-          /* PANTALLA BIENVENIDA CORREGIDA */
           <div className="absolute inset-[4%] flex gap-6"> 
             <div className="w-[60%] h-full bg-[#1a1c1e] rounded-[2rem] relative overflow-hidden border border-white/5">
-              
-              {/* "En Espera" ahora a la izquierda */}
               <div className="absolute top-10 left-10">
-                <span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">En Espera</span>
+                <span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest">En Espera</span>
               </div>
-
-              {/* Logo centrado más arriba para dar aire al QR */}
               <div className="absolute inset-0 flex items-center justify-center pb-64">
-                <img src={LogoBilliard} alt="Logo" className="w-[55%] max-h-[220px] object-contain opacity-80" />
+                <img src={LogoBilliard} alt="Logo" className="w-[150px] object-contain opacity-80" />
               </div>
-
-              {/* Bloque Blanco: QR más grande y textos proporcionales */}
-              <div className="absolute bottom-0 left-0 w-full h-[260px] bg-white text-black flex items-center px-14 gap-12">
-                <div className="w-48 h-48 bg-white flex items-center justify-center p-2 border-4 border-black/5 rounded-2xl">
+              <div className="absolute bottom-0 left-0 w-full h-[240px] bg-white text-black flex items-center px-12">
+                <div className="w-48 h-48 bg-white rounded-xl flex items-center justify-center p-4 border border-black/5">
                   <QRCodeSVG value={qrUrl} size="100%" />
                 </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-[16px] font-bold tracking-[0.4em] uppercase mb-2 opacity-50">Mesa Disponible</p>
-                  <p className="text-6xl font-light tracking-tighter uppercase leading-[0.9]">Escanea para<br/>comenzar</p>
+                <div className="pl-10 flex flex-col justify-center">
+                  <p className="text-[1.2vw] font-bold tracking-[0.3em] uppercase mb-1 opacity-60">Mesa Disponible</p>
+                  <p className="text-[4vw] font-light tracking-tighter uppercase leading-[0.95]">Escanea para<br/>comenzar</p>
                 </div>
               </div>
             </div>
-
             <div className="w-[40%] h-full bg-[#111] rounded-[2rem] border border-white/5 flex items-center justify-center">
                <p className="text-white/5 text-7xl font-normal tracking-[0.1em] uppercase">PUBLICIDAD</p>
             </div>
           </div>
         ) : (
-          /* PANTALLA EN VIVO - NO SE HA MODIFICADO NADA */
           <div className="absolute inset-[4%] flex flex-col gap-6">
             <div className="h-[20%] bg-[#111] border border-white/10 rounded-[2rem] relative">
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-[14vh] font-mono font-normal text-[#D4AF37] tracking-[0.1em] tabular-nums">
-                  {tiempoReal}
-                </span>
+                <span className="text-[14vh] font-mono font-normal text-[#D4AF37] tracking-[0.1em] tabular-nums">{tiempoReal}</span>
               </div>
               <div className="absolute right-12 top-0 h-full flex flex-col justify-center text-right">
                 <p className="text-[1.5vh] uppercase opacity-30 tracking-[0.4em] leading-none">Mesa</p>
@@ -130,15 +119,11 @@ export default function App() {
             <div className="flex-1 flex gap-6">
               <div className="flex-1 bg-[#111] rounded-[3rem] border border-white/5 flex flex-col relative overflow-hidden">
                 <div className="bg-[#A2FF00] h-[15%] flex items-center justify-center text-black font-black uppercase tracking-[0.3em] text-[3vh]">{data.jugador1}</div>
-                <div className="flex-1 flex items-center justify-center">
-                  <span className="text-[40vh] font-black leading-none">{data.puntos1}</span>
-                </div>
+                <div className="flex-1 flex items-center justify-center"><span className="text-[40vh] font-black leading-none">{data.puntos1}</span></div>
               </div>
               <div className="flex-1 bg-[#111] rounded-[3rem] border border-white/5 flex flex-col relative overflow-hidden">
                 <div className="bg-[#00A3FF] h-[15%] flex items-center justify-center text-black font-black uppercase tracking-[0.3em] text-[3vh]">{data.jugador2}</div>
-                <div className="flex-1 flex items-center justify-center">
-                  <span className="text-[40vh] font-black leading-none">{data.puntos2}</span>
-                </div>
+                <div className="flex-1 flex items-center justify-center"><span className="text-[40vh] font-black leading-none">{data.puntos2}</span></div>
               </div>
             </div>
           </div>
@@ -147,37 +132,42 @@ export default function App() {
     );
   }
 
+  // VISTA MÓVIL REPARADA (Z-INDEX Y ESTRUCTURA LIMPIA)
   return (
-    <div className="h-screen w-screen bg-[#050505] text-white font-sans overflow-hidden flex flex-col p-4 gap-4">
+    <div className="min-h-screen w-full bg-[#050505] text-white font-sans flex flex-col p-4 gap-4 overflow-y-auto">
       {!enPartida ? (
-        <div className="flex-1 flex flex-col items-center justify-center p-10">
-          <img src={LogoBilliard} className="w-40 mb-12 opacity-80 object-contain" alt="logo" />
-          <div className="w-full max-w-sm space-y-4">
-            <input className="w-full bg-[#111] border border-white/10 p-5 rounded-xl outline-none text-white" placeholder="Equipo 1" value={nombre1} onChange={e => setNombre1(e.target.value)} />
-            <input className="w-full bg-[#111] border border-white/10 p-5 rounded-xl outline-none text-white" placeholder="Equipo 2" value={nombre2} onChange={e => setNombre2(e.target.value)} />
-            <button onClick={iniciarPartida} className="w-full bg-white text-black font-black p-5 rounded-xl uppercase tracking-widest">Empezar</button>
+        <div className="flex-1 flex flex-col items-center justify-center py-10">
+          <img src={LogoBilliard} className="w-32 mb-10 opacity-80 object-contain" alt="logo" />
+          <div className="w-full max-w-xs space-y-4">
+            <input className="w-full bg-[#111] border border-white/10 p-4 rounded-xl outline-none text-white focus:border-white/30" placeholder="Equipo 1" value={nombre1} onChange={e => setNombre1(e.target.value)} />
+            <input className="w-full bg-[#111] border border-white/10 p-4 rounded-xl outline-none text-white focus:border-white/30" placeholder="Equipo 2" value={nombre2} onChange={e => setNombre2(e.target.value)} />
+            <button onClick={iniciarPartida} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase tracking-widest active:bg-gray-200">Empezar</button>
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col relative gap-4 pt-2">
-          <div className="flex justify-between items-center px-1">
-            <button onClick={reiniciarPuntos} className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg"><span className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Reiniciar</span></button>
-            <div className="bg-[#111] border border-white/10 px-5 py-2.5 rounded-xl"><span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Mesa {mesaId.replace("mesa", "")}</span></div>
+        <div className="flex-1 flex flex-col gap-4 relative">
+          <div className="flex justify-between items-center py-2">
+            <button onClick={reiniciarPuntos} className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-[10px] font-black uppercase tracking-wider">Reiniciar</button>
+            <div className="bg-[#111] border border-white/10 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider">Mesa {mesaId.replace("mesa", "")}</div>
           </div>
-          <div onClick={(e) => updateScore('puntos1', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative">
-            <div className="bg-[#A2FF00] p-4 flex justify-between items-center"><span className="text-black font-black uppercase tracking-widest text-xs">{data.jugador1}</span></div>
-            <div className="flex-1 flex items-center justify-center"><span className="text-[230px] font-black leading-none text-white tabular-nums">{data.puntos1}</span></div>
-            <div className="absolute left-6 bottom-6 w-16 h-16 flex items-center justify-center text-white/10 text-4xl" onClick={(e) => updateScore('puntos1', -1, e)}>-</div>
+          
+          <div onClick={(e) => updateScore('puntos1', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative active:bg-[#111]">
+            <div className="bg-[#A2FF00] p-3 text-center text-black font-black uppercase text-xs tracking-widest">{data.jugador1}</div>
+            <div className="flex-1 flex items-center justify-center text-[120px] font-black">{data.puntos1}</div>
+            <div className="absolute left-4 bottom-4 w-14 h-14 flex items-center justify-center text-white/20 text-3xl z-20" onClick={(e) => updateScore('puntos1', -1, e)}>-</div>
           </div>
-          <div className="flex items-center justify-center py-1 font-normal"><div className="bg-[#111] border border-white/5 px-10 py-3 rounded-xl"><span className="text-4xl font-mono tracking-[0.2em]">{tiempoReal}</span></div></div>
-          <div onClick={(e) => updateScore('puntos2', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative">
-            <div className="flex-1 flex items-center justify-center"><span className="text-[230px] font-black leading-none text-white tabular-nums">{data.puntos2}</span></div>
-            <div className="bg-[#00A3FF] p-4 flex justify-between items-center"><span className="text-black font-black uppercase tracking-widest text-xs">{data.jugador2}</span></div>
-            <div className="absolute right-6 top-6 w-16 h-16 flex items-center justify-center text-white/10 text-4xl" onClick={(e) => updateScore('puntos2', -1, e)}>-</div>
+
+          <div className="flex items-center justify-center py-2">
+            <div className="bg-[#111] border border-white/5 px-8 py-2 rounded-xl text-3xl font-mono">{tiempoReal}</div>
           </div>
-          <div className="flex justify-end items-center px-1 pb-1">
-            <button onClick={finalizarSesion} className="px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg flex items-center"><span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Cerrar Mesa</span></button>
+
+          <div onClick={(e) => updateScore('puntos2', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative active:bg-[#111]">
+            <div className="flex-1 flex items-center justify-center text-[120px] font-black">{data.puntos2}</div>
+            <div className="bg-[#00A3FF] p-3 text-center text-black font-black uppercase text-xs tracking-widest">{data.jugador2}</div>
+            <div className="absolute right-4 top-16 w-14 h-14 flex items-center justify-center text-white/20 text-3xl z-20" onClick={(e) => updateScore('puntos2', -1, e)}>-</div>
           </div>
+
+          <button onClick={finalizarSesion} className="w-full py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest mt-2 active:bg-red-500/20">Cerrar Mesa</button>
         </div>
       )}
     </div>

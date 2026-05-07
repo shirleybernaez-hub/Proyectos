@@ -49,7 +49,7 @@ export default function App() {
 }
 
 // =========================================================
-// --- VISTA TV (BLINDADA CONTRA ZOOM) ---
+// --- VISTA TV (BIENVENIDA ACTUALIZADA) ---
 // =========================================================
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
@@ -66,14 +66,16 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
               <img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-90" />
             </div>
 
-            {/* BARRA BLANCA CORREGIDA */}
+            {/* BARRA BLANCA CON CAMBIOS SOLICITADOS */}
             <div className="absolute bottom-0 left-0 w-full h-[180px] bg-white text-black flex items-center px-10 gap-8">
               <div className="w-[140px] h-[140px] bg-white flex-shrink-0 flex items-center justify-center p-2 border-2 border-black/5 rounded-lg">
                 <QRCodeSVG value={qrUrl} size="100%" />
               </div>
               <div className="flex flex-col justify-center overflow-hidden">
-                <p className="text-[12px] font-bold tracking-[0.3em] uppercase mb-1 opacity-50">Mesa Disponible</p>
-                <p className="text-4xl font-light tracking-tighter uppercase leading-[0.85] break-words">Escanea para<br/>comenzar</p>
+                {/* Mesa Disponible en VERDE */}
+                <p className="text-[12px] font-black tracking-[0.3em] uppercase mb-1 text-[#A2FF00] drop-shadow-sm">Mesa Disponible</p>
+                {/* Texto corregido */}
+                <p className="text-4xl font-light tracking-tighter uppercase leading-[0.85] break-words">Escanea para<br/>comenzar a jugar</p>
               </div>
             </div>
           </div>
@@ -84,7 +86,7 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
           </div>
         </div>
       ) : (
-        /* MARCADOR EN VIVO (Mantenemos lo que funcionaba) */
+        /* MARCADOR EN VIVO (SIN CAMBIOS) */
         <div className="absolute inset-[4%] flex flex-col gap-6">
           <div className="h-[20%] bg-[#111] border border-white/10 rounded-[2rem] relative">
             <div className="absolute inset-0 flex items-center justify-center">

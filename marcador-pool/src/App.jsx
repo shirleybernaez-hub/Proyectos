@@ -1,4 +1,4 @@
-// --- VISTA TV: SIN "EN VIVO" Y MESA EDITABLE SIN FONDO ---
+// --- VISTA TV: VERSIÓN CORREGIDA SIN "EN VIVO" ---
 if (isTV) {
   return (
     <div className="h-screen w-screen bg-[#050505] text-white overflow-hidden font-sans p-10 select-none">
@@ -34,19 +34,20 @@ if (isTV) {
           </div>
         </div>
       ) : (
-        /* MARCADOR EN VIVO: CONTADOR CENTRADO Y MESA SIN FONDO */
+        /* MARCADOR EN VIVO: EL BADGE VERDE HA SIDO ELIMINADO DEFINITIVAMENTE */
         <div className="grid grid-rows-10 h-full gap-5">
-          {/* Header: Tiempo y Mesa */}
+          {/* Header: Tiempo centrado y Mesa (Editable y sin fondo) a la derecha */}
           <div className="row-span-2 bg-[#111] border border-white/10 rounded-3xl px-12 flex justify-between items-center shadow-2xl relative">
-            {/* Espacio vacío a la izquierda para equilibrar el diseño */}
+            
+            {/* Espacio vacío a la izquierda para equilibrar el diseño con el texto de la mesa */}
             <div className="w-32"></div> 
             
-            {/* Reloj central */}
+            {/* Reloj central (Único protagonista visual) */}
             <span className="text-9xl font-mono font-normal text-[#D4AF37] tracking-[0.2em] tabular-nums">
               {tiempoReal}
             </span>
 
-            {/* Texto de Mesa a la derecha (Sin fondo negro) */}
+            {/* Texto de Mesa a la derecha (Sin fondo negro, solo texto blanco plano) */}
             <div className="text-right">
               <p className="text-[10px] uppercase opacity-30 tracking-[0.4em]">Mesa</p>
               <p className="text-4xl font-black text-white/80">{mesaId.replace("mesa", "")}</p>

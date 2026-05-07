@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from './firebase';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { QRCodeSVG } from 'qrcode.react';
-import LogoBilliard from './assets/billiardplay.png'; // Actualizado a .png y nuevo nombre
+import LogoBilliard from './assets/billiardplay.png'; 
 
 export default function App() {
   const [data, setData] = useState(null);
@@ -14,7 +14,6 @@ export default function App() {
   const mesaId = params.get('mesa') || 'mesa1'; 
   const isTV = params.get('view') === 'tv';
 
-  // Configuración dinámica del QR
   const baseUrl = window.location.origin; 
   const qrUrl = `${baseUrl}/?mesa=${mesaId}`;
 
@@ -80,59 +79,57 @@ export default function App() {
   if (!data) return null;
   const enPartida = data.jugador1 && data.jugador1 !== "---";
 
-  // --- VISTA TV: ESTRUCTURA PARA 43" ---
+  // --- VISTA TV REESTABLECIDA Y LIMPIA ---
   if (isTV) {
     return (
-      <div className="h-screen w-screen bg-[#050505] text-white overflow-hidden font-sans p-6">
+      <div className="h-screen w-screen bg-[#050505] text-white flex overflow-hidden font-sans">
         {!enPartida ? (
-          <div className="grid grid-cols-10 h-full gap-6">
-            <div className="col-span-6 bg-[#24292E] rounded-[2rem] flex flex-col justify-between overflow-hidden shadow-2xl">
-              <div className="p-10"><span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-sm font-bold uppercase tracking-[0.3em]">En Espera</span></div>
-              <div className="flex-1 flex items-center justify-center p-10">
-                <img src={LogoBilliard} alt="Logo" className="w-[70%] object-contain" />
-              </div>
-              <div className="bg-white text-black flex items-center p-10 gap-10">
-                <div className="bg-white p-2 rounded-xl shadow-xl"><QRCodeSVG value={qrUrl} size={150} /></div>
-                <div>
-                  <p className="text-5xl font-black uppercase leading-none mb-2">Mesa {mesaId.replace("mesa", "")}</p>
-                  <p className="text-xl opacity-50 uppercase tracking-widest font-light">Escanea para jugar</p>
+          <div className="flex w-full h-full">
+            <div className="w-[60%] flex flex-col h-full bg-[#24292E]">
+              <div className="p-10 pb-0"><span className="bg-[#4C5FD5] px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg text-white">En Espera</span></div>
+              <div className="flex-1 flex items-center justify-center p-20 pt-0"><img src={LogoBilliard} alt="Logo" className="w-full max-w-xl object-contain" /></div>
+              <div className="h-60 bg-white text-black flex items-center px-16 gap-12">
+                <div className="p-2 bg-white rounded-lg shadow-2xl border border-black/5"><QRCodeSVG value={qrUrl} size={190} /></div>
+                <div className="flex flex-col justify-center">
+                  <p className="text-6xl font-light tracking-tighter uppercase mb-2">Mesa {mesaId.replace("mesa", "")} Disponible</p>
+                  <p className="text-3xl font-light tracking-tight opacity-50 italic">Escanea para comenzar</p>
                 </div>
               </div>
             </div>
-            <div className="col-span-4 bg-[#111] rounded-[2rem] border border-white/5 flex items-center justify-center relative overflow-hidden">
-               <span className="absolute top-10 text-[10px] tracking-[1em] text-white/20 uppercase">Publicidad</span>
-               <p className="text-white/5 text-7xl font-black uppercase -rotate-90">ONSHIFT</p>
+            <div className="w-[40%] h-full bg-[#1A1A1A] flex flex-col justify-center items-center p-12 text-center text-white">
+               <div className="w-full h-full rounded-2xl bg-[#222] border border-white/5 flex flex-col items-center justify-center p-20 relative">
+                  <span className="absolute top-10 text-[10px] tracking-[0.5em] text-white/20 uppercase font-bold">Espacio Disponible</span>
+                  {/* TEXTO CORREGIDO: Solo dice PUBLICIDAD */}
+                  <p className="text-white/10 text-7xl font-light tracking-[0.1em] uppercase">PUBLICIDAD</p>
+               </div>
             </div>
           </div>
         ) : (
-          <div className="flex flex-col h-full gap-4">
-            <div className="h-[15vh] flex justify-between items-center px-4">
-              <div className="flex items-center gap-4 bg-green-500/10 px-8 py-3 rounded-full border border-green-500/20">
-                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-xl tracking-[0.5em] text-green-500 uppercase font-black">En Vivo</span>
+          <div className="flex-1 flex flex-col p-8 gap-8 relative text-white">
+            <div className="flex justify-between items-center px-4">
+              <div className="flex items-center gap-4 bg-green-500/10 px-6 py-2 rounded-full border border-green-500/20">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_15px_green]"></div>
+                <span className="text-sm tracking-[0.5em] text-green-500 uppercase font-black">En Vivo</span>
               </div>
-              <div className="bg-[#111] border border-white/10 px-20 py-4 rounded-2xl shadow-2xl">
-                <span className="text-7xl font-mono text-[#D4AF37] tracking-widest">{tiempoReal}</span>
+              <div className="bg-[#111] border border-white/10 px-16 py-4 rounded-xl shadow-2xl">
+                <span className="text-6xl font-mono font-light text-[#D4AF37] tracking-[0.2em]">{tiempoReal}</span>
               </div>
-              <div className="text-right">
-                <p className="text-white/20 text-xs uppercase tracking-[0.5em] mb-1">Mesa</p>
-                <p className="text-4xl font-black uppercase tracking-tighter">{mesaId.replace("mesa", "")}</p>
+              <div className="w-[120px]"></div>
+            </div>
+            <div className="flex-1 flex gap-8">
+              <div className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden shadow-2xl">
+                <div className="bg-[#A2FF00] p-6 flex justify-between items-center"><span className="text-black font-black uppercase tracking-[0.3em] text-2xl">{data.jugador1}</span></div>
+                <div className="flex-1 flex items-center justify-center"><span className="text-[480px] font-black leading-none text-white tabular-nums">{data.puntos1}</span></div>
+              </div>
+              <div className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden shadow-2xl">
+                <div className="bg-[#00A3FF] p-6 flex justify-between items-center"><span className="text-black font-black uppercase tracking-[0.3em] text-2xl">{data.jugador2}</span></div>
+                <div className="flex-1 flex items-center justify-center"><span className="text-[480px] font-black leading-none text-white tabular-nums">{data.puntos2}</span></div>
               </div>
             </div>
-
-            <div className="flex-1 grid grid-cols-2 gap-6">
-              <div className="bg-[#0a0a0a] border-2 border-white/10 rounded-[3rem] flex flex-col overflow-hidden shadow-2xl">
-                <div className="bg-[#A2FF00] py-4 px-10"><span className="text-black font-black uppercase tracking-[0.4em] text-3xl">{data.jugador1}</span></div>
-                <div className="flex-1 flex items-center justify-center bg-gradient-to-b from-transparent to-white/5">
-                  <span className="text-[55vh] font-black leading-none tabular-nums text-white">{data.puntos1}</span>
-                </div>
-              </div>
-
-              <div className="bg-[#0a0a0a] border-2 border-white/10 rounded-[3rem] flex flex-col overflow-hidden shadow-2xl">
-                <div className="bg-[#00A3FF] py-4 px-10"><span className="text-black font-black uppercase tracking-[0.4em] text-3xl">{data.jugador2}</span></div>
-                <div className="flex-1 flex items-center justify-center bg-gradient-to-b from-transparent to-white/5">
-                  <span className="text-[55vh] font-black leading-none tabular-nums text-white">{data.puntos2}</span>
-                </div>
+            <div className="flex justify-end pr-4">
+              <div className="bg-[#111] border border-white/10 px-8 py-4 rounded-xl flex items-center gap-6 shadow-2xl">
+                <span className="text-xl font-black text-white uppercase tracking-[0.3em]">Mesa {mesaId.replace("mesa", "")}</span>
+                <div className="flex items-center gap-3 bg-green-500/10 px-4 py-1.5 rounded-full border border-green-500/20"><div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div><span className="text-[10px] font-black text-green-500 uppercase tracking-widest">Activa</span></div>
               </div>
             </div>
           </div>

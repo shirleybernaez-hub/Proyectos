@@ -83,51 +83,50 @@ export default function App() {
     return (
       <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative">
         {!enPartida ? (
+          /* PANTALLA BIENVENIDA CORREGIDA */
           <div className="absolute inset-[4%] flex gap-6"> 
             <div className="w-[60%] h-full bg-[#1a1c1e] rounded-[2rem] relative overflow-hidden border border-white/5">
-              <div className="absolute top-10 left-10 text-left">
-                <p className="text-[10px] uppercase opacity-30 tracking-[0.4em] leading-none">Mesa</p>
-                <p className="text-4xl font-black">{mesaId.replace("mesa", "")}</p>
+              
+              {/* "En Espera" ahora a la izquierda */}
+              <div className="absolute top-10 left-10">
+                <span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">En Espera</span>
               </div>
-              <div className="absolute top-10 right-10">
-                <span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest">En Espera</span>
+
+              {/* Logo centrado más arriba para dar aire al QR */}
+              <div className="absolute inset-0 flex items-center justify-center pb-64">
+                <img src={LogoBilliard} alt="Logo" className="w-[55%] max-h-[220px] object-contain opacity-80" />
               </div>
-              <div className="absolute inset-0 flex items-center justify-center pb-40">
-                <img src={LogoBilliard} alt="Logo" className="w-[60%] max-h-[250px] object-contain opacity-80" />
-              </div>
-              <div className="absolute bottom-0 left-0 w-full h-[220px] bg-white text-black flex items-center px-12 gap-10">
-                <div className="w-40 h-40 bg-white rounded-xl flex items-center justify-center p-4">
+
+              {/* Bloque Blanco: QR más grande y textos proporcionales */}
+              <div className="absolute bottom-0 left-0 w-full h-[260px] bg-white text-black flex items-center px-14 gap-12">
+                <div className="w-48 h-48 bg-white flex items-center justify-center p-2 border-4 border-black/5 rounded-2xl">
                   <QRCodeSVG value={qrUrl} size="100%" />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <p className="text-[14px] font-bold tracking-[0.3em] uppercase mb-1 opacity-60">Mesa Disponible</p>
-                  <p className="text-5xl font-light tracking-tighter uppercase leading-tight">Escanea para comenzar</p>
+                  <p className="text-[16px] font-bold tracking-[0.4em] uppercase mb-2 opacity-50">Mesa Disponible</p>
+                  <p className="text-6xl font-light tracking-tighter uppercase leading-[0.9]">Escanea para<br/>comenzar</p>
                 </div>
               </div>
             </div>
+
             <div className="w-[40%] h-full bg-[#111] rounded-[2rem] border border-white/5 flex items-center justify-center">
                <p className="text-white/5 text-7xl font-normal tracking-[0.1em] uppercase">PUBLICIDAD</p>
             </div>
           </div>
         ) : (
-          /* PANTALLA EN VIVO - REVISADA PARA TODAS LAS TV */
+          /* PANTALLA EN VIVO - NO SE HA MODIFICADO NADA */
           <div className="absolute inset-[4%] flex flex-col gap-6">
-            {/* HEADER: SIN FLEX-BETWEEN PARA EVITAR DESPLAZAMIENTOS */}
             <div className="h-[20%] bg-[#111] border border-white/10 rounded-[2rem] relative">
-              {/* Reloj Clavado al Centro */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-[14vh] font-mono font-normal text-[#D4AF37] tracking-[0.1em] tabular-nums">
                   {tiempoReal}
                 </span>
               </div>
-              {/* Mesa Clavada a la Derecha (Sin fondo negro) */}
               <div className="absolute right-12 top-0 h-full flex flex-col justify-center text-right">
                 <p className="text-[1.5vh] uppercase opacity-30 tracking-[0.4em] leading-none">Mesa</p>
                 <p className="text-[6vh] font-black text-white/90 leading-tight">{mesaId.replace("mesa", "")}</p>
               </div>
             </div>
-
-            {/* MARCADOR */}
             <div className="flex-1 flex gap-6">
               <div className="flex-1 bg-[#111] rounded-[3rem] border border-white/5 flex flex-col relative overflow-hidden">
                 <div className="bg-[#A2FF00] h-[15%] flex items-center justify-center text-black font-black uppercase tracking-[0.3em] text-[3vh]">{data.jugador1}</div>
@@ -148,7 +147,6 @@ export default function App() {
     );
   }
 
-  /* VISTA MÓVIL */
   return (
     <div className="h-screen w-screen bg-[#050505] text-white font-sans overflow-hidden flex flex-col p-4 gap-4">
       {!enPartida ? (

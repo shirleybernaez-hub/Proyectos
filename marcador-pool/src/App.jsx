@@ -40,7 +40,7 @@ export default function App() {
   if (!data) return null;
   const enPartida = data.jugador1 && data.jugador1 !== "---";
 
-  // RENDER CONDICIONAL PARA NO MEZCLAR CÓDIGO
+  // RENDER CONDICIONAL
   if (isTV) {
     return <TvView data={data} enPartida={enPartida} tiempoReal={tiempoReal} qrUrl={qrUrl} mesaId={mesaId} />;
   } else {
@@ -49,7 +49,7 @@ export default function App() {
 }
 
 // =========================================================
-// --- VISTA TV (BIENVENIDA ACTUALIZADA) ---
+// --- VISTA TV (BIENVENIDA CON TEXTO CORREGIDO) ---
 // =========================================================
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
@@ -66,16 +66,18 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
               <img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-90" />
             </div>
 
-            {/* BARRA BLANCA CON CAMBIOS SOLICITADOS */}
+            {/* BARRA BLANCA - TEXTO EN MINÚSCULAS Y MESA DISPONIBLE EN NEGRO */}
             <div className="absolute bottom-0 left-0 w-full h-[180px] bg-white text-black flex items-center px-10 gap-8">
               <div className="w-[140px] h-[140px] bg-white flex-shrink-0 flex items-center justify-center p-2 border-2 border-black/5 rounded-lg">
                 <QRCodeSVG value={qrUrl} size="100%" />
               </div>
               <div className="flex flex-col justify-center overflow-hidden">
-                {/* Mesa Disponible en VERDE */}
-                <p className="text-[12px] font-black tracking-[0.3em] uppercase mb-1 text-[#A2FF00] drop-shadow-sm">Mesa Disponible</p>
-                {/* Texto corregido */}
-                <p className="text-4xl font-light tracking-tighter uppercase leading-[0.85] break-words">Escanea para<br/>comenzar a jugar</p>
+                {/* Vuelto a Negro original */}
+                <p className="text-[12px] font-bold tracking-[0.3em] uppercase mb-1 text-black opacity-50">Mesa Disponible</p>
+                {/* Texto: Escanea para comenzar a jugar (solo E mayúscula) */}
+                <p className="text-[42px] font-light tracking-tighter leading-[0.9] break-words lowercase first-letter:uppercase">
+                  Escanea para<br/>comenzar a jugar
+                </p>
               </div>
             </div>
           </div>
@@ -86,7 +88,7 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
           </div>
         </div>
       ) : (
-        /* MARCADOR EN VIVO (SIN CAMBIOS) */
+        /* MARCADOR EN VIVO (INTACTO) */
         <div className="absolute inset-[4%] flex flex-col gap-6">
           <div className="h-[20%] bg-[#111] border border-white/10 rounded-[2rem] relative">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -114,7 +116,7 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
 }
 
 // =========================================================
-// --- VISTA MÓVIL (PROTEGIDA - NO TOCAR) ---
+// --- VISTA MÓVIL (PROTEGIDA) ---
 // =========================================================
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [nombre1, setNombre1] = useState('');

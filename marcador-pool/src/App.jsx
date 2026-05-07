@@ -14,9 +14,18 @@ export default function App() {
   const mesaId = params.get('mesa') || 'mesa1'; 
   const isTV = params.get('view') === 'tv';
 
-  const networkIP = "172.16.0.157"; 
-  const puerto = "5174";           
-  const qrUrl = `http://${networkIP}:${puerto}/?mesa=${mesaId}`;
+  // ... dentro de export default function App() { ...
+
+  const params = new URLSearchParams(window.location.search);
+  const mesaId = params.get('mesa') || 'mesa1'; 
+  const isTV = params.get('view') === 'tv';
+
+  // --- CONFIGURACIÓN DINÁMICA DEL QR ---
+  // Esto detecta si estás en localhost o en marcador-pool.vercel.app
+  const baseUrl = window.location.origin; 
+  const qrUrl = `${baseUrl}/?mesa=${mesaId}`;
+
+// ... resto del código ...
 
   useEffect(() => {
     const timer = setInterval(() => {

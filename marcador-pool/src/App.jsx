@@ -79,73 +79,70 @@ export default function App() {
   if (!data) return null;
   const enPartida = data.jugador1 && data.jugador1 !== "---";
 
-  // --- VISTA TV: ESTRUCTURA DE FRANJAS RÍGIDAS ---
   if (isTV) {
     return (
-      <div className="h-screen w-screen bg-[#050505] text-white overflow-hidden font-sans p-16 flex">
+      <div className="h-screen w-screen bg-[#050505] text-white overflow-hidden font-sans p-12">
         {!enPartida ? (
-          <div className="flex w-full h-full border border-white/10 rounded-[3rem] overflow-hidden">
-            {/* LADO IZQUIERDO */}
-            <div className="w-[65%] h-full bg-[#1a1c1e] flex flex-col relative border-r border-white/5">
-              <div className="p-10"><span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[12px] font-bold uppercase tracking-[0.4em]">En Espera</span></div>
-              
-              <div className="flex-1 flex items-center justify-center p-12 mb-40">
-                <img src={LogoBilliard} alt="Logo" className="max-h-[220px] w-auto object-contain opacity-90" />
+          <div className="grid grid-cols-10 h-full gap-6">
+            {/* Columna Izquierda: Logo y QR */}
+            <div className="col-span-6 grid grid-rows-6 bg-[#1a1c1e] rounded-[2rem] overflow-hidden shadow-2xl border border-white/5">
+              <div className="row-span-1 p-8 flex justify-between items-start">
+                <span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[12px] font-bold uppercase tracking-widest">En Espera</span>
+                <p className="text-3xl font-black opacity-30">Mesa {mesaId.replace("mesa", "")}</p>
               </div>
-
-              {/* FRANJA BLANCA FIJA (AL FONDO) */}
-              <div className="absolute bottom-0 left-0 w-full h-[180px] bg-white text-black flex items-center px-12 gap-10">
-                <div className="h-32 w-32 bg-white rounded-xl flex items-center justify-center p-4 shadow-xl border border-black/5">
+              <div className="row-span-3 flex items-center justify-center p-10">
+                <img src={LogoBilliard} alt="Logo" className="max-h-full w-auto object-contain" />
+              </div>
+              <div className="row-span-2 bg-white text-black flex items-center px-12 gap-10">
+                <div className="w-40 h-40 bg-white rounded-xl flex items-center justify-center p-4 shadow-xl border border-black/5">
                   <QRCodeSVG value={qrUrl} size="100%" />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <p className="text-[14px] font-bold tracking-[0.2em] uppercase mb-1 text-black">Mesa {mesaId.replace("mesa", "")} Disponible</p>
-                  <p className="text-4xl font-light tracking-tighter uppercase text-black leading-none">Escanea para comenzar</p>
+                  <p className="text-[14px] font-bold tracking-[0.3em] uppercase mb-1 text-black opacity-60">Mesa Disponible</p>
+                  <p className="text-4xl font-light tracking-tighter uppercase text-black leading-tight">Escanea para comenzar</p>
                 </div>
               </div>
             </div>
-
-            {/* LADO DERECHO (PUBLICIDAD) */}
-            <div className="w-[35%] h-full bg-[#111] flex flex-col items-center justify-center p-10 relative">
-               <span className="absolute top-10 text-[10px] tracking-[0.6em] text-white/10 uppercase font-bold">Publicidad</span>
-               <p className="text-white/5 text-7xl font-normal tracking-[0.1em] uppercase leading-none text-center">PUBLICIDAD</p>
+            {/* Columna Derecha: Publicidad */}
+            <div className="col-span-4 bg-[#111] rounded-[2rem] border border-white/5 flex flex-col justify-center items-center p-12 relative overflow-hidden text-center">
+               <span className="absolute top-10 text-[10px] tracking-[0.6em] text-white/20 uppercase font-bold">Espacio Disponible</span>
+               <p className="text-white/5 text-7xl font-normal tracking-[0.1em] uppercase leading-none">PUBLICIDAD</p>
             </div>
           </div>
         ) : (
-          <div className="flex-1 flex flex-col gap-10 p-4">
-             <div className="flex justify-between items-center bg-[#111] p-8 rounded-[2rem] border border-white/5">
-                <div className="flex items-center gap-6 bg-green-500/10 px-8 py-3 rounded-full border border-green-500/20">
-                   <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse shadow-[0_0_20px_green]"></div>
-                   <span className="text-xl tracking-[0.4em] text-green-500 uppercase font-black">En Vivo</span>
-                </div>
-                <span className="text-7xl font-mono text-[#D4AF37] tracking-[0.2em] tabular-nums">{tiempoReal}</span>
-                <p className="text-3xl font-black uppercase tracking-widest text-white/20">Mesa {mesaId.replace("mesa", "")}</p>
-             </div>
-             <div className="flex-1 grid grid-cols-2 gap-10">
-                <div className="bg-[#111] rounded-[3rem] border border-white/5 overflow-hidden flex flex-col">
-                   <div className="bg-[#A2FF00] p-6 text-center"><span className="text-black font-black uppercase tracking-[0.3em] text-3xl">{data.jugador1}</span></div>
-                   <div className="flex-1 flex items-center justify-center"><span className="text-[35vh] font-black">{data.puntos1}</span></div>
-                </div>
-                <div className="bg-[#111] rounded-[3rem] border border-white/5 overflow-hidden flex flex-col">
-                   <div className="bg-[#00A3FF] p-6 text-center"><span className="text-black font-black uppercase tracking-[0.3em] text-3xl">{data.jugador2}</span></div>
-                   <div className="flex-1 flex items-center justify-center"><span className="text-[35vh] font-black">{data.puntos2}</span></div>
-                </div>
-             </div>
+          <div className="grid grid-rows-6 h-full gap-6">
+            <div className="row-span-1 bg-[#111] border border-white/10 rounded-[2rem] px-10 flex justify-between items-center">
+              <div className="flex items-center gap-6 bg-green-500/10 px-8 py-3 rounded-full border border-green-500/20">
+                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse shadow-[0_0_20px_green]"></div>
+                <span className="text-xl tracking-[0.4em] text-green-500 uppercase font-black">En Vivo</span>
+              </div>
+              <span className="text-8xl font-mono text-[#D4AF37] tracking-[0.2em]">{tiempoReal}</span>
+              <p className="text-4xl font-black uppercase text-white/20">Mesa {mesaId.replace("mesa", "")}</p>
+            </div>
+            <div className="row-span-5 grid grid-cols-2 gap-6">
+              <div className="bg-[#111] rounded-[3rem] border border-white/10 overflow-hidden flex flex-col relative">
+                <div className="bg-[#A2FF00] p-6 text-center"><span className="text-black font-black uppercase tracking-[0.3em] text-3xl">{data.jugador1}</span></div>
+                <div className="flex-1 flex items-center justify-center p-10"><span className="text-[40vh] font-black text-white">{data.puntos1}</span></div>
+              </div>
+              <div className="bg-[#111] rounded-[3rem] border border-white/10 overflow-hidden flex flex-col relative">
+                <div className="bg-[#00A3FF] p-6 text-center"><span className="text-black font-black uppercase tracking-[0.3em] text-2xl">{data.jugador2}</span></div>
+                <div className="flex-1 flex items-center justify-center p-10"><span className="text-[40vh] font-black text-white">{data.puntos2}</span></div>
+              </div>
+            </div>
           </div>
         )}
       </div>
     );
   }
 
-  // VISTA MOVIL (Sin cambios)
   return (
     <div className="h-screen w-screen bg-[#050505] text-white font-sans overflow-hidden flex flex-col p-4 gap-4">
       {!enPartida ? (
         <div className="flex-1 flex flex-col items-center justify-center p-10">
           <img src={LogoBilliard} className="w-40 mb-12 opacity-80 object-contain" alt="logo" />
           <div className="w-full max-w-sm space-y-4">
-            <input className="w-full bg-[#111] border border-white/10 p-5 rounded-xl outline-none" placeholder="Equipo 1" value={nombre1} onChange={e => setNombre1(e.target.value)} />
-            <input className="w-full bg-[#111] border border-white/10 p-5 rounded-xl outline-none" placeholder="Equipo 2" value={nombre2} onChange={e => setNombre2(e.target.value)} />
+            <input className="w-full bg-[#111] border border-white/10 p-5 rounded-xl outline-none text-white" placeholder="Equipo 1" value={nombre1} onChange={e => setNombre1(e.target.value)} />
+            <input className="w-full bg-[#111] border border-white/10 p-5 rounded-xl outline-none text-white" placeholder="Equipo 2" value={nombre2} onChange={e => setNombre2(e.target.value)} />
             <button onClick={iniciarPartida} className="w-full bg-white text-black font-black p-5 rounded-xl uppercase tracking-widest active:scale-95 transition-all">Empezar</button>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { db } from './firebase';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { QRCodeSVG } from 'qrcode.react';
 import LogoBilliard from './assets/billiardplay.png'; 
+import KFCPubli from './assets/kfcpubli.jpg'; // Importación de la nueva publicidad
 
 export default function App() {
   const [data, setData] = useState(null);
@@ -40,7 +41,6 @@ export default function App() {
   if (!data) return null;
   const enPartida = data.jugador1 && data.jugador1 !== "---";
 
-  // RENDER CONDICIONAL
   if (isTV) {
     return <TvView data={data} enPartida={enPartida} tiempoReal={tiempoReal} qrUrl={qrUrl} mesaId={mesaId} />;
   } else {
@@ -49,7 +49,7 @@ export default function App() {
 }
 
 // =========================================================
-// --- VISTA TV (BIENVENIDA CON TEXTO CORREGIDO) ---
+// --- VISTA TV (BIENVENIDA CON PUBLICIDAD REAL) ---
 // =========================================================
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
@@ -66,25 +66,27 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
               <img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-90" />
             </div>
 
-            {/* BARRA BLANCA - TEXTO EN MINÚSCULAS Y MESA DISPONIBLE EN NEGRO */}
+            {/* BARRA BLANCA - TIPOGRAFÍA AJUSTADA */}
             <div className="absolute bottom-0 left-0 w-full h-[180px] bg-white text-black flex items-center px-10 gap-8">
               <div className="w-[140px] h-[140px] bg-white flex-shrink-0 flex items-center justify-center p-2 border-2 border-black/5 rounded-lg">
                 <QRCodeSVG value={qrUrl} size="100%" />
               </div>
               <div className="flex flex-col justify-center overflow-hidden">
-                {/* Vuelto a Negro original */}
-                <p className="text-[12px] font-bold tracking-[0.3em] uppercase mb-1 text-black opacity-50">Mesa Disponible</p>
-                {/* Texto: Escanea para comenzar a jugar (solo E mayúscula) */}
-                <p className="text-[42px] font-light tracking-tighter leading-[0.9] break-words lowercase first-letter:uppercase">
+                {/* Mesa Disponible en NEGRITA (BOLD) */}
+                <p className="text-[12px] font-black tracking-[0.3em] uppercase mb-1 text-black">Mesa Disponible</p>
+                {/* Texto: MAYÚSCULAS y un punto más pequeño */}
+                <p className="text-[38px] font-light tracking-tighter leading-[0.85] break-words uppercase">
                   Escanea para<br/>comenzar a jugar
                 </p>
               </div>
             </div>
           </div>
 
-          {/* PUBLICIDAD */}
-          <div className="w-[38%] h-full bg-[#111] rounded-[2rem] border border-white/5 flex items-center justify-center">
-             <p className="text-white/5 text-6xl font-normal tracking-[0.1em] uppercase text-center">PUBLICIDAD</p>
+          {/* CUADRO DE PUBLICIDAD CON IMAGEN REAL */}
+          <div className="w-[38%] h-full bg-[#111] rounded-[2rem] border border-white/5 relative overflow-hidden">
+             <img src={KFCPubli} alt="Publicidad KFC" className="w-full h-full object-cover" />
+             {/* Overlay sutil para indicar que es publicidad si la imagen no lo dice */}
+             <span className="absolute top-6 right-6 text-[8px] tracking-[0.5em] text-white/30 uppercase font-bold">Publicidad</span>
           </div>
         </div>
       ) : (

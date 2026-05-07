@@ -1,4 +1,4 @@
-// --- VISTA TV REFEINADA ---
+// --- VISTA TV REFINADA (SIN ITALIC / JERARQUÍA CORREGIDA) ---
   if (isTV) {
     return (
       <div className="h-screen w-screen bg-[#050505] text-white flex overflow-hidden font-sans">
@@ -14,15 +14,17 @@
                 <img src={LogoBilliard} alt="Logo" className="w-full max-w-lg object-contain" />
               </div>
               <div className="h-64 bg-white text-black flex items-center px-16 gap-12">
-                {/* QR Centrado en su contenedor */}
+                {/* QR Centrado */}
                 <div className="w-48 h-48 bg-white rounded-xl shadow-2xl border border-black/5 flex items-center justify-center">
                   <QRCodeSVG value={qrUrl} size={160} />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <p className="text-4xl font-light tracking-tighter uppercase mb-2">
+                  {/* Mesa Disponible más pequeño */}
+                  <p className="text-xl font-normal tracking-widest uppercase mb-1 opacity-40">
                     Mesa {mesaId.replace("mesa", "")} Disponible
                   </p>
-                  <p className="text-2xl font-normal tracking-tight opacity-60 uppercase">
+                  {/* Escanea para comenzar más grande y sin italic */}
+                  <p className="text-4xl font-black tracking-tighter uppercase">
                     Escanea para comenzar
                   </p>
                 </div>
@@ -41,7 +43,6 @@
             </div>
           </div>
         ) : (
-          /* ... resto del código del marcador (sin cambios) ... */
           <div className="flex-1 flex flex-col p-8 gap-8 relative text-white">
             <div className="flex justify-between items-center px-4">
               <div className="flex items-center gap-4 bg-green-500/10 px-6 py-2 rounded-full border border-green-500/20">
@@ -49,7 +50,8 @@
                 <span className="text-sm tracking-[0.5em] text-green-500 uppercase font-black">En Vivo</span>
               </div>
               <div className="bg-[#111] border border-white/10 px-16 py-4 rounded-xl shadow-2xl">
-                <span className="text-6xl font-mono font-light text-[#D4AF37] tracking-[0.2em]">{tiempoReal}</span>
+                {/* Sin italic en el tiempo */}
+                <span className="text-6xl font-mono font-normal text-[#D4AF37] tracking-[0.2em]">{tiempoReal}</span>
               </div>
               <div className="w-[120px]"></div>
             </div>

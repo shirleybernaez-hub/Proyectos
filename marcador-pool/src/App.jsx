@@ -92,11 +92,11 @@ export default function App() {
                 <img src={LogoBilliard} alt="Logo" className="w-full max-w-lg object-contain" />
               </div>
               <div className="h-64 bg-white text-black flex items-center px-16 gap-12">
-                <div className="w-48 h-48 bg-white rounded-xl shadow-2xl flex items-center justify-center p-6 border border-black/5">
+                <div className="w-48 h-48 bg-white rounded-xl shadow-2xl flex items-center justify-center p-8 border border-black/5">
                   <QRCodeSVG value={qrUrl} size={140} />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <p className="text-[14px] font-bold tracking-[0.3em] uppercase mb-1 text-black">
+                  <p className="text-[12px] font-bold tracking-[0.3em] uppercase mb-1 text-black">
                     Mesa {mesaId.replace("mesa", "")} Disponible
                   </p>
                   <p className="text-5xl font-light tracking-tighter uppercase leading-tight text-black">
@@ -115,8 +115,13 @@ export default function App() {
         ) : (
           <div className="flex-1 flex flex-col p-8 gap-8 relative text-white">
             <div className="flex justify-between items-center px-4">
-              <div className="flex items-center gap-4 bg-green-500/10 px-6 py-2 rounded-full border border-green-500/20"><div className="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_15px_green]"></div><span className="text-sm tracking-[0.5em] text-green-500 uppercase font-black">En Vivo</span></div>
-              <div className="bg-[#111] border border-white/10 px-16 py-4 rounded-xl shadow-2xl"><span className="text-6xl font-mono font-normal text-[#D4AF37] tracking-[0.2em]">{tiempoReal}</span></div>
+              <div className="flex items-center gap-4 bg-green-500/10 px-6 py-2 rounded-full border border-green-500/20">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_15px_green]"></div>
+                <span className="text-sm tracking-[0.5em] text-green-500 uppercase font-black">En Vivo</span>
+              </div>
+              <div className="bg-[#111] border border-white/10 px-16 py-4 rounded-xl shadow-2xl">
+                <span className="text-6xl font-mono font-normal text-[#D4AF37] tracking-[0.2em]">{tiempoReal}</span>
+              </div>
               <div className="w-[120px]"></div>
             </div>
             <div className="flex-1 flex gap-8">
@@ -149,8 +154,12 @@ export default function App() {
       ) : (
         <div className="flex-1 flex flex-col relative gap-4 pt-2">
           <div className="flex justify-between items-center px-1">
-            <button onClick={reiniciarPuntos} className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/10 rounded-lg active:scale-90 transition-all shadow-lg"><span className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Reiniciar</span></button>
-            <div className="bg-[#111] border border-white/10 px-5 py-2.5 rounded-xl flex items-center gap-4 shadow-2xl"><span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Mesa {mesaId.replace("mesa", "")}</span></div>
+            <button onClick={reiniciarPuntos} className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/10 rounded-lg active:scale-90 transition-all shadow-lg">
+              <span className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Reiniciar</span>
+            </button>
+            <div className="bg-[#111] border border-white/10 px-5 py-2.5 rounded-xl flex items-center gap-4 shadow-2xl">
+              <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Mesa {mesaId.replace("mesa", "")}</span>
+            </div>
           </div>
           <div onClick={(e) => updateScore('puntos1', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden active:bg-white/5 relative shadow-xl">
             <div className="bg-[#A2FF00] p-4 flex justify-between items-center"><span className="text-black font-black uppercase tracking-widest text-xs">{data.jugador1}</span></div>

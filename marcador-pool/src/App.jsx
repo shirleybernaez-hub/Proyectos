@@ -79,25 +79,26 @@ export default function App() {
   if (!data) return null;
   const enPartida = data.jugador1 && data.jugador1 !== "---";
 
+  // --- VISTA TV ---
   if (isTV) {
     return (
-      <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative">
+      <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
         {!enPartida ? (
           <div className="absolute inset-[4%] flex gap-6"> 
             <div className="w-[60%] h-full bg-[#1a1c1e] rounded-[2rem] relative overflow-hidden border border-white/5">
               <div className="absolute top-10 left-10">
-                <span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest">En Espera</span>
+                <span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">En Espera</span>
               </div>
               <div className="absolute inset-0 flex items-center justify-center pb-64">
-                <img src={LogoBilliard} alt="Logo" className="w-[150px] object-contain opacity-80" />
+                <img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-80" />
               </div>
               <div className="absolute bottom-0 left-0 w-full h-[240px] bg-white text-black flex items-center px-12">
-                <div className="w-48 h-48 bg-white rounded-xl flex items-center justify-center p-4 border border-black/5">
+                <div className="w-48 h-48 bg-white rounded-xl flex items-center justify-center p-4 border border-black/5 shadow-sm">
                   <QRCodeSVG value={qrUrl} size="100%" />
                 </div>
-                <div className="pl-10 flex flex-col justify-center">
-                  <p className="text-[1.2vw] font-bold tracking-[0.3em] uppercase mb-1 opacity-60">Mesa Disponible</p>
-                  <p className="text-[4vw] font-light tracking-tighter uppercase leading-[0.95]">Escanea para<br/>comenzar</p>
+                <div className="pl-12 flex flex-col justify-center">
+                  <p className="text-[1.2vw] font-bold tracking-[0.4em] uppercase mb-1 opacity-50">Mesa Disponible</p>
+                  <p className="text-[4.5vw] font-light tracking-tighter uppercase leading-[0.9] text-black">Escanea para<br/>comenzar</p>
                 </div>
               </div>
             </div>
@@ -132,39 +133,47 @@ export default function App() {
     );
   }
 
-  // VISTA MÓVIL REPARADA (Z-INDEX Y ESTRUCTURA LIMPIA)
+  // --- VISTA MÓVIL OPTIMIZADA ---
   return (
-    <div className="min-h-screen w-full bg-[#050505] text-white font-sans flex flex-col p-4 gap-4 overflow-y-auto">
+    <div className="min-h-screen w-full bg-[#050505] text-white font-sans flex flex-col p-4 select-none">
       {!enPartida ? (
         <div className="flex-1 flex flex-col items-center justify-center py-10">
           <img src={LogoBilliard} className="w-32 mb-10 opacity-80 object-contain" alt="logo" />
           <div className="w-full max-w-xs space-y-4">
-            <input className="w-full bg-[#111] border border-white/10 p-4 rounded-xl outline-none text-white focus:border-white/30" placeholder="Equipo 1" value={nombre1} onChange={e => setNombre1(e.target.value)} />
-            <input className="w-full bg-[#111] border border-white/10 p-4 rounded-xl outline-none text-white focus:border-white/30" placeholder="Equipo 2" value={nombre2} onChange={e => setNombre2(e.target.value)} />
-            <button onClick={iniciarPartida} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase tracking-widest active:bg-gray-200">Empezar</button>
+            <input className="w-full bg-[#111] border border-white/10 p-4 rounded-xl outline-none text-white text-center" placeholder="Equipo 1" value={nombre1} onChange={e => setNombre1(e.target.value)} />
+            <input className="w-full bg-[#111] border border-white/10 p-4 rounded-xl outline-none text-white text-center" placeholder="Equipo 2" value={nombre2} onChange={e => setNombre2(e.target.value)} />
+            <button onClick={iniciarPartida} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase tracking-widest active:bg-gray-200 transition-colors">Empezar</button>
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col gap-4 relative">
+        <div className="flex-1 flex flex-col gap-4">
+          {/* Header móvil */}
           <div className="flex justify-between items-center py-2">
             <button onClick={reiniciarPuntos} className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-[10px] font-black uppercase tracking-wider">Reiniciar</button>
-            <div className="bg-[#111] border border-white/10 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider">Mesa {mesaId.replace("mesa", "")}</div>
+            <div className="bg-[#111] border border-white/10 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider text-white/60">Mesa {mesaId.replace("mesa", "")}</div>
           </div>
           
-          <div onClick={(e) => updateScore('puntos1', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative active:bg-[#111]">
-            <div className="bg-[#A2FF00] p-3 text-center text-black font-black uppercase text-xs tracking-widest">{data.jugador1}</div>
-            <div className="flex-1 flex items-center justify-center text-[120px] font-black">{data.puntos1}</div>
-            <div className="absolute left-4 bottom-4 w-14 h-14 flex items-center justify-center text-white/20 text-3xl z-20" onClick={(e) => updateScore('puntos1', -1, e)}>-</div>
-          </div>
+          {/* Marcadores: Se apilan en vertical (portrait) y se ponen lado a lado en horizontal (landscape) */}
+          <div className="flex-1 flex flex-col landscape:flex-row gap-4 h-full">
+            
+            {/* Jugador 1 */}
+            <div onClick={(e) => updateScore('puntos1', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative active:bg-[#151515] touch-manipulation">
+              <div className="bg-[#A2FF00] p-3 text-center text-black font-black uppercase text-xs tracking-widest">{data.jugador1}</div>
+              <div className="flex-1 flex items-center justify-center text-[min(25vh,120px)] font-black tabular-nums">{data.puntos1}</div>
+              <div className="absolute left-0 bottom-0 w-24 h-24 flex items-center justify-center text-white/20 text-4xl" onClick={(e) => updateScore('puntos1', -1, e)}>-</div>
+            </div>
 
-          <div className="flex items-center justify-center py-2">
-            <div className="bg-[#111] border border-white/5 px-8 py-2 rounded-xl text-3xl font-mono">{tiempoReal}</div>
-          </div>
+            {/* Tiempo central (Móvil) */}
+            <div className="flex items-center justify-center py-1">
+              <div className="bg-[#111] border border-white/5 px-8 py-2 rounded-xl text-3xl font-mono text-[#D4AF37]">{tiempoReal}</div>
+            </div>
 
-          <div onClick={(e) => updateScore('puntos2', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative active:bg-[#111]">
-            <div className="flex-1 flex items-center justify-center text-[120px] font-black">{data.puntos2}</div>
-            <div className="bg-[#00A3FF] p-3 text-center text-black font-black uppercase text-xs tracking-widest">{data.jugador2}</div>
-            <div className="absolute right-4 top-16 w-14 h-14 flex items-center justify-center text-white/20 text-3xl z-20" onClick={(e) => updateScore('puntos2', -1, e)}>-</div>
+            {/* Jugador 2 */}
+            <div onClick={(e) => updateScore('puntos2', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative active:bg-[#151515] touch-manipulation">
+              <div className="flex-1 flex items-center justify-center text-[min(25vh,120px)] font-black tabular-nums">{data.puntos2}</div>
+              <div className="bg-[#00A3FF] p-3 text-center text-black font-black uppercase text-xs tracking-widest">{data.jugador2}</div>
+              <div className="absolute right-0 top-12 landscape:top-0 landscape:bottom-0 w-24 h-24 flex items-center justify-center text-white/20 text-4xl" onClick={(e) => updateScore('puntos2', -1, e)}>-</div>
+            </div>
           </div>
 
           <button onClick={finalizarSesion} className="w-full py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest mt-2 active:bg-red-500/20">Cerrar Mesa</button>

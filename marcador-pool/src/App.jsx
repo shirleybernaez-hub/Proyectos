@@ -12,6 +12,16 @@ const IconPause = () => <svg className="w-4 h-4 mr-1" fill="currentColor" viewBo
 const IconReset = () => <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>;
 const IconChevron = () => <svg className="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>;
 
+// --- LÓGICA DE COLORES ---
+const getColorBySeconds = (seconds) => {
+  if (seconds > 50) return '#9333ea'; // Morado (60-51)
+  if (seconds > 40) return '#a855f7'; // Violeta (50-41)
+  if (seconds > 30) return '#22c55e'; // Verde (40-31)
+  if (seconds > 20) return '#facc15'; // Amarillo (30-21)
+  if (seconds > 10) return '#f97316'; // Naranja (20-11)
+  return '#ef4444'; // Rojo (10-0)
+};
+
 export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
@@ -55,7 +65,7 @@ export default function App() {
   }
 }
 
-// --- SHOT CLOCK (CON SONIDO Y SINCRONIZACIÓN) ---
+// --- SHOT CLOCK (CON LÓGICA DE COLORES Y AUDIO) ---
 function ShotClock({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -65,9 +75,9 @@ function ShotClock({ data, mesaId }) {
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
-      // Alerta sonora a los 10 segundos
+      // Suena exactamente al entrar en los 10 segundos rojos
       if (timeLeft === 10) {
-        audioRef.current.play().catch(e => console.log("Audio play blocked"));
+        audioRef.current.play().catch(e => console.log("Audio interactivo requerido"));
       }
 
       interval = setInterval(async () => {
@@ -87,13 +97,6 @@ function ShotClock({ data, mesaId }) {
   const handleMaxTimeChange = (e) => {
     const val = parseInt(e.target.value);
     updateDoc(doc(db, "mesas", mesaId), { maxShot: val, tiempoShot: val, shotActive: false });
-  };
-
-  const getBarColor = () => {
-    const elapsed = maxTime - timeLeft;
-    if (elapsed >= 20) return '#ef4444';
-    if (elapsed >= 10) return '#facc15';
-    return '#f97316';
   };
 
   const progress = ((maxTime - timeLeft) / maxTime) * 100;
@@ -118,26 +121,22 @@ function ShotClock({ data, mesaId }) {
             <div className="pointer-events-none absolute right-0"><IconChevron /></div>
           </div>
         </div>
-        <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden">
-          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getBarColor() }} />
+        <div className="w-full h-4 bg-white/5 rounded-full overflow-hidden relative">
+          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span className="text-[10px] font-black text-white">{timeLeft}s</span>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// --- VISTA TV (CON BARRA INTEGRADA Y SEGUNDOS) ---
+// --- VISTA TV (CONTADOR CENTRADO EN LA BARRA) ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
   const progress = ((maxTime - timeLeft) / maxTime) * 100;
-  
-  const getBarColor = () => {
-    const elapsed = maxTime - timeLeft;
-    if (elapsed >= 20) return '#ef4444';
-    if (elapsed >= 10) return '#facc15';
-    return '#f97316';
-  };
 
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
@@ -166,13 +165,13 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
             <ScoreBox name={data.jugador4} score={data.puntos4} color="#64748b" />
           </div>
           
-          {/* BARRA DE TIEMPO INTEGRADA EN TV */}
-          <div className="bg-[#111] border border-white p-4 rounded-2xl flex items-center gap-6 shadow-2xl mt-2">
-            <div className="flex-1 h-6 bg-white/5 rounded-full overflow-hidden">
-               <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getBarColor() }} />
-            </div>
-            <div className="w-24 text-right">
-               <span className="text-3xl font-mono font-bold text-white tabular-nums">{timeLeft}s</span>
+          {/* BARRA TV CON TIEMPO CENTRADO */}
+          <div className="bg-[#111] border border-white p-3 rounded-2xl flex flex-col gap-2 shadow-2xl mt-2 relative">
+            <div className="h-10 bg-white/5 rounded-full overflow-hidden relative">
+               <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
+               <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-4xl font-mono font-black text-white drop-shadow-lg tabular-nums">{timeLeft}</span>
+               </div>
             </div>
           </div>
         </div>
@@ -201,7 +200,7 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
       jugador1: n1, jugador2: n2, jugador3: n3, jugador4: n4,
       puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0, 
       inicio: new Date().getTime(),
-      tiempoShot: 30, maxShot: 30, shotActive: false
+      tiempoShot: data.maxShot || 30, shotActive: false
     });
   };
 
@@ -238,14 +237,14 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
             {[setN1, setN2, setN3, setN4].map((set, i) => (
               <input key={i} style={{ fontSize: '16px' }} className="w-full bg-[#0a0a0a] border border-white/5 p-4 rounded-xl text-center outline-none text-white font-black tracking-widest" placeholder={`JUGADOR ${i+1}`} onChange={e => set(e.target.value)} />
             ))}
-            <button onClick={iniciarPartida} className="w-full bg-white text-black font-bold text-sm p-4 rounded-xl uppercase tracking-[0.3em] mt-8 active:scale-95 transition-transform shadow-lg">Empezar</button>
+            <button onClick={iniciarPartida} className="w-full bg-white text-black font-bold text-sm p-4 rounded-xl uppercase tracking-[0.3em] mt-8">Empezar</button>
           </div>
         </div>
       ) : (
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex justify-between items-start py-2 px-1">
             <div className="flex flex-col gap-3">
-              <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none">MESA {mesaId.replace("mesa", "")}</span>
+              <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none text-white">MESA {mesaId.replace("mesa", "")}</span>
               <button onClick={reiniciarPuntos} className="flex items-center text-[10px] font-black uppercase text-white/40 active:text-white/60">
                 <IconReset /> Reiniciar Todo
               </button>
@@ -282,9 +281,9 @@ function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) 
         <div className="absolute right-2 pointer-events-none"><IconPencil /></div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center py-2 relative">
-        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10 active:bg-white/30">-</button>
+        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10">-</button>
         <div onClick={onPlus} className="text-6xl font-black tabular-nums tracking-tighter active:scale-95 transition-transform">{score || 0}</div>
-        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10 active:bg-white/30">+</button>
+        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10">+</button>
       </div>
     </div>
   );

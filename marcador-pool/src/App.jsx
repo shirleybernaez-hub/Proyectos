@@ -14,12 +14,12 @@ const IconChevron = () => <svg className="w-3 h-3 ml-1 opacity-50" fill="none" s
 
 // --- LÓGICA DE COLORES ---
 const getColorBySeconds = (seconds) => {
-  if (seconds > 50) return '#9333ea'; // Morado (60-51)
-  if (seconds > 40) return '#a855f7'; // Violeta (50-41)
-  if (seconds > 30) return '#22c55e'; // Verde (40-31)
-  if (seconds > 20) return '#facc15'; // Amarillo (30-21)
-  if (seconds > 10) return '#f97316'; // Naranja (20-11)
-  return '#ef4444'; // Rojo (10-0)
+  if (seconds > 50) return '#9333ea'; // Morado
+  if (seconds > 40) return '#a855f7'; // Violeta
+  if (seconds > 30) return '#22c55e'; // Verde
+  if (seconds > 20) return '#facc15'; // Amarillo
+  if (seconds > 10) return '#f97316'; // Naranja
+  return '#ef4444'; // Rojo
 };
 
 export default function App() {
@@ -65,7 +65,7 @@ export default function App() {
   }
 }
 
-// --- SHOT CLOCK (CON LÓGICA DE COLORES Y AUDIO) ---
+// --- SHOT CLOCK (MOVIL) ---
 function ShotClock({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -75,15 +75,11 @@ function ShotClock({ data, mesaId }) {
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
-      // Suena exactamente al entrar en los 10 segundos rojos
       if (timeLeft === 10) {
-        audioRef.current.play().catch(e => console.log("Audio interactivo requerido"));
+        audioRef.current.play().catch(e => console.log("Interacción requerida para audio"));
       }
-
       interval = setInterval(async () => {
-        await updateDoc(doc(db, "mesas", mesaId), {
-          tiempoShot: timeLeft - 1
-        });
+        await updateDoc(doc(db, "mesas", mesaId), { tiempoShot: timeLeft - 1 });
       }, 1000);
     } else if (timeLeft === 0 && isActive) {
       updateDoc(doc(db, "mesas", mesaId), { shotActive: false });
@@ -93,7 +89,6 @@ function ShotClock({ data, mesaId }) {
 
   const togglePlay = () => updateDoc(doc(db, "mesas", mesaId), { shotActive: !isActive });
   const resetClock = () => updateDoc(doc(db, "mesas", mesaId), { shotActive: false, tiempoShot: maxTime });
-  
   const handleMaxTimeChange = (e) => {
     const val = parseInt(e.target.value);
     updateDoc(doc(db, "mesas", mesaId), { maxShot: val, tiempoShot: val, shotActive: false });
@@ -106,14 +101,13 @@ function ShotClock({ data, mesaId }) {
       <button onClick={resetClock} className="mb-2 ml-1 flex items-center text-[10px] font-black uppercase tracking-widest text-white/40">
         <IconReset /> Reiniciar Tiempo
       </button>
-      <div className="w-full bg-[#111] p-4 rounded-2xl border border-white/5 flex flex-col gap-3 shadow-lg">
-        <div className="flex justify-between items-center">
+      <div className="w-full bg-[#111] p-4 rounded-2xl border border-white/5 flex flex-col gap-1 shadow-lg">
+        <div className="flex justify-between items-center mb-1">
           <button onClick={togglePlay} className="flex items-center text-white font-black uppercase text-[12px] tracking-widest">
-            {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'Pausa' : 'Play'}
+            {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'Pausar' : 'Iniciar'}
           </button>
           <div className="relative flex items-center">
-            <select value={maxTime} onChange={handleMaxTimeChange}
-              className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
+            <select value={maxTime} onChange={handleMaxTimeChange} className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
               <option value={30} className="bg-black">30 SEG</option>
               <option value={40} className="bg-black">40 SEG</option>
               <option value={60} className="bg-black">60 SEG</option>
@@ -121,18 +115,19 @@ function ShotClock({ data, mesaId }) {
             <div className="pointer-events-none absolute right-0"><IconChevron /></div>
           </div>
         </div>
-        <div className="w-full h-4 bg-white/5 rounded-full overflow-hidden relative">
+        {/* Contador arriba de la barra en Movil */}
+        <div className="flex justify-center w-full mb-1">
+           <span className="text-xs font-black" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}s</span>
+        </div>
+        <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden">
           <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-[10px] font-black text-white">{timeLeft}s</span>
-          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// --- VISTA TV (CONTADOR CENTRADO EN LA BARRA) ---
+// --- VISTA TV ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -165,13 +160,13 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
             <ScoreBox name={data.jugador4} score={data.puntos4} color="#64748b" />
           </div>
           
-          {/* BARRA TV CON TIEMPO CENTRADO */}
-          <div className="bg-[#111] border border-white p-3 rounded-2xl flex flex-col gap-2 shadow-2xl mt-2 relative">
-            <div className="h-10 bg-white/5 rounded-full overflow-hidden relative">
+          {/* BARRA TV CON CONTADOR ARRIBA */}
+          <div className="bg-[#111] border border-white p-4 rounded-2xl flex flex-col gap-2 shadow-2xl mt-2 relative">
+            <div className="flex justify-center w-full">
+               <span className="text-4xl font-mono font-black tabular-nums transition-colors duration-500" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}</span>
+            </div>
+            <div className="h-8 bg-white/5 rounded-full overflow-hidden relative">
                <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
-               <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-4xl font-mono font-black text-white drop-shadow-lg tabular-nums">{timeLeft}</span>
-               </div>
             </div>
           </div>
         </div>

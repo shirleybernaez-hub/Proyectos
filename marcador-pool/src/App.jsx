@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { db } from './firebase';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { QRCodeSVG } from 'qrcode.react';
@@ -48,7 +48,84 @@ export default function App() {
   }
 }
 
-// --- VISTA TV ---
+// =========================================================
+// --- COMPONENTE SHOT CLOCK (BARRA DE TIEMPO) ---
+// =========================================================
+function ShotClock() {
+  const [maxTime, setMaxTime] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(30);
+  const [isActive, setIsActive] = useState(false);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    if (isActive && timeLeft > 0) {
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      clearInterval(timerRef.current);
+      setIsActive(false);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [isActive, timeLeft]);
+
+  const togglePlay = () => setIsActive(!isActive);
+  const resetClock = () => {
+    setIsActive(false);
+    setTimeLeft(maxTime);
+  };
+
+  const handleMaxTimeChange = (e) => {
+    const val = parseInt(e.target.value);
+    setMaxTime(val);
+    setTimeLeft(val);
+    setIsActive(false);
+  };
+
+  // Lógica de colores: Naranja (inicio) -> Amarillo (10s) -> Rojo (20s+)
+  const getBarColor = () => {
+    const elapsed = maxTime - timeLeft;
+    if (elapsed >= 20) return '#ef4444'; // Rojo
+    if (elapsed >= 10) return '#facc15'; // Amarillo
+    return '#f97316'; // Naranja
+  };
+
+  const progress = (timeLeft / maxTime) * 100;
+
+  return (
+    <div className="w-full bg-[#111] p-4 rounded-2xl border border-white/5 flex flex-col gap-3">
+      <div className="flex justify-between items-center px-1">
+        <select 
+          value={maxTime} 
+          onChange={handleMaxTimeChange}
+          className="bg-transparent text-white/40 text-[10px] font-bold uppercase tracking-widest outline-none"
+        >
+          <option value={30} className="bg-black text-white">30 Seg</option>
+          <option value={40} className="bg-black text-white">40 Seg</option>
+          <option value={60} className="bg-black text-white">60 Seg</option>
+        </select>
+        <div className="flex gap-4">
+          <button onClick={togglePlay} className="text-white/60 text-[10px] font-black uppercase tracking-widest">
+            {isActive ? 'Pausa' : 'Play'}
+          </button>
+          <button onClick={resetClock} className="text-white/60 text-[10px] font-black uppercase tracking-widest">
+            Reiniciar
+          </button>
+        </div>
+      </div>
+
+      {/* Barra de Progreso */}
+      <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden">
+        <div 
+          className="h-full transition-all duration-1000 ease-linear"
+          style={{ width: `${progress}%`, backgroundColor: getBarColor() }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// --- VISTA TV (MANTIENE PROTECCIÓN) ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
@@ -104,7 +181,7 @@ function ScoreBox({ name, score, color }) {
   );
 }
 
-// --- VISTA MÓVIL ---
+// --- VISTA MÓVIL (INTEGRANDO SHOT CLOCK) ---
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
   const [n3, setN3] = useState(''); const [n4, setN4] = useState('');
@@ -127,7 +204,7 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   };
 
   const finalizarSesion = async () => {
-    if(window.confirm("¿Finalizar sesión?")) {
+    if(window.confirm("¿Cerrar mesa definitivamente?")) {
       await updateDoc(doc(db, "mesas", mesaId), { 
         jugador1: "---", jugador2: "---", jugador3: "---", jugador4: "---", 
         puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0, inicio: null 
@@ -148,33 +225,33 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
           <img src={LogoBilliard} className="w-24 mb-10 opacity-70" alt="logo" />
           <div className="w-full max-w-xs space-y-4">
             {[setN1, setN2, setN3, setN4].map((set, i) => (
-              <input key={i} 
-              style={{ fontSize: '16px' }} 
-              className="w-full bg-[#0a0a0a] border border-white/5 p-4 rounded-xl text-center outline-none text-white font-black tracking-widest" 
-              placeholder={`JUGADOR ${i+1}`} onChange={e => set(e.target.value)} />
+              <input key={i} style={{ fontSize: '16px' }} className="w-full bg-[#0a0a0a] border border-white/5 p-4 rounded-xl text-center outline-none text-white font-black tracking-widest" placeholder={`JUGADOR ${i+1}`} onChange={e => set(e.target.value)} />
             ))}
             <button onClick={iniciarPartida} className="w-full bg-white text-black font-bold text-sm p-4 rounded-xl uppercase tracking-[0.3em] mt-8">Empezar</button>
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col gap-5">
-          <div className="flex justify-between items-center py-2 px-1">
-            <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none">MESA {mesaId.replace("mesa", "")}</span>
+        <div className="flex-1 flex flex-col gap-4">
+          <div className="flex justify-between items-center py-1">
+            <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none text-white">MESA {mesaId.replace("mesa", "")}</span>
             <div className="bg-[#0a0a0a] border border-white px-4 py-1.5 rounded-lg">
                <span className="text-sm font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span>
             </div>
           </div>
           
-          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-4">
+          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3">
             <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
             <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
             <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
             <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
           </div>
 
-          <div className="flex gap-4 pt-4">
-            <button onClick={reiniciarPuntos} className="flex-1 py-4 bg-[#0a0a0a] border border-white/20 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Reiniciar</button>
-            <button onClick={finalizarSesion} className="flex-1 py-4 bg-red-950/10 border border-red-500/30 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Finalizar</button>
+          {/* BARRA DE TIEMPO (SHOT CLOCK) CENTRADA ABAJO */}
+          <ShotClock />
+
+          <div className="flex gap-3 pt-2">
+            <button onClick={reiniciarPuntos} className="flex-1 py-4 bg-[#0a0a0a] border border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Reiniciar Todo</button>
+            <button onClick={finalizarSesion} className="flex-1 py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Cerrar Mesa</button>
           </div>
         </div>
       )}
@@ -184,18 +261,12 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
 
 function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) {
   return (
-    <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative">
-      <input 
-        type="text" 
-        value={label} 
-        onChange={(e) => onNameChange(e.target.value)}
-        style={{ backgroundColor: color, fontSize: '16px' }}
-        className="py-2.5 text-center text-white font-black uppercase tracking-[0.3em] outline-none border-none w-full"
-      />
+    <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative shadow-inner">
+      <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)} style={{ backgroundColor: color, fontSize: '16px' }} className="py-2.5 text-center text-white font-bold uppercase tracking-[0.3em] outline-none border-none w-full" />
       <div className="flex-1 flex flex-col items-center justify-center py-2 relative">
-        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10">-</button>
-        <div onClick={onPlus} className="text-6xl font-black tabular-nums tracking-tighter active:scale-95 transition-transform">{score || 0}</div>
-        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10">+</button>
+        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white text-lg z-10 active:bg-white/20">-</button>
+        <div onClick={onPlus} className="text-5xl font-black tabular-nums tracking-tighter active:scale-95 transition-transform">{score || 0}</div>
+        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white text-lg z-10 active:bg-white/20">+</button>
       </div>
     </div>
   );

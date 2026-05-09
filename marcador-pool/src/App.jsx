@@ -5,6 +5,13 @@ import { QRCodeSVG } from 'qrcode.react';
 import LogoBilliard from './assets/billiardplay.png'; 
 import KFCPubli from './assets/kfcpubli.jpg'; 
 
+// --- ICONOS SVG ---
+const IconPencil = () => <svg className="w-3 h-3 ml-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>;
+const IconPlay = () => <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>;
+const IconPause = () => <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>;
+const IconReset = () => <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>;
+const IconChevron = () => <svg className="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>;
+
 export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
@@ -49,7 +56,7 @@ export default function App() {
 }
 
 // =========================================================
-// --- COMPONENTE SHOT CLOCK (BARRA DE TIEMPO) ---
+// --- SHOT CLOCK COMPONENT ---
 // =========================================================
 function ShotClock() {
   const [maxTime, setMaxTime] = useState(30);
@@ -59,9 +66,7 @@ function ShotClock() {
 
   useEffect(() => {
     if (isActive && timeLeft > 0) {
-      timerRef.current = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
+      timerRef.current = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
     } else if (timeLeft === 0) {
       clearInterval(timerRef.current);
       setIsActive(false);
@@ -69,96 +74,65 @@ function ShotClock() {
     return () => clearInterval(timerRef.current);
   }, [isActive, timeLeft]);
 
-  const togglePlay = () => setIsActive(!isActive);
-  const resetClock = () => {
-    setIsActive(false);
-    setTimeLeft(maxTime);
-  };
-
-  const handleMaxTimeChange = (e) => {
-    const val = parseInt(e.target.value);
-    setMaxTime(val);
-    setTimeLeft(val);
-    setIsActive(false);
-  };
-
-  // Lógica de colores: Naranja (inicio) -> Amarillo (10s) -> Rojo (20s+)
+  const resetClock = () => { setIsActive(false); setTimeLeft(maxTime); };
   const getBarColor = () => {
     const elapsed = maxTime - timeLeft;
-    if (elapsed >= 20) return '#ef4444'; // Rojo
-    if (elapsed >= 10) return '#facc15'; // Amarillo
-    return '#f97316'; // Naranja
+    if (elapsed >= 20) return '#ef4444';
+    if (elapsed >= 10) return '#facc15';
+    return '#f97316';
   };
 
-  const progress = (timeLeft / maxTime) * 100;
+  const progress = ((maxTime - timeLeft) / maxTime) * 100;
 
   return (
-    <div className="w-full bg-[#111] p-4 rounded-2xl border border-white/5 flex flex-col gap-3">
-      <div className="flex justify-between items-center px-1">
-        <select 
-          value={maxTime} 
-          onChange={handleMaxTimeChange}
-          className="bg-transparent text-white/40 text-[10px] font-bold uppercase tracking-widest outline-none"
-        >
-          <option value={30} className="bg-black text-white">30 Seg</option>
-          <option value={40} className="bg-black text-white">40 Seg</option>
-          <option value={60} className="bg-black text-white">60 Seg</option>
-        </select>
-        <div className="flex gap-4">
-          <button onClick={togglePlay} className="text-white/60 text-[10px] font-black uppercase tracking-widest">
-            {isActive ? 'Pausa' : 'Play'}
+    <div className="w-full flex flex-col items-center">
+      <button onClick={resetClock} className="mb-2 flex items-center text-[10px] font-black uppercase tracking-widest text-white/40">
+        <IconReset /> Reiniciar Barra
+      </button>
+      <div className="w-full bg-[#111] p-4 rounded-2xl border border-white/5 flex flex-col gap-3">
+        <div className="flex justify-between items-center">
+          <button onClick={() => setIsActive(!isActive)} className="flex items-center text-white font-black uppercase text-[12px] tracking-widest">
+            {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'Pausa' : 'Play'}
           </button>
-          <button onClick={resetClock} className="text-white/60 text-[10px] font-black uppercase tracking-widest">
-            Reiniciar
-          </button>
+          <div className="relative flex items-center">
+            <select value={maxTime} onChange={(e) => { setMaxTime(parseInt(e.target.value)); setTimeLeft(parseInt(e.target.value)); setIsActive(false); }}
+              className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
+              <option value={30} className="bg-black">30 SEG</option>
+              <option value={40} className="bg-black">40 SEG</option>
+              <option value={60} className="bg-black">60 SEG</option>
+            </select>
+            <div className="pointer-events-none absolute right-0"><IconChevron /></div>
+          </div>
         </div>
-      </div>
-
-      {/* Barra de Progreso */}
-      <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden">
-        <div 
-          className="h-full transition-all duration-1000 ease-linear"
-          style={{ width: `${progress}%`, backgroundColor: getBarColor() }}
-        />
+        <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden">
+          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getBarColor() }} />
+        </div>
       </div>
     </div>
   );
 }
 
-// --- VISTA TV (MANTIENE PROTECCIÓN) ---
+// --- VISTA TV (PROTEGIDA) ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
       {!enPartida ? (
         <div className="absolute inset-[5%] flex gap-6"> 
           <div className="w-[62%] h-full bg-[#1a1c1e] rounded-[2rem] relative overflow-hidden border border-white/5 shadow-2xl">
-            <div className="absolute top-8 left-8">
-              <span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-white">En Espera</span>
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center pb-48">
-              <img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-90" />
-            </div>
+            <div className="absolute top-8 left-8"><span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-white">En Espera</span></div>
+            <div className="absolute inset-0 flex items-center justify-center pb-48"><img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-90" /></div>
             <div className="absolute bottom-0 left-0 w-full h-[180px] bg-white text-black flex items-center px-10 gap-8">
-              <div className="w-[140px] h-[140px] bg-white flex-shrink-0 flex items-center justify-center p-2 border-2 border-black/5 rounded-lg">
-                <QRCodeSVG value={qrUrl} size="100%" />
-              </div>
-              <div className="flex flex-col justify-center overflow-hidden">
-                <p className="text-[12px] font-black tracking-[0.3em] uppercase mb-1 text-black opacity-40">Mesa Disponible</p>
-                <p className="text-[38px] font-light tracking-tighter leading-[0.85] uppercase">Escanea para<br/>comenzar a jugar</p>
-              </div>
+              <div className="w-[140px] h-[140px] bg-white flex-shrink-0 flex items-center justify-center p-2 border-2 border-black/5 rounded-lg"><QRCodeSVG value={qrUrl} size="100%" /></div>
+              <div className="flex flex-col justify-center overflow-hidden"><p className="text-[12px] font-black tracking-[0.3em] uppercase mb-1 text-black opacity-40">Mesa Disponible</p><p className="text-[38px] font-light tracking-tighter leading-[0.85] uppercase">Escanea para<br/>comenzar a jugar</p></div>
             </div>
           </div>
-          <div className="w-[38%] h-full bg-[#111] rounded-[2rem] border border-white/5 relative overflow-hidden">
-             <img src={KFCPubli} alt="Publicidad" className="w-full h-full object-cover" />
-          </div>
+          <div className="w-[38%] h-full bg-[#111] rounded-[2rem] border border-white/5 relative overflow-hidden"><img src={KFCPubli} alt="Publicidad" className="w-full h-full object-cover" /></div>
         </div>
       ) : (
         <div className="absolute inset-[4%] flex flex-col gap-4">
           <div className="flex justify-between items-center px-4">
             <span className="text-3xl font-black text-white tracking-[0.2em] uppercase">MESA {mesaId.replace("mesa", "")}</span>
-            <div className="bg-[#111] border border-white px-6 py-2 rounded-xl">
-               <span className="text-lg font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span>
-            </div>
+            <div className="bg-[#111] border border-white px-6 py-2 rounded-xl"><span className="text-lg font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span></div>
           </div>
           <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-4">
             <ScoreBox name={data.jugador1} score={data.puntos1} color="#9333ea" />
@@ -181,7 +155,7 @@ function ScoreBox({ name, score, color }) {
   );
 }
 
-// --- VISTA MÓVIL (INTEGRANDO SHOT CLOCK) ---
+// --- VISTA MÓVIL (REDISEÑADA) ---
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
   const [n3, setN3] = useState(''); const [n4, setN4] = useState('');
@@ -232,8 +206,13 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
         </div>
       ) : (
         <div className="flex-1 flex flex-col gap-4">
-          <div className="flex justify-between items-center py-1">
-            <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none text-white">MESA {mesaId.replace("mesa", "")}</span>
+          <div className="flex justify-between items-center py-2 px-1">
+            <div className="flex flex-col gap-1">
+              <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none">MESA {mesaId.replace("mesa", "")}</span>
+              <button onClick={reiniciarPuntos} className="flex items-center text-[10px] font-black uppercase text-white/40">
+                <IconReset /> Reiniciar Todo
+              </button>
+            </div>
             <div className="bg-[#0a0a0a] border border-white px-4 py-1.5 rounded-lg">
                <span className="text-sm font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span>
             </div>
@@ -246,12 +225,10 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
             <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
           </div>
 
-          {/* BARRA DE TIEMPO (SHOT CLOCK) CENTRADA ABAJO */}
           <ShotClock />
 
-          <div className="flex gap-3 pt-2">
-            <button onClick={reiniciarPuntos} className="flex-1 py-4 bg-[#0a0a0a] border border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Reiniciar Todo</button>
-            <button onClick={finalizarSesion} className="flex-1 py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Cerrar Mesa</button>
+          <div className="pt-2 flex justify-center">
+            <button onClick={finalizarSesion} className="w-full py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Cerrar Mesa</button>
           </div>
         </div>
       )}
@@ -262,11 +239,15 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
 function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) {
   return (
     <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative shadow-inner">
-      <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)} style={{ backgroundColor: color, fontSize: '16px' }} className="py-2.5 text-center text-white font-bold uppercase tracking-[0.3em] outline-none border-none w-full" />
+      <div className="relative flex items-center justify-center" style={{ backgroundColor: color }}>
+        <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)}
+          style={{ fontSize: '16px' }} className="py-2.5 text-center text-white font-bold uppercase tracking-[0.3em] outline-none border-none w-full bg-transparent" />
+        <div className="absolute right-2 pointer-events-none"><IconPencil /></div>
+      </div>
       <div className="flex-1 flex flex-col items-center justify-center py-2 relative">
-        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white text-lg z-10 active:bg-white/20">-</button>
-        <div onClick={onPlus} className="text-5xl font-black tabular-nums tracking-tighter active:scale-95 transition-transform">{score || 0}</div>
-        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white text-lg z-10 active:bg-white/20">+</button>
+        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10">-</button>
+        <div onClick={onPlus} className="text-6xl font-black tabular-nums tracking-tighter active:scale-95 transition-transform">{score || 0}</div>
+        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10">+</button>
       </div>
     </div>
   );

@@ -48,35 +48,35 @@ export default function App() {
   }
 }
 
-// --- VISTA TV (NUEVA JERARQUÍA: CONTADOR ARRIBA) ---
+// --- VISTA TV (JERARQUÍA OPTIMIZADA) ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
       {!enPartida ? (
         <div className="absolute inset-[5%] flex gap-6"> 
           <div className="w-[62%] h-full bg-[#1a1c1e] rounded-[2rem] relative overflow-hidden border border-white/5 shadow-2xl">
-            <div className="absolute top-8 left-8"><span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest">En Espera</span></div>
+            <div className="absolute top-8 left-8"><span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-white">En Espera</span></div>
             <div className="absolute inset-0 flex items-center justify-center pb-48"><img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-90" /></div>
             <div className="absolute bottom-0 left-0 w-full h-[180px] bg-white text-black flex items-center px-10 gap-8">
               <div className="w-[140px] h-[140px] bg-white flex-shrink-0 flex items-center justify-center p-2 border-2 border-black/5 rounded-lg"><QRCodeSVG value={qrUrl} size="100%" /></div>
-              <div className="flex flex-col justify-center"><p className="text-[12px] font-bold tracking-[0.3em] uppercase mb-1 opacity-50">Mesa Disponible</p><p className="text-[38px] font-light tracking-tighter leading-[0.85] uppercase">Escanea para<br/>comenzar a jugar</p></div>
-            </div>
-          </div>
-          <div className="w-[38%] h-full bg-[#111] rounded-[2rem] border border-white/5 relative overflow-hidden"><img src={KFCPubli} alt="Publicidad" className="w-full h-full object-cover" /></div>
-        </div>
-      ) : (
-        <div className="absolute inset-[4%] flex flex-col gap-4">
-          {/* CONTADOR ARRIBA (Rectángulo no protagonista) */}
-          <div className="flex justify-center">
-            <div className="bg-[#111] border border-white/10 px-8 py-2 rounded-2xl flex items-center gap-6">
-              <div className="flex flex-col">
-                <span className="text-[8px] uppercase tracking-[0.4em] opacity-30">Mesa {mesaId.replace("mesa", "")}</span>
-                <span className="text-xl font-mono text-[#D4AF37] leading-none">{tiempoReal}</span>
+              <div className="flex flex-col justify-center overflow-hidden">
+                <p className="text-[12px] font-black tracking-[0.3em] uppercase mb-1 text-black">Mesa Disponible</p>
+                <p className="text-[38px] font-light tracking-tighter leading-[0.85] uppercase">Escanea para<br/>comenzar a jugar</p>
               </div>
             </div>
           </div>
-
-          {/* GRID DE MARCADORES (PROTAGONISTAS) */}
+          <div className="w-[38%] h-full bg-[#111] rounded-[2rem] border border-white/5 relative overflow-hidden">
+             <img src={KFCPubli} alt="Publicidad" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      ) : (
+        <div className="absolute inset-[4%] flex flex-col gap-4">
+          <div className="flex justify-center">
+            <div className="bg-[#111] border border-white/10 px-8 py-2 rounded-2xl flex flex-col items-center">
+              <span className="text-[8px] uppercase tracking-[0.4em] opacity-30">Mesa {mesaId.replace("mesa", "")}</span>
+              <span className="text-xl font-mono text-[#D4AF37] leading-none">{tiempoReal}</span>
+            </div>
+          </div>
           <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-4">
             <ScoreBox name={data.jugador1} score={data.puntos1} color="#9333ea" />
             <ScoreBox name={data.jugador2} score={data.puntos2} color="#00A3FF" />
@@ -98,7 +98,7 @@ function ScoreBox({ name, score, color }) {
   );
 }
 
-// --- VISTA MÓVIL (MANTIENE EDICIÓN Y DISEÑO 2x2) ---
+// --- VISTA MÓVIL (CONTADOR ARRIBA) ---
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
   const [n3, setN3] = useState(''); const [n4, setN4] = useState('');
@@ -136,7 +136,7 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
           <img src={LogoBilliard} className="w-24 mb-6 opacity-80" alt="logo" />
           <div className="w-full max-w-xs space-y-3">
             {[setN1, setN2, setN3, setN4].map((set, i) => (
-              <input key={i} className="w-full bg-[#111] border border-white/10 p-3 rounded-xl text-center outline-none" 
+              <input key={i} className="w-full bg-[#111] border border-white/10 p-3 rounded-xl text-center outline-none text-white" 
               placeholder={`Jugador ${i+1}`} onChange={e => set(e.target.value)} />
             ))}
             <button onClick={iniciarPartida} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase tracking-widest mt-4">Empezar</button>
@@ -144,20 +144,28 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
         </div>
       ) : (
         <div className="flex-1 flex flex-col gap-3">
+          {/* HEADER MÓVIL */}
           <div className="flex justify-between items-center py-1">
-            <button onClick={() => updateDoc(doc(db, "mesas", mesaId), { puntos1:0, puntos2:0, puntos3:0, puntos4:0 })} className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-[8px] font-black uppercase">Reiniciar</button>
+            <button onClick={() => updateDoc(doc(db, "mesas", mesaId), { puntos1:0, puntos2:0, puntos3:0, puntos4:0 })} className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-[8px] font-black uppercase text-white/50">Reiniciar</button>
             <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">Mesa {mesaId.replace("mesa", "")}</div>
           </div>
+
+          {/* CONTADOR ARRIBA (Pequeño y discreto) */}
+          <div className="flex justify-center">
+            <div className="bg-[#111] border border-white/5 px-6 py-1.5 rounded-xl">
+              <span className="text-xl font-mono text-[#D4AF37]/80 tabular-nums">{tiempoReal}</span>
+            </div>
+          </div>
           
-          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3">
+          {/* MARCADORES 2x2 */}
+          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3 mt-1">
             <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
             <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
             <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
             <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
           </div>
 
-          <div className="flex items-center justify-center py-2"><div className="bg-[#111] px-8 py-2 rounded-xl text-3xl font-mono text-[#D4AF37]">{tiempoReal}</div></div>
-          <button onClick={finalizarSesion} className="w-full py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest">Cerrar Mesa</button>
+          <button onClick={finalizarSesion} className="w-full py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest mt-2 text-white/30">Cerrar Mesa</button>
         </div>
       )}
     </div>
@@ -168,11 +176,11 @@ function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) 
   return (
     <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative">
       <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)}
-        className="py-2 text-center text-white font-black uppercase text-[10px] tracking-widest outline-none border-none w-full"
+        className="py-1.5 text-center text-white font-black uppercase text-[10px] tracking-widest outline-none border-none w-full"
         style={{ backgroundColor: color }} />
-      <div className="flex-1 flex flex-col items-center justify-center py-4 relative">
+      <div className="flex-1 flex flex-col items-center justify-center py-2 relative">
         <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white text-xl z-10">-</button>
-        <div onClick={onPlus} className="text-5xl font-black">{score || 0}</div>
+        <div onClick={onPlus} className="text-5xl font-black tabular-nums">{score || 0}</div>
         <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white text-xl z-10">+</button>
       </div>
     </div>

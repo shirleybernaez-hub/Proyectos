@@ -78,7 +78,6 @@ function ShotClock({ data, mesaId, audioRef }) {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    // Evitar sonido al cargar la página por primera vez
     if (isFirstRender.current) {
         isFirstRender.current = false;
         return;
@@ -184,12 +183,19 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
   return (
     <div className="p-6 flex flex-col min-h-screen gap-5 bg-black">
       {data.jugador1 === "---" ? (
-        <div className="flex-1 flex flex-col items-center justify-center gap-4">
-          <img src={LogoBilliard} className="w-32 mb-6 opacity-60" alt="logo" />
-          {names.map((n, i) => (
-            <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white outline-none" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
-          ))}
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 relative">
+          <img src={LogoBilliard} className="w-44 mb-6 opacity-60" alt="logo" /> {/* Logo aumentado a w-44 */}
+          <div className="w-full space-y-4">
+            {names.map((n, i) => (
+                <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white outline-none" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
+            ))}
+          </div>
           <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4">EMPEZAR PARTIDA</button>
+          
+          {/* VERSIÓN DEL SOFTWARE */}
+          <div className="absolute bottom-4 w-full text-center">
+            <span className="text-[10px] font-black tracking-[0.2em] text-white/20 uppercase">V 1.0</span>
+          </div>
         </div>
       ) : (
         <>
@@ -198,7 +204,7 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
               <IconResetGeneral />
             </button>
             <span className="absolute left-1/2 -translate-x-1/2 text-lg font-black tracking-widest uppercase text-white whitespace-nowrap">MESA {mesaId.replace("mesa", "")}</span>
-            <div className="bg-[#111] border border-white px-2 py-1 rounded-lg text-white font-bold tabular-nums text-[10px] z-10 ml-auto leading-none h-fit">{tiempoReal}</div>
+            <div className="bg-[#111] border border-white px-2 py-1 rounded-lg text-white font-bold tabular-nums text-[10px] z-10 ml-auto h-fit">{tiempoReal}</div>
           </div>
 
           <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
@@ -214,9 +220,9 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
                   <IconPencil />
                 </div>
                 <div className="flex-1 flex items-center justify-between px-4 py-2">
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20">-</button>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">-</button>
                   <span className="text-6xl font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</span>
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20">+</button>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">+</button>
                 </div>
               </div>
             ))}

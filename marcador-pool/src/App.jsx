@@ -3,7 +3,6 @@ import { db } from './firebase';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { QRCodeSVG } from 'qrcode.react';
 import LogoBilliard from './assets/billiardplay.png'; 
-import KFCPubli from './assets/kfcpubli.jpg'; 
 
 // --- ICONOS ---
 const IconPencil = () => <svg className="w-3 h-3 ml-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>;
@@ -76,8 +75,15 @@ function ShotClock({ data, mesaId, audioRef }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
   const isActive = data.shotActive || false;
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    // Evitar sonido al cargar la página por primera vez
+    if (isFirstRender.current) {
+        isFirstRender.current = false;
+        return;
+    }
+
     let interval = null;
     if (isActive && timeLeft > 0) {
       if (timeLeft <= 10 && timeLeft > 0) {
@@ -136,9 +142,9 @@ function TvView({ data, mesaId, tiempoReal }) {
 
   return (
     <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none overflow-hidden bg-black">
-      <div className="flex justify-between items-center px-4">
-        <span className="text-3xl font-black text-white/60 tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
-        <div className="bg-[#111] border border-white px-8 py-3 rounded-2xl shadow-xl"><span className="text-2xl font-mono font-bold text-white tabular-nums">{tiempoReal}</span></div>
+      <div className="flex justify-between items-center px-4 relative h-12">
+        <span className="absolute left-1/2 -translate-x-1/2 text-3xl font-black text-white/60 tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
+        <div className="bg-[#111] border border-white px-8 py-3 rounded-2xl shadow-xl ml-auto"><span className="text-2xl font-mono font-bold text-white tabular-nums">{tiempoReal}</span></div>
       </div>
       <div className={`flex-1 grid gap-6 ${players.length <= 2 ? 'grid-cols-2 grid-rows-1' : 'grid-cols-2 grid-rows-2'}`}>
         {players.map(i => (
@@ -176,7 +182,7 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
   };
 
   return (
-    <div className="p-6 flex flex-col min-h-screen gap-5 bg-black relative">
+    <div className="p-6 flex flex-col min-h-screen gap-5 bg-black">
       {data.jugador1 === "---" ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-4">
           <img src={LogoBilliard} className="w-32 mb-6 opacity-60" alt="logo" />
@@ -187,13 +193,12 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
         </div>
       ) : (
         <>
-          {/* CABECERA CENTRADA */}
-          <div className="flex justify-between items-center px-1 mb-2 relative h-10">
+          <div className="flex justify-between items-center px-1 relative h-10">
             <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="text-white/40 active:text-white/80 z-10">
               <IconResetGeneral />
             </button>
-            <span className="absolute left-1/2 -translate-x-1/2 text-lg font-black tracking-widest uppercase text-white">MESA {mesaId.replace("mesa", "")}</span>
-            <div className="bg-[#111] border border-white px-2 py-1 rounded-lg text-white font-bold tabular-nums text-xs z-10">{tiempoReal}</div>
+            <span className="absolute left-1/2 -translate-x-1/2 text-lg font-black tracking-widest uppercase text-white whitespace-nowrap">MESA {mesaId.replace("mesa", "")}</span>
+            <div className="bg-[#111] border border-white px-2 py-1 rounded-lg text-white font-bold tabular-nums text-[10px] z-10 ml-auto leading-none h-fit">{tiempoReal}</div>
           </div>
 
           <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
@@ -209,9 +214,9 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
                   <IconPencil />
                 </div>
                 <div className="flex-1 flex items-center justify-between px-4 py-2">
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">-</button>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20">-</button>
                   <span className="text-6xl font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</span>
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">+</button>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20">+</button>
                 </div>
               </div>
             ))}

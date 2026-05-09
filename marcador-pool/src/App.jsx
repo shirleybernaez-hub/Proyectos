@@ -48,7 +48,7 @@ export default function App() {
   }
 }
 
-// --- VISTA TV (SIN CAMBIOS) ---
+// --- VISTA TV (RECIBE CAMBIOS DE NOMBRE EN TIEMPO REAL) ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
@@ -85,14 +85,14 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
 function ScoreBox({ name, score, color }) {
   return (
     <div className="bg-[#111] rounded-[2rem] border border-white/5 flex flex-col overflow-hidden relative">
-      <div style={{ backgroundColor: color }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.2em] text-[2.5vh]">{name}</div>
+      <div style={{ backgroundColor: color }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.2em] text-[2.5vh] px-4 truncate">{name}</div>
       <div className="flex-1 flex items-center justify-center text-white"><span className="text-[22vh] font-black leading-none">{score || 0}</span></div>
     </div>
   );
 }
 
 // =========================================================
-// --- VISTA MÓVIL (DOS COLUMNAS + BOTONES VISIBLES) ---
+// --- VISTA MÓVIL (CON EDICIÓN DE NOMBRES) ---
 // =========================================================
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
@@ -107,9 +107,13 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   };
 
   const updateScore = async (campo, valor, e) => {
-    e.stopPropagation();
+    if (e) e.stopPropagation();
     const valorActual = Number(data[campo]) || 0;
     await updateDoc(doc(db, "mesas", mesaId), { [campo]: Math.max(0, valorActual + valor) });
+  };
+
+  const updateName = async (campo, nuevoNombre) => {
+    await updateDoc(doc(db, "mesas", mesaId), { [campo]: nuevoNombre });
   };
 
   const finalizarSesion = async () => {
@@ -141,12 +145,11 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
             <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">Mesa {mesaId.replace("mesa", "")}</div>
           </div>
           
-          {/* DOS COLUMNAS (GRID 2x2) */}
           <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3">
-            <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={(e) => updateScore('puntos1', 1, e)} onMinus={(e) => updateScore('puntos1', -1, e)} />
-            <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={(e) => updateScore('puntos2', 1, e)} onMinus={(e) => updateScore('puntos2', -1, e)} />
-            <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={(e) => updateScore('puntos3', 1, e)} onMinus={(e) => updateScore('puntos3', -1, e)} />
-            <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={(e) => updateScore('puntos4', 1, e)} onMinus={(e) => updateScore('puntos4', -1, e)} />
+            <MobileScoreBox field="jugador1" label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
+            <MobileScoreBox field="jugador2" label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
+            <MobileScoreBox field="jugador3" label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
+            <MobileScoreBox field="jugador4" label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
           </div>
 
           <div className="flex items-center justify-center py-2"><div className="bg-[#111] px-8 py-2 rounded-xl text-3xl font-mono text-[#D4AF37]">{tiempoReal}</div></div>
@@ -157,21 +160,24 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   );
 }
 
-// --- CAJA DE MARCADOR MÓVIL CON SIGNOS VISIBLES ---
-function MobileScoreBox({ label, score, color, onPlus, onMinus }) {
+function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) {
   return (
     <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative">
-      <div style={{ backgroundColor: color }} className="py-2 text-center text-white font-black uppercase text-[10px] tracking-widest">{label}</div>
+      {/* Input de Nombre Editable */}
+      <input 
+        type="text" 
+        value={label} 
+        onChange={(e) => onNameChange(e.target.value)}
+        className="py-2 text-center text-white font-black uppercase text-[10px] tracking-widest outline-none border-none w-full"
+        style={{ backgroundColor: color }}
+      />
       
       <div className="flex-1 flex flex-col items-center justify-center py-4 relative">
-        {/* Botón Menos Visible */}
-        <button onClick={onMinus} className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white text-2xl font-bold active:bg-white/20">-</button>
+        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white text-2xl font-bold active:bg-white/20 z-10">-</button>
         
-        {/* Marcador Central (Sumar al tocarlo) */}
         <div onClick={onPlus} className="text-6xl font-black tabular-nums active:scale-95 transition-transform">{score || 0}</div>
         
-        {/* Botón Mas Visible */}
-        <button onClick={onPlus} className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white text-2xl font-bold active:bg-white/20">+</button>
+        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white text-2xl font-bold active:bg-white/20 z-10">+</button>
       </div>
     </div>
   );

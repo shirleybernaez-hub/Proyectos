@@ -55,26 +55,34 @@ export default function App() {
   }
 }
 
-// =========================================================
-// --- SHOT CLOCK COMPONENT ---
-// =========================================================
-function ShotClock() {
-  const [maxTime, setMaxTime] = useState(30);
-  const [timeLeft, setTimeLeft] = useState(30);
-  const [isActive, setIsActive] = useState(false);
-  const timerRef = useRef(null);
+// --- SHOT CLOCK (SINCRONIZADO CON FIREBASE) ---
+function ShotClock({ data, mesaId }) {
+  const maxTime = data.maxShot || 30;
+  const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
+  const isActive = data.shotActive || false;
 
   useEffect(() => {
+    let interval = null;
     if (isActive && timeLeft > 0) {
-      timerRef.current = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
-    } else if (timeLeft === 0) {
-      clearInterval(timerRef.current);
-      setIsActive(false);
+      interval = setInterval(async () => {
+        await updateDoc(doc(db, "mesas", mesaId), {
+          tiempoShot: timeLeft - 1
+        });
+      }, 1000);
+    } else if (timeLeft === 0 && isActive) {
+      updateDoc(doc(db, "mesas", mesaId), { shotActive: false });
     }
-    return () => clearInterval(timerRef.current);
-  }, [isActive, timeLeft]);
+    return () => clearInterval(interval);
+  }, [isActive, timeLeft, mesaId]);
 
-  const resetClock = () => { setIsActive(false); setTimeLeft(maxTime); };
+  const togglePlay = () => updateDoc(doc(db, "mesas", mesaId), { shotActive: !isActive });
+  const resetClock = () => updateDoc(doc(db, "mesas", mesaId), { shotActive: false, tiempoShot: maxTime });
+  
+  const handleMaxTimeChange = (e) => {
+    const val = parseInt(e.target.value);
+    updateDoc(doc(db, "mesas", mesaId), { maxShot: val, tiempoShot: val, shotActive: false });
+  };
+
   const getBarColor = () => {
     const elapsed = maxTime - timeLeft;
     if (elapsed >= 20) return '#ef4444';
@@ -85,17 +93,17 @@ function ShotClock() {
   const progress = ((maxTime - timeLeft) / maxTime) * 100;
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <button onClick={resetClock} className="mb-2 flex items-center text-[10px] font-black uppercase tracking-widest text-white/40">
-        <IconReset /> Reiniciar Barra
+    <div className="w-full flex flex-col items-start">
+      <button onClick={resetClock} className="mb-2 ml-1 flex items-center text-[10px] font-black uppercase tracking-widest text-white/40">
+        <IconReset /> Reiniciar Tiempo
       </button>
       <div className="w-full bg-[#111] p-4 rounded-2xl border border-white/5 flex flex-col gap-3">
         <div className="flex justify-between items-center">
-          <button onClick={() => setIsActive(!isActive)} className="flex items-center text-white font-black uppercase text-[12px] tracking-widest">
+          <button onClick={togglePlay} className="flex items-center text-white font-black uppercase text-[12px] tracking-widest">
             {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'Pausa' : 'Play'}
           </button>
           <div className="relative flex items-center">
-            <select value={maxTime} onChange={(e) => { setMaxTime(parseInt(e.target.value)); setTimeLeft(parseInt(e.target.value)); setIsActive(false); }}
+            <select value={maxTime} onChange={handleMaxTimeChange}
               className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
               <option value={30} className="bg-black">30 SEG</option>
               <option value={40} className="bg-black">40 SEG</option>
@@ -112,8 +120,19 @@ function ShotClock() {
   );
 }
 
-// --- VISTA TV (PROTEGIDA) ---
+// --- VISTA TV (AHORA MUESTRA LA BARRA) ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
+  const maxTime = data.maxShot || 30;
+  const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
+  const progress = ((maxTime - timeLeft) / maxTime) * 100;
+  
+  const getBarColor = () => {
+    const elapsed = maxTime - timeLeft;
+    if (elapsed >= 20) return '#ef4444';
+    if (elapsed >= 10) return '#facc15';
+    return '#f97316';
+  };
+
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
       {!enPartida ? (
@@ -140,6 +159,10 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
             <ScoreBox name={data.jugador3} score={data.puntos3} color="#ec4899" />
             <ScoreBox name={data.jugador4} score={data.puntos4} color="#64748b" />
           </div>
+          {/* BARRA DE TIEMPO EN TV */}
+          <div className="h-6 bg-[#111] rounded-full border border-white/5 overflow-hidden mt-2 shadow-2xl">
+            <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getBarColor() }} />
+          </div>
         </div>
       )}
     </div>
@@ -148,14 +171,14 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
 
 function ScoreBox({ name, score, color }) {
   return (
-    <div className="bg-[#111] rounded-[2rem] border border-white/5 flex flex-col overflow-hidden relative">
+    <div className="bg-[#111] rounded-[2rem] border border-white/5 flex flex-col overflow-hidden relative shadow-lg">
       <div style={{ backgroundColor: color }} className="h-[18%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2vh] px-4 truncate">{name}</div>
       <div className="flex-1 flex items-center justify-center text-white"><span className="text-[25vh] font-black leading-none">{score || 0}</span></div>
     </div>
   );
 }
 
-// --- VISTA MÓVIL (REDISEÑADA) ---
+// --- VISTA MÓVIL ---
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
   const [n3, setN3] = useState(''); const [n4, setN4] = useState('');
@@ -164,7 +187,9 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
     if (!n1 || !n2 || !n3 || !n4) return alert("Introduce todos los nombres");
     await updateDoc(doc(db, "mesas", mesaId), {
       jugador1: n1, jugador2: n2, jugador3: n3, jugador4: n4,
-      puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0, inicio: new Date().getTime()
+      puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0, 
+      inicio: new Date().getTime(),
+      tiempoShot: 30, maxShot: 30, shotActive: false
     });
   };
 
@@ -206,8 +231,8 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
         </div>
       ) : (
         <div className="flex-1 flex flex-col gap-4">
-          <div className="flex justify-between items-center py-2 px-1">
-            <div className="flex flex-col gap-1">
+          <div className="flex justify-between items-start py-2 px-1">
+            <div className="flex flex-col gap-3">
               <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none">MESA {mesaId.replace("mesa", "")}</span>
               <button onClick={reiniciarPuntos} className="flex items-center text-[10px] font-black uppercase text-white/40">
                 <IconReset /> Reiniciar Todo
@@ -225,7 +250,7 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
             <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
           </div>
 
-          <ShotClock />
+          <ShotClock data={data} mesaId={mesaId} />
 
           <div className="pt-2 flex justify-center">
             <button onClick={finalizarSesion} className="w-full py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Cerrar Mesa</button>

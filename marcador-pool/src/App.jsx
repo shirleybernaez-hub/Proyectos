@@ -5,109 +5,110 @@ import { QRCodeSVG } from 'qrcode.react';
 import LogoBilliard from './assets/billiardplay.png'; 
 import KFCPubli from './assets/kfcpubli.jpg'; 
 
-// --- ICONOS SVG ---
+// --- ICONOS ---
 const IconPencil = () => <svg className="w-3 h-3 ml-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>;
 const IconPlay = () => <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>;
 const IconPause = () => <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>;
 const IconReset = () => <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>;
 const IconChevron = () => <svg className="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>;
 
-// --- LÓGICA DE COLORES ---
 const getColorBySeconds = (seconds) => {
-  if (seconds > 50) return '#9333ea'; // Morado
-  if (seconds > 40) return '#a855f7'; // Violeta
-  if (seconds > 30) return '#22c55e'; // Verde
-  if (seconds > 20) return '#facc15'; // Amarillo
-  if (seconds > 10) return '#f97316'; // Naranja
-  return '#ef4444'; // Rojo
+  if (seconds > 50) return '#9333ea';
+  if (seconds > 40) return '#a855f7';
+  if (seconds > 30) return '#22c55e';
+  if (seconds > 20) return '#facc15';
+  if (seconds > 10) return '#f97316';
+  return '#ef4444';
 };
 
 export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
+  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'));
 
   const params = new URLSearchParams(window.location.search);
   const mesaId = params.get('mesa') || 'mesa1'; 
   const isTV = params.get('view') === 'tv'; 
-  const baseUrl = window.location.origin; 
-  const qrUrl = `${baseUrl}/?mesa=${mesaId}`;
+
+  // Desbloqueo de audio (Browsers require user gesture)
+  const enableAudio = () => {
+    audioRef.current.play().then(() => {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }).catch(() => {});
+    window.removeEventListener('click', enableAudio);
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (data?.inicio) {
-        const inicio = typeof data.inicio === 'number' ? data.inicio : new Date(data.inicio).getTime();
-        const ahora = new Date().getTime();
-        const diff = Math.floor((ahora - inicio) / 1000);
-        if (diff < 0) return;
-        const h = Math.floor(diff / 3600).toString().padStart(2, '0');
-        const m = Math.floor((diff % 3600) / 60).toString().padStart(2, '0');
-        const s = (diff % 60).toString().padStart(2, '0');
-        setTiempoReal(`${h}:${m}:${s}`);
-      }
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [data]);
-
-  useEffect(() => {
+    window.addEventListener('click', enableAudio);
     const unsub = onSnapshot(doc(db, "mesas", mesaId), (docSnap) => {
       if (docSnap.exists()) setData(docSnap.data());
     });
     return () => unsub();
   }, [mesaId]);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (data?.inicio) {
+        const diff = Math.floor((new Date().getTime() - data.inicio) / 1000);
+        if (diff < 0) return;
+        setTiempoReal(`${Math.floor(diff/3600).toString().padStart(2,'0')}:${Math.floor((diff%3600)/60).toString().padStart(2,'0')}:${(diff%60).toString().padStart(2,'0')}`);
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [data]);
+
   if (!data) return null;
   const enPartida = data.jugador1 && data.jugador1 !== "---";
 
-  if (isTV) {
-    return <TvView data={data} enPartida={enPartida} tiempoReal={tiempoReal} qrUrl={qrUrl} mesaId={mesaId} />;
-  } else {
-    return <MobileView data={data} enPartida={enPartida} tiempoReal={tiempoReal} mesaId={mesaId} db={db} />;
-  }
+  return (
+    <div className="bg-black text-white font-sans min-h-screen">
+      {isTV ? 
+        <TvView data={data} mesaId={mesaId} tiempoReal={tiempoReal} /> : 
+        <MobileView data={data} mesaId={mesaId} tiempoReal={tiempoReal} db={db} audioRef={audioRef} />
+      }
+    </div>
+  );
 }
 
-// --- SHOT CLOCK (MOVIL) ---
-function ShotClock({ data, mesaId }) {
+// --- SHOT CLOCK (MÓVIL) ---
+function ShotClock({ data, mesaId, audioRef }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
   const isActive = data.shotActive || false;
-  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'));
 
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
-      if (timeLeft === 10) {
-        audioRef.current.play().catch(e => console.log("Interacción requerida para audio"));
-      }
-      interval = setInterval(async () => {
-        await updateDoc(doc(db, "mesas", mesaId), { tiempoShot: timeLeft - 1 });
-      }, 1000);
+      if (timeLeft === 10) audioRef.current.play().catch(() => {});
+      interval = setInterval(() => updateDoc(doc(db, "mesas", mesaId), { tiempoShot: timeLeft - 1 }), 1000);
     } else if (timeLeft === 0 && isActive) {
       updateDoc(doc(db, "mesas", mesaId), { shotActive: false });
     }
     return () => clearInterval(interval);
   }, [isActive, timeLeft, mesaId]);
 
-  const togglePlay = () => updateDoc(doc(db, "mesas", mesaId), { shotActive: !isActive });
-  const resetClock = () => updateDoc(doc(db, "mesas", mesaId), { shotActive: false, tiempoShot: maxTime });
-  const handleMaxTimeChange = (e) => {
-    const val = parseInt(e.target.value);
-    updateDoc(doc(db, "mesas", mesaId), { maxShot: val, tiempoShot: val, shotActive: false });
-  };
-
   const progress = ((maxTime - timeLeft) / maxTime) * 100;
 
   return (
-    <div className="w-full flex flex-col items-start">
-      <button onClick={resetClock} className="mb-2 ml-1 flex items-center text-[10px] font-black uppercase tracking-widest text-white/40">
-        <IconReset /> Reiniciar Tiempo
+    <div className="w-full flex flex-col items-start px-1">
+      <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{shotActive:false, tiempoShot:maxTime})} className="mb-2 flex items-center text-[10px] font-black uppercase text-white/40">
+        <IconReset /> REINICIAR TIEMPO
       </button>
-      <div className="w-full bg-[#111] p-4 rounded-2xl border border-white/5 flex flex-col gap-1 shadow-lg">
-        <div className="flex justify-between items-center mb-1">
-          <button onClick={togglePlay} className="flex items-center text-white font-black uppercase text-[12px] tracking-widest">
-            {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'Pausar' : 'Iniciar'}
+      <div className="w-full bg-[#111] p-5 rounded-2xl border border-white/5 flex flex-col gap-2 relative">
+        <div className="flex justify-between items-center relative z-10">
+          <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{shotActive:!isActive})} className="flex items-center text-white font-black uppercase text-[12px] tracking-widest">
+            {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'PAUSAR' : 'INICIAR'}
           </button>
+          
+          {/* CONTADOR GRANDE Y CENTRADO */}
+          <div className="absolute left-1/2 -translate-x-1/2 -top-1">
+            <span className="text-2xl font-black tabular-nums transition-colors" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}s</span>
+          </div>
+
           <div className="relative flex items-center">
-            <select value={maxTime} onChange={handleMaxTimeChange} className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
+            <select value={maxTime} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{maxShot:parseInt(e.target.value), tiempoShot:parseInt(e.target.value), shotActive:false})} 
+              className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
               <option value={30} className="bg-black">30 SEG</option>
               <option value={40} className="bg-black">40 SEG</option>
               <option value={60} className="bg-black">60 SEG</option>
@@ -115,11 +116,7 @@ function ShotClock({ data, mesaId }) {
             <div className="pointer-events-none absolute right-0"><IconChevron /></div>
           </div>
         </div>
-        {/* Contador arriba de la barra en Movil */}
-        <div className="flex justify-center w-full mb-1">
-           <span className="text-xs font-black" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}s</span>
-        </div>
-        <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden">
+        <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden mt-2">
           <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
         </div>
       </div>
@@ -127,159 +124,90 @@ function ShotClock({ data, mesaId }) {
   );
 }
 
-// --- VISTA TV ---
-function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
-  const maxTime = data.maxShot || 30;
-  const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
-  const progress = ((maxTime - timeLeft) / maxTime) * 100;
+// --- VISTA TV (DINÁMICA 2-4 JUGADORES) ---
+function TvView({ data, mesaId, tiempoReal }) {
+  const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
+  const timeLeft = data.tiempoShot || 30;
+  const progress = (( (data.maxShot||30) - timeLeft) / (data.maxShot||30)) * 100;
 
   return (
-    <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
-      {!enPartida ? (
-        <div className="absolute inset-[5%] flex gap-6"> 
-          <div className="w-[62%] h-full bg-[#1a1c1e] rounded-[2rem] relative overflow-hidden border border-white/5 shadow-2xl">
-            <div className="absolute top-8 left-8"><span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-white">En Espera</span></div>
-            <div className="absolute inset-0 flex items-center justify-center pb-48"><img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-90" /></div>
-            <div className="absolute bottom-0 left-0 w-full h-[180px] bg-white text-black flex items-center px-10 gap-8">
-              <div className="w-[140px] h-[140px] bg-white flex-shrink-0 flex items-center justify-center p-2 border-2 border-black/5 rounded-lg"><QRCodeSVG value={qrUrl} size="100%" /></div>
-              <div className="flex flex-col justify-center overflow-hidden"><p className="text-[12px] font-black tracking-[0.3em] uppercase mb-1 text-black opacity-40">Mesa Disponible</p><p className="text-[38px] font-light tracking-tighter leading-[0.85] uppercase">Escanea para<br/>comenzar a jugar</p></div>
-            </div>
+    <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none">
+      <div className="flex justify-between items-center px-4">
+        <span className="text-3xl font-black text-white/60 tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
+        <div className="bg-[#111] border border-white px-8 py-3 rounded-2xl shadow-xl"><span className="text-2xl font-mono font-bold text-white tabular-nums">{tiempoReal}</span></div>
+      </div>
+      
+      <div className={`flex-1 grid gap-6 ${players.length <= 2 ? 'grid-cols-2 grid-rows-1' : 'grid-cols-2 grid-rows-2'}`}>
+        {players.map(i => (
+          <div key={i} className="bg-[#111] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl">
+            <div style={{ backgroundColor: data.colors?.[i-1] || ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh]">{data[`jugador${i}`]}</div>
+            <div className="flex-1 flex items-center justify-center text-[25vh] font-black">{data[`puntos${i}`] || 0}</div>
           </div>
-          <div className="w-[38%] h-full bg-[#111] rounded-[2rem] border border-white/5 relative overflow-hidden"><img src={KFCPubli} alt="Publicidad" className="w-full h-full object-cover" /></div>
-        </div>
-      ) : (
-        <div className="absolute inset-[4%] flex flex-col gap-4">
-          <div className="flex justify-between items-center px-4">
-            <span className="text-3xl font-black text-white tracking-[0.2em] uppercase">MESA {mesaId.replace("mesa", "")}</span>
-            <div className="bg-[#111] border border-white px-6 py-2 rounded-xl"><span className="text-lg font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span></div>
-          </div>
-          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-4">
-            <ScoreBox name={data.jugador1} score={data.puntos1} color="#9333ea" />
-            <ScoreBox name={data.jugador2} score={data.puntos2} color="#00A3FF" />
-            <ScoreBox name={data.jugador3} score={data.puntos3} color="#ec4899" />
-            <ScoreBox name={data.jugador4} score={data.puntos4} color="#64748b" />
-          </div>
-          
-          {/* BARRA TV CON CONTADOR ARRIBA */}
-          <div className="bg-[#111] border border-white p-4 rounded-2xl flex flex-col gap-2 shadow-2xl mt-2 relative">
-            <div className="flex justify-center w-full">
-               <span className="text-4xl font-mono font-black tabular-nums transition-colors duration-500" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}</span>
-            </div>
-            <div className="h-8 bg-white/5 rounded-full overflow-hidden relative">
-               <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
+        ))}
+      </div>
 
-function ScoreBox({ name, score, color }) {
-  return (
-    <div className="bg-[#111] rounded-[2rem] border border-white/5 flex flex-col overflow-hidden relative shadow-lg">
-      <div style={{ backgroundColor: color }} className="h-[18%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2vh] px-4 truncate">{name}</div>
-      <div className="flex-1 flex items-center justify-center text-white"><span className="text-[25vh] font-black leading-none">{score || 0}</span></div>
+      <div className="bg-[#111] border border-white p-5 rounded-[2rem] flex flex-col items-center gap-2">
+        <span className="text-5xl font-mono font-black tabular-nums" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}</span>
+        <div className="w-full h-8 bg-white/5 rounded-full overflow-hidden">
+          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
+        </div>
+      </div>
     </div>
   );
 }
 
 // --- VISTA MÓVIL ---
-function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
-  const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
-  const [n3, setN3] = useState(''); const [n4, setN4] = useState('');
+function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
+  const [names, setNames] = useState(['','','','']);
+  const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
 
-  const iniciarPartida = async () => {
-    if (!n1 || !n2 || !n3 || !n4) return alert("Introduce todos los nombres");
-    await updateDoc(doc(db, "mesas", mesaId), {
-      jugador1: n1, jugador2: n2, jugador3: n3, jugador4: n4,
-      puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0, 
-      inicio: new Date().getTime(),
-      tiempoShot: data.maxShot || 30, shotActive: false
-    });
-  };
-
-  const updateScore = async (campo, valor) => {
-    const valorActual = Number(data[campo]) || 0;
-    await updateDoc(doc(db, "mesas", mesaId), { [campo]: Math.max(0, valorActual + valor) });
-  };
-
-  const updateName = async (campo, nuevoNombre) => {
-    await updateDoc(doc(db, "mesas", mesaId), { [campo]: nuevoNombre });
-  };
-
-  const finalizarSesion = async () => {
-    if(window.confirm("¿Cerrar mesa definitivamente?")) {
-      await updateDoc(doc(db, "mesas", mesaId), { 
-        jugador1: "---", jugador2: "---", jugador3: "---", jugador4: "---", 
-        puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0, inicio: null 
-      });
-    }
-  };
-
-  const reiniciarPuntos = async () => {
-    if(window.confirm("¿Reiniciar marcadores?")) {
-      await updateDoc(doc(db, "mesas", mesaId), { puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0 });
-    }
+  const iniciar = async () => {
+    const valid = names.filter(n => n.trim() !== "");
+    if (valid.length < 2) return alert("Mínimo 2 jugadores");
+    const update = { inicio: new Date().getTime(), shotActive: false, tiempoShot: 30, maxShot: 30 };
+    names.forEach((n, i) => { update[`jugador${i+1}`] = n.trim() || "---"; update[`puntos${i+1}`] = 0; });
+    await updateDoc(doc(db, "mesas", mesaId), update);
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#050505] text-white font-sans flex flex-col p-5 select-none overflow-hidden">
-      {!enPartida ? (
-        <div className="flex-1 flex flex-col items-center justify-center py-6">
-          <img src={LogoBilliard} className="w-24 mb-10 opacity-70" alt="logo" />
-          <div className="w-full max-w-xs space-y-4">
-            {[setN1, setN2, setN3, setN4].map((set, i) => (
-              <input key={i} style={{ fontSize: '16px' }} className="w-full bg-[#0a0a0a] border border-white/5 p-4 rounded-xl text-center outline-none text-white font-black tracking-widest" placeholder={`JUGADOR ${i+1}`} onChange={e => set(e.target.value)} />
-            ))}
-            <button onClick={iniciarPartida} className="w-full bg-white text-black font-bold text-sm p-4 rounded-xl uppercase tracking-[0.3em] mt-8">Empezar</button>
-          </div>
+    <div className="p-6 flex flex-col min-h-screen gap-5">
+      {data.jugador1 === "---" ? (
+        <div className="flex-1 flex flex-col items-center justify-center gap-4">
+          <img src={LogoBilliard} className="w-24 mb-6 opacity-60" alt="logo" />
+          {names.map((n, i) => (
+            <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black" placeholder={`JUGADOR ${i+1} ${i>1 ? '(OPCIONAL)' : ''}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
+          ))}
+          <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4 active:scale-95 transition-transform">EMPEZAR PARTIDA</button>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col gap-4">
-          <div className="flex justify-between items-start py-2 px-1">
-            <div className="flex flex-col gap-3">
-              <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none text-white">MESA {mesaId.replace("mesa", "")}</span>
-              <button onClick={reiniciarPuntos} className="flex items-center text-[10px] font-black uppercase text-white/40 active:text-white/60">
-                <IconReset /> Reiniciar Todo
-              </button>
+        <>
+          <div className="flex justify-between items-start">
+            <div className="flex flex-col gap-4">
+              <span className="text-sm font-black tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
+              <button onClick={() => updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40"><IconReset /> REINICIAR TODO</button>
             </div>
-            <div className="bg-[#0a0a0a] border border-white px-4 py-1.5 rounded-lg shadow-md">
-               <span className="text-sm font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span>
-            </div>
-          </div>
-          
-          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3">
-            <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
-            <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
-            <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
-            <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
+            <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold">{tiempoReal}</div>
           </div>
 
-          <ShotClock data={data} mesaId={mesaId} />
-
-          <div className="pt-2 flex justify-center">
-            <button onClick={finalizarSesion} className="w-full py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500 active:bg-red-950/20 transition-colors">Cerrar Mesa</button>
+          <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+            {players.map(i => (
+              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+                <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-2 px-3 flex items-center justify-center">
+                  <input value={data[`jugador${i}`]} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{[`jugador${i}`]:e.target.value})} style={{fontSize:'16px'}} className="bg-transparent text-center font-black uppercase text-[10px] outline-none w-full" />
+                  <IconPencil />
+                </div>
+                <div className="flex-1 flex items-center justify-between px-4 py-2">
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl">-</button>
+                  <span className="text-5xl font-black">{data[`puntos${i}`] || 0}</span>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl">+</button>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
+          <ShotClock data={data} mesaId={mesaId} audioRef={audioRef} />
+          <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{jugador1:"---",jugador2:"---",jugador3:"---",jugador4:"---"})} className="w-full py-4 bg-red-950/20 border border-red-500/20 rounded-xl text-[10px] font-black text-red-500">CERRAR MESA</button>
+        </>
       )}
-    </div>
-  );
-}
-
-function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) {
-  return (
-    <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative shadow-inner">
-      <div className="relative flex items-center justify-center" style={{ backgroundColor: color }}>
-        <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)}
-          style={{ fontSize: '16px' }} className="py-2.5 text-center text-white font-bold uppercase tracking-[0.3em] outline-none border-none w-full bg-transparent" />
-        <div className="absolute right-2 pointer-events-none"><IconPencil /></div>
-      </div>
-      <div className="flex-1 flex flex-col items-center justify-center py-2 relative">
-        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10">-</button>
-        <div onClick={onPlus} className="text-6xl font-black tabular-nums tracking-tighter active:scale-95 transition-transform">{score || 0}</div>
-        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10">+</button>
-      </div>
     </div>
   );
 }

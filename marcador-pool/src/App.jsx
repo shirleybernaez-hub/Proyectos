@@ -46,7 +46,10 @@ export default function App() {
   }, [mesaId]);
 
   if (!data) return null;
-  const enPartida = data.jugador1 && data.jugador1 !== "---";
+  
+  // Se considera en partida si al menos hay 2 jugadores con nombre real
+  const jugadoresActivos = [data.jugador1, data.jugador2, data.jugador3, data.jugador4].filter(j => j && j !== "---");
+  const enPartida = jugadoresActivos.length >= 2;
 
   if (isTV) {
     return <TvView data={data} enPartida={enPartida} tiempoReal={tiempoReal} qrUrl={qrUrl} mesaId={mesaId} />;
@@ -55,14 +58,13 @@ export default function App() {
   }
 }
 
-// --- SHOT CLOCK (MÓVIL CON SONIDO) ---
+// --- SHOT CLOCK SINCRONIZADO ---
 function ShotClock({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
   const isActive = data.shotActive || false;
   const audioCtx = useRef(null);
 
-  // Función para emitir el beep de alerta
   const playAlert = () => {
     if (!audioCtx.current) audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
     const osc = audioCtx.current.createOscillator();
@@ -101,9 +103,9 @@ function ShotClock({ data, mesaId }) {
   const progress = ((maxTime - timeLeft) / maxTime) * 100;
   const getBarColor = () => {
     const elapsed = maxTime - timeLeft;
-    if (elapsed >= 20) return '#ef4444';
-    if (elapsed >= 10) return '#facc15';
-    return '#f97316';
+    if (elapsed >= 20) return '#ef4444'; // Rojo (final)
+    if (elapsed >= 10) return '#facc15'; // Amarillo (medio)
+    return '#f97316'; // Naranja (inicio)
   };
 
   return (
@@ -133,7 +135,7 @@ function ShotClock({ data, mesaId }) {
   );
 }
 
-// --- VISTA TV (CON BARRA Y CONTADOR SEGUNDOS) ---
+// --- VISTA TV ADAPTATIVA ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -145,6 +147,13 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
     if (elapsed >= 10) return '#facc15';
     return '#f97316';
   };
+
+  // Filtrar solo los jugadores que tienen nombre
+  const boxes = [];
+  if (data.jugador1 && data.jugador1 !== "---") boxes.push({ n: data.jugador1, s: data.puntos1, c: "#9333ea" });
+  if (data.jugador2 && data.jugador2 !== "---") boxes.push({ n: data.jugador2, s: data.puntos2, c: "#00A3FF" });
+  if (data.jugador3 && data.jugador3 !== "---") boxes.push({ n: data.jugador3, s: data.puntos3, c: "#ec4899" });
+  if (data.jugador4 && data.jugador4 !== "---") boxes.push({ n: data.jugador4, s: data.puntos4, c: "#64748b" });
 
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
@@ -166,13 +175,11 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
             <span className="text-3xl font-black text-white tracking-[0.2em] uppercase">MESA {mesaId.replace("mesa", "")}</span>
             <div className="bg-[#111] border border-white px-6 py-2 rounded-xl"><span className="text-lg font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span></div>
           </div>
-          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-4">
-            <ScoreBox name={data.jugador1} score={data.puntos1} color="#9333ea" />
-            <ScoreBox name={data.jugador2} score={data.puntos2} color="#00A3FF" />
-            <ScoreBox name={data.jugador3} score={data.puntos3} color="#ec4899" />
-            <ScoreBox name={data.jugador4} score={data.puntos4} color="#64748b" />
+          <div className={`flex-1 grid gap-4 ${boxes.length === 2 ? 'grid-cols-2 grid-rows-1' : 'grid-cols-2 grid-rows-2'}`}>
+            {boxes.map((box, i) => (
+              <ScoreBox key={i} name={box.n} score={box.s} color={box.c} small={boxes.length > 2} />
+            ))}
           </div>
-          {/* BARRA Y SEGUNDOS EN TV */}
           <div className="flex flex-col items-center gap-2 mt-2">
             <span className="text-2xl font-mono font-bold text-white/60">{timeLeft}s</span>
             <div className="w-full h-8 bg-[#111] rounded-full border border-white px-1 flex items-center">
@@ -185,24 +192,29 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   );
 }
 
-function ScoreBox({ name, score, color }) {
+function ScoreBox({ name, score, color, small }) {
   return (
     <div className="bg-[#111] rounded-[2rem] border border-white/5 flex flex-col overflow-hidden relative shadow-lg">
       <div style={{ backgroundColor: color }} className="h-[18%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2vh] px-4 truncate">{name}</div>
-      <div className="flex-1 flex items-center justify-center text-white"><span className="text-[25vh] font-black leading-none">{score || 0}</span></div>
+      <div className="flex-1 flex items-center justify-center text-white">
+        <span className={`${small ? 'text-[25vh]' : 'text-[35vh]'} font-black leading-none`}>{score || 0}</span>
+      </div>
     </div>
   );
 }
 
-// --- VISTA MÓVIL ---
+// --- VISTA MÓVIL ADAPTATIVA ---
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
   const [n3, setN3] = useState(''); const [n4, setN4] = useState('');
 
   const iniciarPartida = async () => {
-    if (!n1 || !n2 || !n3 || !n4) return alert("Introduce todos los nombres");
+    // Validación: Al menos 2 nombres
+    const nombres = [n1, n2, n3, n4].filter(n => n.trim() !== "");
+    if (nombres.length < 2) return alert("Introduce al menos 2 nombres para empezar");
+    
     await updateDoc(doc(db, "mesas", mesaId), {
-      jugador1: n1, jugador2: n2, jugador3: n3, jugador4: n4,
+      jugador1: n1 || "---", jugador2: n2 || "---", jugador3: n3 || "---", jugador4: n4 || "---",
       puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0, 
       inicio: new Date().getTime(),
       tiempoShot: 30, maxShot: 30, shotActive: false
@@ -236,7 +248,7 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   return (
     <div className="min-h-screen w-full bg-[#050505] text-white font-sans flex flex-col p-5 select-none overflow-hidden">
       {!enPartida ? (
-        <div className="flex-1 flex flex-col items-center justify-center py-6 text-white">
+        <div className="flex-1 flex flex-col items-center justify-center py-6">
           <img src={LogoBilliard} className="w-24 mb-10 opacity-70" alt="logo" />
           <div className="w-full max-w-xs space-y-4">
             {[setN1, setN2, setN3, setN4].map((set, i) => (
@@ -254,12 +266,14 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
             </div>
             <div className="bg-[#0a0a0a] border border-white px-4 py-1.5 rounded-lg shadow-md"><span className="text-sm font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span></div>
           </div>
-          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3">
-            <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
-            <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
-            <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
-            <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
+          
+          <div className={`flex-1 grid gap-3 ${[data.jugador1, data.jugador2, data.jugador3, data.jugador4].filter(j => j !== "---").length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+            {data.jugador1 !== "---" && <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />}
+            {data.jugador2 !== "---" && <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />}
+            {data.jugador3 !== "---" && <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />}
+            {data.jugador4 !== "---" && <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />}
           </div>
+          
           <ShotClock data={data} mesaId={mesaId} />
           <div className="pt-2 flex justify-center"><button onClick={finalizarSesion} className="w-full py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Cerrar Mesa</button></div>
         </div>

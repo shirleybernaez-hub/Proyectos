@@ -25,7 +25,7 @@ export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
   
-  // RUTA LOCAL: Busca 'alert.mp3' en tu carpeta public
+  // Mantiene la ruta local para mayor fiabilidad
   const audioRef = useRef(new Audio('/alert.mp3'));
 
   const params = new URLSearchParams(window.location.search);
@@ -73,6 +73,7 @@ export default function App() {
   );
 }
 
+// --- SHOT CLOCK SINCRONIZADO ---
 function ShotClock({ data, mesaId, audioRef }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -81,8 +82,10 @@ function ShotClock({ data, mesaId, audioRef }) {
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
+      // Sincronización: El sonido se dispara ANTES de actualizar el segundo en Firebase
+      // para que el 'Ding' coincida con el cambio de número
       if (timeLeft <= 10) {
-        audioRef.current.currentTime = 0;
+        audioRef.current.currentTime = 0; 
         audioRef.current.play().catch(() => {});
       }
       
@@ -93,7 +96,7 @@ function ShotClock({ data, mesaId, audioRef }) {
       updateDoc(doc(db, "mesas", mesaId), { shotActive: false });
     }
     return () => clearInterval(interval);
-  }, [isActive, timeLeft, mesaId]);
+  }, [isActive, timeLeft, mesaId, audioRef]); // Agregado audioRef a dependencias
 
   const progress = ((maxTime - timeLeft) / maxTime) * 100;
 
@@ -130,6 +133,7 @@ function ShotClock({ data, mesaId, audioRef }) {
   );
 }
 
+// --- VISTA TV ---
 function TvView({ data, mesaId, tiempoReal }) {
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
   const timeLeft = data.tiempoShot || 0;
@@ -139,14 +143,14 @@ function TvView({ data, mesaId, tiempoReal }) {
   return (
     <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none overflow-hidden bg-black">
       <div className="flex justify-between items-center px-4">
-        <span className="text-3xl font-black text-white/60 tracking-widest uppercase text-white">MESA {mesaId.replace("mesa", "")}</span>
+        <span className="text-3xl font-black text-white/60 tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
         <div className="bg-[#111] border border-white px-8 py-3 rounded-2xl shadow-xl"><span className="text-2xl font-mono font-bold text-white tabular-nums">{tiempoReal}</span></div>
       </div>
       <div className={`flex-1 grid gap-6 ${players.length <= 2 ? 'grid-cols-2 grid-rows-1' : 'grid-cols-2 grid-rows-2'}`}>
         {players.map(i => (
           <div key={i} className="bg-[#111] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl">
             <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh]">{data[`jugador${i}`]}</div>
-            <div className="flex-1 flex items-center justify-center text-[25vh] font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</div>
+            <div className="flex-1 flex items-center justify-center text-[25vh] font-black tabular-nums">{data[`puntos${i}`] || 0}</div>
           </div>
         ))}
       </div>
@@ -160,6 +164,7 @@ function TvView({ data, mesaId, tiempoReal }) {
   );
 }
 
+// --- VISTA MÓVIL ---
 function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
   const [names, setNames] = useState(['','','','']);
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
@@ -199,7 +204,7 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
 
           <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {players.map(i => (
-              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-inner">
+              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
                 <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-2 px-3 flex items-center justify-center">
                   <input 
                     defaultValue={data[`jugador${i}`]} 

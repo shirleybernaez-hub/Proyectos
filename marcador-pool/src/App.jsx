@@ -71,7 +71,6 @@ export default function App() {
   );
 }
 
-// --- SHOT CLOCK (CORREGIDO: SILENCIO EN CERO) ---
 function ShotClock({ data, mesaId, audioRef }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -80,7 +79,6 @@ function ShotClock({ data, mesaId, audioRef }) {
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
-      // Sincronización: Solo suena si el tiempo es mayor a 0 y menor o igual a 10
       if (timeLeft <= 10 && timeLeft > 0) {
         audioRef.current.currentTime = 0; 
         audioRef.current.play().catch(() => {});
@@ -90,7 +88,6 @@ function ShotClock({ data, mesaId, audioRef }) {
         updateDoc(doc(db, "mesas", mesaId), { tiempoShot: timeLeft - 1 });
       }, 1000);
     } else if (timeLeft <= 0 && isActive) {
-      // Detener audio y pausar reloj al llegar a 0
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       updateDoc(doc(db, "mesas", mesaId), { shotActive: false, tiempoShot: 0 });
@@ -184,7 +181,7 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
     <div className="p-6 flex flex-col min-h-screen gap-5 bg-black">
       {data.jugador1 === "---" ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-4">
-          <img src={LogoBilliard} className="w-24 mb-6 opacity-60" alt="logo" />
+          <img src={LogoBilliard} className="w-32 mb-6 opacity-60" alt="logo" /> {/* Logo aumentado de w-24 a w-32 */}
           {names.map((n, i) => (
             <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white outline-none" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
           ))}

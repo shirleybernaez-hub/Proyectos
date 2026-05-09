@@ -24,27 +24,26 @@ const getColorBySeconds = (seconds) => {
 export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
-  // Audio cargado desde una URL confiable
-  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'));
+  
+  // Usamos un sonido de "beep" corto que funciona mejor para repeticiones por segundo
+  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/3005/3005-preview.mp3'));
 
   const params = new URLSearchParams(window.location.search);
   const mesaId = params.get('mesa') || 'mesa1'; 
   const isTV = params.get('view') === 'tv'; 
 
-  // FUNCIÓN CRÍTICA: Desbloquea el audio en móviles/navegadores
   const unlockAudio = () => {
     audioRef.current.play().then(() => {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
-    }).catch(e => console.log("Esperando interacción..."));
-    window.removeEventListener('touchstart', unlockAudio);
+    }).catch(() => {});
     window.removeEventListener('click', unlockAudio);
+    window.removeEventListener('touchstart', unlockAudio);
   };
 
   useEffect(() => {
-    window.addEventListener('touchstart', unlockAudio);
     window.addEventListener('click', unlockAudio);
-    
+    window.addEventListener('touchstart', unlockAudio);
     const unsub = onSnapshot(doc(db, "mesas", mesaId), (docSnap) => {
       if (docSnap.exists()) setData(docSnap.data());
     });
@@ -74,7 +73,6 @@ export default function App() {
   );
 }
 
-// --- SHOT CLOCK (CON LOGICA DE AUDIO REFORZADA) ---
 function ShotClock({ data, mesaId, audioRef }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -83,12 +81,15 @@ function ShotClock({ data, mesaId, audioRef }) {
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
-      // Disparar audio justo al llegar a 10
-      if (timeLeft === 10) {
+      // LOGICA DE AUDIO POR SEGUNDO: Suena cada vez que baja el tiempo entre 10 y 1
+      if (timeLeft <= 10) {
         audioRef.current.currentTime = 0;
-        audioRef.current.play().catch(e => console.log("Audio bloqueado por navegador"));
+        audioRef.current.play().catch(e => console.warn("Audio esperando interacción"));
       }
-      interval = setInterval(() => updateDoc(doc(db, "mesas", mesaId), { tiempoShot: timeLeft - 1 }), 1000);
+      
+      interval = setInterval(() => {
+        updateDoc(doc(db, "mesas", mesaId), { tiempoShot: timeLeft - 1 });
+      }, 1000);
     } else if (timeLeft === 0 && isActive) {
       updateDoc(doc(db, "mesas", mesaId), { shotActive: false });
     }
@@ -130,19 +131,18 @@ function ShotClock({ data, mesaId, audioRef }) {
   );
 }
 
-// --- VISTA TV ---
 function TvView({ data, mesaId, tiempoReal }) {
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
-  const timeLeft = data.tiempoShot || 30;
-  const progress = (( (data.maxShot||30) - timeLeft) / (data.maxShot||30)) * 100;
+  const timeLeft = data.tiempoShot || 0;
+  const maxT = data.maxShot || 30;
+  const progress = ((maxT - timeLeft) / maxT) * 100;
 
   return (
-    <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none">
+    <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none overflow-hidden">
       <div className="flex justify-between items-center px-4">
         <span className="text-3xl font-black text-white/60 tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
         <div className="bg-[#111] border border-white px-8 py-3 rounded-2xl shadow-xl"><span className="text-2xl font-mono font-bold text-white tabular-nums">{tiempoReal}</span></div>
       </div>
-      
       <div className={`flex-1 grid gap-6 ${players.length <= 2 ? 'grid-cols-2 grid-rows-1' : 'grid-cols-2 grid-rows-2'}`}>
         {players.map(i => (
           <div key={i} className="bg-[#111] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl">
@@ -151,7 +151,6 @@ function TvView({ data, mesaId, tiempoReal }) {
           </div>
         ))}
       </div>
-
       <div className="bg-[#111] border border-white p-5 rounded-[2rem] flex flex-col items-center gap-2">
         <span className="text-5xl font-mono font-black tabular-nums" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}</span>
         <div className="w-full h-8 bg-white/5 rounded-full overflow-hidden">
@@ -162,7 +161,6 @@ function TvView({ data, mesaId, tiempoReal }) {
   );
 }
 
-// --- VISTA MÓVIL ---
 function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
   const [names, setNames] = useState(['','','','']);
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
@@ -187,12 +185,12 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
   };
 
   return (
-    <div className="p-6 flex flex-col min-h-screen gap-5 select-none">
+    <div className="p-6 flex flex-col min-h-screen gap-5">
       {data.jugador1 === "---" ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-4">
           <img src={LogoBilliard} className="w-24 mb-6 opacity-60" alt="logo" />
           {names.map((n, i) => (
-            <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
+            <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white outline-none" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
           ))}
           <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4 active:scale-95 transition-transform">EMPEZAR PARTIDA</button>
         </div>
@@ -203,12 +201,12 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
               <span className="text-sm font-black tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
               <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40 active:text-white/60"><IconReset /> REINICIAR TODO</button>
             </div>
-            <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold tabular-nums shadow-md">{tiempoReal}</div>
+            <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold tabular-nums">{tiempoReal}</div>
           </div>
 
           <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {players.map(i => (
-              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-inner">
+              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
                 <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-2 px-3 flex items-center justify-center">
                   <input 
                     defaultValue={data[`jugador${i}`]} 

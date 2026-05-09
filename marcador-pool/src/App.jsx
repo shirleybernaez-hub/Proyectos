@@ -9,7 +9,7 @@ import KFCPubli from './assets/kfcpubli.jpg';
 const IconPencil = () => <svg className="w-3 h-3 ml-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>;
 const IconPlay = () => <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>;
 const IconPause = () => <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>;
-const IconReset = () => <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>;
+const IconReset = () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>;
 const IconChevron = () => <svg className="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>;
 
 const getColorBySeconds = (seconds) => {
@@ -83,7 +83,6 @@ function ShotClock({ data, mesaId, audioRef }) {
         audioRef.current.currentTime = 0; 
         audioRef.current.play().catch(() => {});
       }
-      
       interval = setInterval(() => {
         updateDoc(doc(db, "mesas", mesaId), { tiempoShot: timeLeft - 1 });
       }, 1000);
@@ -107,11 +106,9 @@ function ShotClock({ data, mesaId, audioRef }) {
           <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{shotActive:!isActive})} className="flex items-center text-white font-black uppercase text-[12px] tracking-widest">
             {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'PAUSAR' : 'INICIAR'}
           </button>
-          
           <div className="absolute left-1/2 -translate-x-1/2 -top-1">
             <span className="text-xl font-black tabular-nums transition-colors" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}s</span>
           </div>
-
           <div className="relative flex items-center">
             <select value={maxTime} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{maxShot:parseInt(e.target.value), tiempoShot:parseInt(e.target.value), shotActive:false})} 
               className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
@@ -181,7 +178,7 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
     <div className="p-6 flex flex-col min-h-screen gap-5 bg-black">
       {data.jugador1 === "---" ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-4">
-          <img src={LogoBilliard} className="w-32 mb-6 opacity-60" alt="logo" /> {/* Logo aumentado de w-24 a w-32 */}
+          <img src={LogoBilliard} className="w-32 mb-6 opacity-60" alt="logo" />
           {names.map((n, i) => (
             <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white outline-none" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
           ))}
@@ -190,29 +187,31 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
       ) : (
         <>
           <div className="flex justify-between items-start">
-            <div className="flex flex-col gap-4">
-              <span className="text-sm font-black tracking-widest uppercase text-white/60">MESA {mesaId.replace("mesa", "")}</span>
-              <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40 active:text-white/60"><IconReset /> REINICIAR TODO</button>
+            <div className="flex flex-col gap-1">
+              <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="p-1 text-white/40 active:text-white/80 w-fit">
+                <IconReset />
+              </button>
+              <span className="text-lg font-black tracking-widest uppercase text-white">MESA {mesaId.replace("mesa", "")}</span>
             </div>
             <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold tabular-nums">{tiempoReal}</div>
           </div>
 
           <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {players.map(i => (
-              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-inner">
-                <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-2 px-3 flex items-center justify-center">
+              <div key={i} className="bg-[#0a0a0a] border border-white/40 rounded-2xl overflow-hidden flex flex-col shadow-inner">
+                <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-3 px-3 flex items-center justify-center">
                   <input 
                     defaultValue={data[`jugador${i}`]} 
                     onBlur={(e) => handleEditName(i, e.target.value)}
-                    style={{fontSize:'16px'}} 
-                    className="bg-transparent text-center font-black uppercase text-[10px] outline-none w-full text-white" 
+                    style={{fontSize:'18px'}} 
+                    className="bg-transparent text-center font-black uppercase outline-none w-full text-white" 
                   />
                   <IconPencil />
                 </div>
                 <div className="flex-1 flex items-center justify-between px-4 py-2">
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">-</button>
-                  <span className="text-5xl font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</span>
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">+</button>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20">-</button>
+                  <span className="text-6xl font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</span>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20">+</button>
                 </div>
               </div>
             ))}

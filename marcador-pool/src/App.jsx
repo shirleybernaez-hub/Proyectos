@@ -25,8 +25,8 @@ export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
   
-  // Usamos un sonido de "beep" corto que funciona mejor para repeticiones por segundo
-  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/3005/3005-preview.mp3'));
+  // Nuevo sonido: "Ding" resonante para la cuenta regresiva
+  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/2216/2216-preview.mp3'));
 
   const params = new URLSearchParams(window.location.search);
   const mesaId = params.get('mesa') || 'mesa1'; 
@@ -81,10 +81,10 @@ function ShotClock({ data, mesaId, audioRef }) {
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
-      // LOGICA DE AUDIO POR SEGUNDO: Suena cada vez que baja el tiempo entre 10 y 1
+      // Suena el "Ding" cada segundo cuando faltan 10 o menos
       if (timeLeft <= 10) {
         audioRef.current.currentTime = 0;
-        audioRef.current.play().catch(e => console.warn("Audio esperando interacción"));
+        audioRef.current.play().catch(() => {});
       }
       
       interval = setInterval(() => {
@@ -116,9 +116,9 @@ function ShotClock({ data, mesaId, audioRef }) {
           <div className="relative flex items-center">
             <select value={maxTime} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{maxShot:parseInt(e.target.value), tiempoShot:parseInt(e.target.value), shotActive:false})} 
               className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
-              <option value={30} className="bg-black">30 SEG</option>
-              <option value={40} className="bg-black">40 SEG</option>
-              <option value={60} className="bg-black">60 SEG</option>
+              <option value={30} className="bg-black text-white">30 SEG</option>
+              <option value={40} className="bg-black text-white">40 SEG</option>
+              <option value={60} className="bg-black text-white">60 SEG</option>
             </select>
             <div className="pointer-events-none absolute right-0"><IconChevron /></div>
           </div>
@@ -138,7 +138,7 @@ function TvView({ data, mesaId, tiempoReal }) {
   const progress = ((maxT - timeLeft) / maxT) * 100;
 
   return (
-    <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none overflow-hidden">
+    <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none overflow-hidden bg-black">
       <div className="flex justify-between items-center px-4">
         <span className="text-3xl font-black text-white/60 tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
         <div className="bg-[#111] border border-white px-8 py-3 rounded-2xl shadow-xl"><span className="text-2xl font-mono font-bold text-white tabular-nums">{tiempoReal}</span></div>
@@ -151,6 +151,7 @@ function TvView({ data, mesaId, tiempoReal }) {
           </div>
         ))}
       </div>
+      {/* BARRA TV PROTEGIDA */}
       <div className="bg-[#111] border border-white p-5 rounded-[2rem] flex flex-col items-center gap-2">
         <span className="text-5xl font-mono font-black tabular-nums" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}</span>
         <div className="w-full h-8 bg-white/5 rounded-full overflow-hidden">
@@ -173,33 +174,27 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
     await updateDoc(doc(db, "mesas", mesaId), update);
   };
 
-  const cerrarMesaConPregunta = async () => {
-    if(window.confirm("¿Estás seguro de que quieres cerrar la mesa?")) {
-      await updateDoc(doc(db,"mesas",mesaId),{jugador1:"---",jugador2:"---",jugador3:"---",jugador4:"---"});
-    }
-  };
-
   const handleEditName = async (i, value) => {
     const cleanValue = value.trim() === "" ? "JUGADOR " + i : value;
     await updateDoc(doc(db, "mesas", mesaId), { [`jugador${i}`]: cleanValue });
   };
 
   return (
-    <div className="p-6 flex flex-col min-h-screen gap-5">
+    <div className="p-6 flex flex-col min-h-screen gap-5 bg-black">
       {data.jugador1 === "---" ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-4">
           <img src={LogoBilliard} className="w-24 mb-6 opacity-60" alt="logo" />
           {names.map((n, i) => (
             <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white outline-none" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
           ))}
-          <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4 active:scale-95 transition-transform">EMPEZAR PARTIDA</button>
+          <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4">EMPEZAR PARTIDA</button>
         </div>
       ) : (
         <>
           <div className="flex justify-between items-start">
             <div className="flex flex-col gap-4">
-              <span className="text-sm font-black tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
-              <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40 active:text-white/60"><IconReset /> REINICIAR TODO</button>
+              <span className="text-sm font-black tracking-widest uppercase text-white/60">MESA {mesaId.replace("mesa", "")}</span>
+              <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40"><IconReset /> REINICIAR TODO</button>
             </div>
             <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold tabular-nums">{tiempoReal}</div>
           </div>
@@ -218,14 +213,14 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
                 </div>
                 <div className="flex-1 flex items-center justify-between px-4 py-2">
                   <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">-</button>
-                  <span className="text-5xl font-black tabular-nums">{data[`puntos${i}`] || 0}</span>
+                  <span className="text-5xl font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</span>
                   <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">+</button>
                 </div>
               </div>
             ))}
           </div>
           <ShotClock data={data} mesaId={mesaId} audioRef={audioRef} />
-          <button onClick={cerrarMesaConPregunta} className="w-full py-4 bg-red-950/20 border border-red-500/20 rounded-xl text-[10px] font-black text-red-500 active:bg-red-900/30 transition-colors">CERRAR MESA</button>
+          <button onClick={() => window.confirm("¿Cerrar mesa?") && updateDoc(doc(db,"mesas",mesaId),{jugador1:"---",jugador2:"---",jugador3:"---",jugador4:"---"})} className="w-full py-4 bg-red-950/20 border border-red-500/20 rounded-xl text-[10px] font-black text-red-500 active:bg-red-900/30 transition-colors uppercase">CERRAR MESA</button>
         </>
       )}
     </div>

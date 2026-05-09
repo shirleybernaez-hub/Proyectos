@@ -143,7 +143,7 @@ function TvView({ data, mesaId, tiempoReal }) {
       <div className={`flex-1 grid gap-6 ${players.length <= 2 ? 'grid-cols-2 grid-rows-1' : 'grid-cols-2 grid-rows-2'}`}>
         {players.map(i => (
           <div key={i} className="bg-[#111] rounded-[2.5rem] border border-white flex flex-col overflow-hidden shadow-2xl">
-            <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh]">{data[`jugador${i}`]}</div>
+            <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh] border-b border-white">{data[`jugador${i}`]}</div>
             <div className="flex-1 flex items-center justify-center text-[25vh] font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</div>
           </div>
         ))}
@@ -176,7 +176,7 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
   };
 
   return (
-    <div className="p-6 flex flex-col min-h-screen gap-5 bg-black">
+    <div className="p-6 flex flex-col min-h-screen gap-5 bg-black relative">
       {data.jugador1 === "---" ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-4">
           <img src={LogoBilliard} className="w-32 mb-6 opacity-60" alt="logo" />
@@ -187,18 +187,19 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center px-1">
-            <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="text-white/40 active:text-white/80">
+          {/* CABECERA CENTRADA */}
+          <div className="flex justify-between items-center px-1 mb-2 relative h-10">
+            <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="text-white/40 active:text-white/80 z-10">
               <IconResetGeneral />
             </button>
-            <span className="text-lg font-black tracking-widest uppercase text-white">MESA {mesaId.replace("mesa", "")}</span>
-            <div className="bg-[#111] border border-white px-3 py-1.5 rounded-lg text-white font-bold tabular-nums text-sm">{tiempoReal}</div>
+            <span className="absolute left-1/2 -translate-x-1/2 text-lg font-black tracking-widest uppercase text-white">MESA {mesaId.replace("mesa", "")}</span>
+            <div className="bg-[#111] border border-white px-2 py-1 rounded-lg text-white font-bold tabular-nums text-xs z-10">{tiempoReal}</div>
           </div>
 
           <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {players.map(i => (
               <div key={i} className="bg-[#0a0a0a] border border-white rounded-2xl overflow-hidden flex flex-col shadow-inner">
-                <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-3 px-3 flex items-center justify-center">
+                <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-3 px-3 flex items-center justify-center border-b border-white">
                   <input 
                     defaultValue={data[`jugador${i}`]} 
                     onBlur={(e) => handleEditName(i, e.target.value)}
@@ -208,9 +209,9 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
                   <IconPencil />
                 </div>
                 <div className="flex-1 flex items-center justify-between px-4 py-2">
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20">-</button>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">-</button>
                   <span className="text-6xl font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</span>
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20">+</button>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">+</button>
                 </div>
               </div>
             ))}

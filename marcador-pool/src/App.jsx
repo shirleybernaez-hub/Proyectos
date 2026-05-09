@@ -48,7 +48,7 @@ export default function App() {
   }
 }
 
-// --- VISTA TV (JERARQUÍA OPTIMIZADA) ---
+// --- VISTA TV (MANTIENE LA MEJOR JERARQUÍA) ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
@@ -98,7 +98,9 @@ function ScoreBox({ name, score, color }) {
   );
 }
 
-// --- VISTA MÓVIL (CONTADOR ARRIBA) ---
+// =========================================================
+// --- VISTA MÓVIL (REORGANIZACIÓN SOLICITADA) ---
+// =========================================================
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
   const [n3, setN3] = useState(''); const [n4, setN4] = useState('');
@@ -129,43 +131,52 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
     }
   };
 
+  const reiniciarPuntos = async () => {
+    if(window.confirm("¿Reiniciar todos los marcadores a cero?")) {
+      await updateDoc(doc(db, "mesas", mesaId), { puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0 });
+    }
+  };
+
   return (
-    <div className="min-h-screen w-full bg-[#050505] text-white font-sans flex flex-col p-3 select-none overflow-hidden">
+    <div className="min-h-screen w-full bg-[#050505] text-white font-sans flex flex-col p-4 select-none overflow-hidden">
       {!enPartida ? (
         <div className="flex-1 flex flex-col items-center justify-center py-6">
           <img src={LogoBilliard} className="w-24 mb-6 opacity-80" alt="logo" />
           <div className="w-full max-w-xs space-y-3">
             {[setN1, setN2, setN3, setN4].map((set, i) => (
-              <input key={i} className="w-full bg-[#111] border border-white/10 p-3 rounded-xl text-center outline-none text-white" 
+              <input key={i} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center outline-none text-white focus:border-white/30" 
               placeholder={`Jugador ${i+1}`} onChange={e => set(e.target.value)} />
             ))}
-            <button onClick={iniciarPartida} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase tracking-widest mt-4">Empezar</button>
+            <button onClick={iniciarPartida} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase tracking-widest mt-6 active:bg-gray-200">Empezar Partida</button>
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col gap-3">
-          {/* HEADER MÓVIL */}
-          <div className="flex justify-between items-center py-1">
-            <button onClick={() => updateDoc(doc(db, "mesas", mesaId), { puntos1:0, puntos2:0, puntos3:0, puntos4:0 })} className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-[8px] font-black uppercase text-white/50">Reiniciar</button>
-            <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">Mesa {mesaId.replace("mesa", "")}</div>
-          </div>
-
-          {/* CONTADOR ARRIBA (Pequeño y discreto) */}
-          <div className="flex justify-center">
-            <div className="bg-[#111] border border-white/5 px-6 py-1.5 rounded-xl">
-              <span className="text-xl font-mono text-[#D4AF37]/80 tabular-nums">{tiempoReal}</span>
+        <div className="flex-1 flex flex-col gap-4">
+          {/* HEADER MÓVIL REORGANIZADO */}
+          <div className="flex justify-between items-end py-2">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Ubicación</span>
+              <span className="text-xl font-black text-white/60">Mesa {mesaId.replace("mesa", "")}</span>
+            </div>
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] font-black text-[#D4AF37]/40 uppercase tracking-[0.2em]">Tiempo</span>
+              <span className="text-2xl font-mono text-[#D4AF37] tabular-nums leading-none">{tiempoReal}</span>
             </div>
           </div>
           
           {/* MARCADORES 2x2 */}
-          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3 mt-1">
+          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3">
             <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
             <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
             <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
             <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
           </div>
 
-          <button onClick={finalizarSesion} className="w-full py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest mt-2 text-white/30">Cerrar Mesa</button>
+          {/* BOTONES DE CONTROL ABAJO */}
+          <div className="flex gap-3 pt-2">
+            <button onClick={reiniciarPuntos} className="flex-1 py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-white/40 active:bg-white/10">Reiniciar</button>
+            <button onClick={finalizarSesion} className="flex-1 py-4 bg-red-500/5 border border-red-500/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-red-500/40 active:bg-red-500/20">Finalizar</button>
+          </div>
         </div>
       )}
     </div>
@@ -176,12 +187,12 @@ function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) 
   return (
     <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative">
       <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)}
-        className="py-1.5 text-center text-white font-black uppercase text-[10px] tracking-widest outline-none border-none w-full"
+        className="py-2 text-center text-white font-black uppercase text-[10px] tracking-widest outline-none border-none w-full"
         style={{ backgroundColor: color }} />
       <div className="flex-1 flex flex-col items-center justify-center py-2 relative">
-        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white text-xl z-10">-</button>
-        <div onClick={onPlus} className="text-5xl font-black tabular-nums">{score || 0}</div>
-        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white text-xl z-10">+</button>
+        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white text-xl z-10 active:bg-white/20">-</button>
+        <div onClick={onPlus} className="text-6xl font-black tabular-nums active:scale-95 transition-transform">{score || 0}</div>
+        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white text-xl z-10 active:bg-white/20">+</button>
       </div>
     </div>
   );

@@ -12,14 +12,6 @@ const IconPause = () => <svg className="w-4 h-4 mr-1" fill="currentColor" viewBo
 const IconReset = () => <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>;
 const IconChevron = () => <svg className="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>;
 
-// --- LÓGICA DE COLOR COMPARTIDA ---
-const getShotColor = (timeLeft) => {
-  if (timeLeft <= 5) return '#ef4444'; // Rojo (Crítico)
-  if (timeLeft <= 10) return '#facc15'; // Amarillo (Alerta)
-  if (timeLeft <= 20) return '#f97316'; // Naranja (Advertencia)
-  return '#22c55e'; // Verde (Tiempo suficiente)
-};
-
 export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
@@ -54,9 +46,7 @@ export default function App() {
   }, [mesaId]);
 
   if (!data) return null;
-  
-  const jugadoresActivos = [data.jugador1, data.jugador2, data.jugador3, data.jugador4].filter(j => j && j !== "---");
-  const enPartida = jugadoresActivos.length >= 2;
+  const enPartida = data.jugador1 && data.jugador1 !== "---";
 
   if (isTV) {
     return <TvView data={data} enPartida={enPartida} tiempoReal={tiempoReal} qrUrl={qrUrl} mesaId={mesaId} />;
@@ -65,33 +55,25 @@ export default function App() {
   }
 }
 
-// --- SHOT CLOCK (MOVIL CON CONTADOR Y COLORES CORREGIDOS) ---
+// --- SHOT CLOCK (CON SONIDO Y SINCRONIZACIÓN) ---
 function ShotClock({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
   const isActive = data.shotActive || false;
-  const audioCtx = useRef(null);
-
-  const playAlert = () => {
-    if (!audioCtx.current) audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = audioCtx.current.createOscillator();
-    const gain = audioCtx.current.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.current.destination);
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(880, audioCtx.current.currentTime);
-    gain.gain.setValueAtTime(0.1, audioCtx.current.currentTime);
-    osc.start();
-    osc.stop(audioCtx.current.currentTime + 0.1);
-  };
+  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'));
 
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
+      // Alerta sonora a los 10 segundos
+      if (timeLeft === 10) {
+        audioRef.current.play().catch(e => console.log("Audio play blocked"));
+      }
+
       interval = setInterval(async () => {
-        const nextTime = timeLeft - 1;
-        if (nextTime <= 10 && nextTime >= 0) playAlert();
-        await updateDoc(doc(db, "mesas", mesaId), { tiempoShot: nextTime });
+        await updateDoc(doc(db, "mesas", mesaId), {
+          tiempoShot: timeLeft - 1
+        });
       }, 1000);
     } else if (timeLeft === 0 && isActive) {
       updateDoc(doc(db, "mesas", mesaId), { shotActive: false });
@@ -107,23 +89,28 @@ function ShotClock({ data, mesaId }) {
     updateDoc(doc(db, "mesas", mesaId), { maxShot: val, tiempoShot: val, shotActive: false });
   };
 
-  const progress = (timeLeft / maxTime) * 100;
-  const currentColor = getShotColor(timeLeft);
+  const getBarColor = () => {
+    const elapsed = maxTime - timeLeft;
+    if (elapsed >= 20) return '#ef4444';
+    if (elapsed >= 10) return '#facc15';
+    return '#f97316';
+  };
+
+  const progress = ((maxTime - timeLeft) / maxTime) * 100;
 
   return (
     <div className="w-full flex flex-col items-start">
       <button onClick={resetClock} className="mb-2 ml-1 flex items-center text-[10px] font-black uppercase tracking-widest text-white/40">
         <IconReset /> Reiniciar Tiempo
       </button>
-      <div className="w-full bg-[#111] p-4 rounded-2xl border border-white/5 flex flex-col gap-3">
+      <div className="w-full bg-[#111] p-4 rounded-2xl border border-white/5 flex flex-col gap-3 shadow-lg">
         <div className="flex justify-between items-center">
           <button onClick={togglePlay} className="flex items-center text-white font-black uppercase text-[12px] tracking-widest">
-            {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'Pausar' : 'Iniciar'}
+            {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'Pausa' : 'Play'}
           </button>
-          {/* CONTADOR DIGITAL EN MOVIL */}
-          <span className="text-xl font-mono font-bold tabular-nums" style={{ color: currentColor }}>{timeLeft}s</span>
           <div className="relative flex items-center">
-            <select value={maxTime} onChange={handleMaxTimeChange} className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
+            <select value={maxTime} onChange={handleMaxTimeChange}
+              className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
               <option value={30} className="bg-black">30 SEG</option>
               <option value={40} className="bg-black">40 SEG</option>
               <option value={60} className="bg-black">60 SEG</option>
@@ -132,25 +119,25 @@ function ShotClock({ data, mesaId }) {
           </div>
         </div>
         <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden">
-          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: currentColor }} />
+          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getBarColor() }} />
         </div>
       </div>
     </div>
   );
 }
 
-// --- VISTA TV ADAPTATIVA ---
+// --- VISTA TV (CON BARRA INTEGRADA Y SEGUNDOS) ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
-  const progress = (timeLeft / maxTime) * 100;
-  const currentColor = getShotColor(timeLeft);
-
-  const boxes = [];
-  if (data.jugador1 && data.jugador1 !== "---") boxes.push({ n: data.jugador1, s: data.puntos1, c: "#9333ea" });
-  if (data.jugador2 && data.jugador2 !== "---") boxes.push({ n: data.jugador2, s: data.puntos2, c: "#00A3FF" });
-  if (data.jugador3 && data.jugador3 !== "---") boxes.push({ n: data.jugador3, s: data.puntos3, c: "#ec4899" });
-  if (data.jugador4 && data.jugador4 !== "---") boxes.push({ n: data.jugador4, s: data.puntos4, c: "#64748b" });
+  const progress = ((maxTime - timeLeft) / maxTime) * 100;
+  
+  const getBarColor = () => {
+    const elapsed = maxTime - timeLeft;
+    if (elapsed >= 20) return '#ef4444';
+    if (elapsed >= 10) return '#facc15';
+    return '#f97316';
+  };
 
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
@@ -172,16 +159,20 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
             <span className="text-3xl font-black text-white tracking-[0.2em] uppercase">MESA {mesaId.replace("mesa", "")}</span>
             <div className="bg-[#111] border border-white px-6 py-2 rounded-xl"><span className="text-lg font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span></div>
           </div>
-          <div className={`flex-1 grid gap-4 ${boxes.length === 2 ? 'grid-cols-2 grid-rows-1' : 'grid-cols-2 grid-rows-2'}`}>
-            {boxes.map((box, i) => (
-              <ScoreBox key={i} name={box.n} score={box.s} color={box.c} small={boxes.length > 2} />
-            ))}
+          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-4">
+            <ScoreBox name={data.jugador1} score={data.puntos1} color="#9333ea" />
+            <ScoreBox name={data.jugador2} score={data.puntos2} color="#00A3FF" />
+            <ScoreBox name={data.jugador3} score={data.puntos3} color="#ec4899" />
+            <ScoreBox name={data.jugador4} score={data.puntos4} color="#64748b" />
           </div>
-          {/* BARRA Y SEGUNDOS EN TV CORREGIDOS */}
-          <div className="flex flex-col items-center gap-2 mt-2">
-            <span className="text-4xl font-mono font-bold tabular-nums" style={{ color: currentColor }}>{timeLeft}s</span>
-            <div className="w-full h-8 bg-[#111] rounded-full border border-white px-1 flex items-center">
-              <div className="h-5 rounded-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: currentColor }} />
+          
+          {/* BARRA DE TIEMPO INTEGRADA EN TV */}
+          <div className="bg-[#111] border border-white p-4 rounded-2xl flex items-center gap-6 shadow-2xl mt-2">
+            <div className="flex-1 h-6 bg-white/5 rounded-full overflow-hidden">
+               <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getBarColor() }} />
+            </div>
+            <div className="w-24 text-right">
+               <span className="text-3xl font-mono font-bold text-white tabular-nums">{timeLeft}s</span>
             </div>
           </div>
         </div>
@@ -190,28 +181,24 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   );
 }
 
-function ScoreBox({ name, score, color, small }) {
+function ScoreBox({ name, score, color }) {
   return (
     <div className="bg-[#111] rounded-[2rem] border border-white/5 flex flex-col overflow-hidden relative shadow-lg">
       <div style={{ backgroundColor: color }} className="h-[18%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2vh] px-4 truncate">{name}</div>
-      <div className="flex-1 flex items-center justify-center text-white">
-        <span className={`${small ? 'text-[25vh]' : 'text-[35vh]'} font-black leading-none`}>{score || 0}</span>
-      </div>
+      <div className="flex-1 flex items-center justify-center text-white"><span className="text-[25vh] font-black leading-none">{score || 0}</span></div>
     </div>
   );
 }
 
-// --- VISTA MÓVIL ADAPTATIVA ---
+// --- VISTA MÓVIL ---
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
   const [n3, setN3] = useState(''); const [n4, setN4] = useState('');
 
   const iniciarPartida = async () => {
-    const nombres = [n1, n2, n3, n4].filter(n => n.trim() !== "");
-    if (nombres.length < 2) return alert("Introduce al menos 2 nombres para empezar");
-    
+    if (!n1 || !n2 || !n3 || !n4) return alert("Introduce todos los nombres");
     await updateDoc(doc(db, "mesas", mesaId), {
-      jugador1: n1 || "---", jugador2: n2 || "---", jugador3: n3 || "---", jugador4: n4 || "---",
+      jugador1: n1, jugador2: n2, jugador3: n3, jugador4: n4,
       puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0, 
       inicio: new Date().getTime(),
       tiempoShot: 30, maxShot: 30, shotActive: false
@@ -251,26 +238,35 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
             {[setN1, setN2, setN3, setN4].map((set, i) => (
               <input key={i} style={{ fontSize: '16px' }} className="w-full bg-[#0a0a0a] border border-white/5 p-4 rounded-xl text-center outline-none text-white font-black tracking-widest" placeholder={`JUGADOR ${i+1}`} onChange={e => set(e.target.value)} />
             ))}
-            <button onClick={iniciarPartida} className="w-full bg-white text-black font-bold text-sm p-4 rounded-xl uppercase tracking-[0.3em] mt-8">Empezar</button>
+            <button onClick={iniciarPartida} className="w-full bg-white text-black font-bold text-sm p-4 rounded-xl uppercase tracking-[0.3em] mt-8 active:scale-95 transition-transform shadow-lg">Empezar</button>
           </div>
         </div>
       ) : (
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex justify-between items-start py-2 px-1">
             <div className="flex flex-col gap-3">
-              <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none text-white">MESA {mesaId.replace("mesa", "")}</span>
-              <button onClick={reiniciarPuntos} className="flex items-center text-[10px] font-black uppercase text-white/40"><IconReset /> Reiniciar Todo</button>
+              <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none">MESA {mesaId.replace("mesa", "")}</span>
+              <button onClick={reiniciarPuntos} className="flex items-center text-[10px] font-black uppercase text-white/40 active:text-white/60">
+                <IconReset /> Reiniciar Todo
+              </button>
             </div>
-            <div className="bg-[#0a0a0a] border border-white px-4 py-1.5 rounded-lg shadow-md"><span className="text-sm font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span></div>
+            <div className="bg-[#0a0a0a] border border-white px-4 py-1.5 rounded-lg shadow-md">
+               <span className="text-sm font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span>
+            </div>
           </div>
-          <div className={`flex-1 grid gap-3 ${[data.jugador1, data.jugador2, data.jugador3, data.jugador4].filter(j => j !== "---").length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
-            {data.jugador1 !== "---" && <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />}
-            {data.jugador2 !== "---" && <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />}
-            {data.jugador3 !== "---" && <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />}
-            {data.jugador4 !== "---" && <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />}
+          
+          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3">
+            <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
+            <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
+            <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
+            <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
           </div>
+
           <ShotClock data={data} mesaId={mesaId} />
-          <div className="pt-2 flex justify-center"><button onClick={finalizarSesion} className="w-full py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Cerrar Mesa</button></div>
+
+          <div className="pt-2 flex justify-center">
+            <button onClick={finalizarSesion} className="w-full py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500 active:bg-red-950/20 transition-colors">Cerrar Mesa</button>
+          </div>
         </div>
       )}
     </div>
@@ -281,13 +277,14 @@ function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) 
   return (
     <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative shadow-inner">
       <div className="relative flex items-center justify-center" style={{ backgroundColor: color }}>
-        <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)} style={{ fontSize: '16px' }} className="py-2.5 text-center text-white font-bold uppercase tracking-[0.3em] outline-none border-none w-full bg-transparent" />
+        <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)}
+          style={{ fontSize: '16px' }} className="py-2.5 text-center text-white font-bold uppercase tracking-[0.3em] outline-none border-none w-full bg-transparent" />
         <div className="absolute right-2 pointer-events-none"><IconPencil /></div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center py-2 relative">
-        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10">-</button>
+        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10 active:bg-white/30">-</button>
         <div onClick={onPlus} className="text-6xl font-black tabular-nums tracking-tighter active:scale-95 transition-transform">{score || 0}</div>
-        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10">+</button>
+        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white text-lg z-10 active:bg-white/30">+</button>
       </div>
     </div>
   );

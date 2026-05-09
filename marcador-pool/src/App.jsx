@@ -12,6 +12,14 @@ const IconPause = () => <svg className="w-4 h-4 mr-1" fill="currentColor" viewBo
 const IconReset = () => <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>;
 const IconChevron = () => <svg className="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>;
 
+// --- LÓGICA DE COLOR COMPARTIDA ---
+const getShotColor = (timeLeft) => {
+  if (timeLeft <= 5) return '#ef4444'; // Rojo (Crítico)
+  if (timeLeft <= 10) return '#facc15'; // Amarillo (Alerta)
+  if (timeLeft <= 20) return '#f97316'; // Naranja (Advertencia)
+  return '#22c55e'; // Verde (Tiempo suficiente)
+};
+
 export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
@@ -47,7 +55,6 @@ export default function App() {
 
   if (!data) return null;
   
-  // Se considera en partida si al menos hay 2 jugadores con nombre real
   const jugadoresActivos = [data.jugador1, data.jugador2, data.jugador3, data.jugador4].filter(j => j && j !== "---");
   const enPartida = jugadoresActivos.length >= 2;
 
@@ -58,7 +65,7 @@ export default function App() {
   }
 }
 
-// --- SHOT CLOCK SINCRONIZADO ---
+// --- SHOT CLOCK (MOVIL CON CONTADOR Y COLORES CORREGIDOS) ---
 function ShotClock({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -100,13 +107,8 @@ function ShotClock({ data, mesaId }) {
     updateDoc(doc(db, "mesas", mesaId), { maxShot: val, tiempoShot: val, shotActive: false });
   };
 
-  const progress = ((maxTime - timeLeft) / maxTime) * 100;
-  const getBarColor = () => {
-    const elapsed = maxTime - timeLeft;
-    if (elapsed >= 20) return '#ef4444'; // Rojo (final)
-    if (elapsed >= 10) return '#facc15'; // Amarillo (medio)
-    return '#f97316'; // Naranja (inicio)
-  };
+  const progress = (timeLeft / maxTime) * 100;
+  const currentColor = getShotColor(timeLeft);
 
   return (
     <div className="w-full flex flex-col items-start">
@@ -116,8 +118,10 @@ function ShotClock({ data, mesaId }) {
       <div className="w-full bg-[#111] p-4 rounded-2xl border border-white/5 flex flex-col gap-3">
         <div className="flex justify-between items-center">
           <button onClick={togglePlay} className="flex items-center text-white font-black uppercase text-[12px] tracking-widest">
-            {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'Pausa' : 'Play'}
+            {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'Pausar' : 'Iniciar'}
           </button>
+          {/* CONTADOR DIGITAL EN MOVIL */}
+          <span className="text-xl font-mono font-bold tabular-nums" style={{ color: currentColor }}>{timeLeft}s</span>
           <div className="relative flex items-center">
             <select value={maxTime} onChange={handleMaxTimeChange} className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
               <option value={30} className="bg-black">30 SEG</option>
@@ -128,7 +132,7 @@ function ShotClock({ data, mesaId }) {
           </div>
         </div>
         <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden">
-          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getBarColor() }} />
+          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: currentColor }} />
         </div>
       </div>
     </div>
@@ -139,16 +143,9 @@ function ShotClock({ data, mesaId }) {
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
-  const progress = ((maxTime - timeLeft) / maxTime) * 100;
-  
-  const getBarColor = () => {
-    const elapsed = maxTime - timeLeft;
-    if (elapsed >= 20) return '#ef4444';
-    if (elapsed >= 10) return '#facc15';
-    return '#f97316';
-  };
+  const progress = (timeLeft / maxTime) * 100;
+  const currentColor = getShotColor(timeLeft);
 
-  // Filtrar solo los jugadores que tienen nombre
   const boxes = [];
   if (data.jugador1 && data.jugador1 !== "---") boxes.push({ n: data.jugador1, s: data.puntos1, c: "#9333ea" });
   if (data.jugador2 && data.jugador2 !== "---") boxes.push({ n: data.jugador2, s: data.puntos2, c: "#00A3FF" });
@@ -180,10 +177,11 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
               <ScoreBox key={i} name={box.n} score={box.s} color={box.c} small={boxes.length > 2} />
             ))}
           </div>
+          {/* BARRA Y SEGUNDOS EN TV CORREGIDOS */}
           <div className="flex flex-col items-center gap-2 mt-2">
-            <span className="text-2xl font-mono font-bold text-white/60">{timeLeft}s</span>
+            <span className="text-4xl font-mono font-bold tabular-nums" style={{ color: currentColor }}>{timeLeft}s</span>
             <div className="w-full h-8 bg-[#111] rounded-full border border-white px-1 flex items-center">
-              <div className="h-5 rounded-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getBarColor() }} />
+              <div className="h-5 rounded-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: currentColor }} />
             </div>
           </div>
         </div>
@@ -209,7 +207,6 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n3, setN3] = useState(''); const [n4, setN4] = useState('');
 
   const iniciarPartida = async () => {
-    // Validación: Al menos 2 nombres
     const nombres = [n1, n2, n3, n4].filter(n => n.trim() !== "");
     if (nombres.length < 2) return alert("Introduce al menos 2 nombres para empezar");
     
@@ -261,19 +258,17 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex justify-between items-start py-2 px-1">
             <div className="flex flex-col gap-3">
-              <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none">MESA {mesaId.replace("mesa", "")}</span>
+              <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none text-white">MESA {mesaId.replace("mesa", "")}</span>
               <button onClick={reiniciarPuntos} className="flex items-center text-[10px] font-black uppercase text-white/40"><IconReset /> Reiniciar Todo</button>
             </div>
             <div className="bg-[#0a0a0a] border border-white px-4 py-1.5 rounded-lg shadow-md"><span className="text-sm font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span></div>
           </div>
-          
           <div className={`flex-1 grid gap-3 ${[data.jugador1, data.jugador2, data.jugador3, data.jugador4].filter(j => j !== "---").length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {data.jugador1 !== "---" && <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />}
             {data.jugador2 !== "---" && <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />}
             {data.jugador3 !== "---" && <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />}
             {data.jugador4 !== "---" && <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />}
           </div>
-          
           <ShotClock data={data} mesaId={mesaId} />
           <div className="pt-2 flex justify-center"><button onClick={finalizarSesion} className="w-full py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Cerrar Mesa</button></div>
         </div>

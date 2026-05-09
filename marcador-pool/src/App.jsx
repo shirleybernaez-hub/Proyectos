@@ -24,8 +24,6 @@ const getColorBySeconds = (seconds) => {
 export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
-  
-  // Mantiene la ruta local para mayor fiabilidad
   const audioRef = useRef(new Audio('/alert.mp3'));
 
   const params = new URLSearchParams(window.location.search);
@@ -73,7 +71,7 @@ export default function App() {
   );
 }
 
-// --- SHOT CLOCK SINCRONIZADO ---
+// --- SHOT CLOCK (CORREGIDO: SILENCIO EN CERO) ---
 function ShotClock({ data, mesaId, audioRef }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -82,9 +80,8 @@ function ShotClock({ data, mesaId, audioRef }) {
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
-      // Sincronización: El sonido se dispara ANTES de actualizar el segundo en Firebase
-      // para que el 'Ding' coincida con el cambio de número
-      if (timeLeft <= 10) {
+      // Sincronización: Solo suena si el tiempo es mayor a 0 y menor o igual a 10
+      if (timeLeft <= 10 && timeLeft > 0) {
         audioRef.current.currentTime = 0; 
         audioRef.current.play().catch(() => {});
       }
@@ -92,11 +89,14 @@ function ShotClock({ data, mesaId, audioRef }) {
       interval = setInterval(() => {
         updateDoc(doc(db, "mesas", mesaId), { tiempoShot: timeLeft - 1 });
       }, 1000);
-    } else if (timeLeft === 0 && isActive) {
-      updateDoc(doc(db, "mesas", mesaId), { shotActive: false });
+    } else if (timeLeft <= 0 && isActive) {
+      // Detener audio y pausar reloj al llegar a 0
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      updateDoc(doc(db, "mesas", mesaId), { shotActive: false, tiempoShot: 0 });
     }
     return () => clearInterval(interval);
-  }, [isActive, timeLeft, mesaId, audioRef]); // Agregado audioRef a dependencias
+  }, [isActive, timeLeft, mesaId, audioRef]);
 
   const progress = ((maxTime - timeLeft) / maxTime) * 100;
 
@@ -133,7 +133,6 @@ function ShotClock({ data, mesaId, audioRef }) {
   );
 }
 
-// --- VISTA TV ---
 function TvView({ data, mesaId, tiempoReal }) {
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
   const timeLeft = data.tiempoShot || 0;
@@ -149,8 +148,8 @@ function TvView({ data, mesaId, tiempoReal }) {
       <div className={`flex-1 grid gap-6 ${players.length <= 2 ? 'grid-cols-2 grid-rows-1' : 'grid-cols-2 grid-rows-2'}`}>
         {players.map(i => (
           <div key={i} className="bg-[#111] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl">
-            <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh]">{data[`jugador${i}`]}</div>
-            <div className="flex-1 flex items-center justify-center text-[25vh] font-black tabular-nums">{data[`puntos${i}`] || 0}</div>
+            <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh] text-white">{data[`jugador${i}`]}</div>
+            <div className="flex-1 flex items-center justify-center text-[25vh] font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</div>
           </div>
         ))}
       </div>
@@ -164,7 +163,6 @@ function TvView({ data, mesaId, tiempoReal }) {
   );
 }
 
-// --- VISTA MÓVIL ---
 function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
   const [names, setNames] = useState(['','','','']);
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
@@ -190,7 +188,7 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
           {names.map((n, i) => (
             <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white outline-none" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
           ))}
-          <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4">EMPEZAR PARTIDA</button>
+          <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4 active:scale-95 transition-transform">EMPEZAR PARTIDA</button>
         </div>
       ) : (
         <>
@@ -204,7 +202,7 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
 
           <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {players.map(i => (
-              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-inner">
                 <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-2 px-3 flex items-center justify-center">
                   <input 
                     defaultValue={data[`jugador${i}`]} 

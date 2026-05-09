@@ -49,7 +49,7 @@ export default function App() {
 }
 
 // =========================================================
-// --- VISTA TV (SIMULTÁNEA CON MÓVIL) ---
+// --- VISTA TV (ESTILO MINIMALISTA REFINADO) ---
 // =========================================================
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
@@ -57,12 +57,18 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
       {!enPartida ? (
         <div className="absolute inset-[5%] flex gap-6"> 
           <div className="w-[62%] h-full bg-[#1a1c1e] rounded-[2rem] relative overflow-hidden border border-white/5 shadow-2xl">
-            <div className="absolute top-8 left-8"><span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-white">En Espera</span></div>
-            <div className="absolute inset-0 flex items-center justify-center pb-48"><img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-90" /></div>
+            <div className="absolute top-8 left-8">
+              <span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-light uppercase tracking-widest text-white">En Espera</span>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center pb-48">
+              <img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-90" />
+            </div>
             <div className="absolute bottom-0 left-0 w-full h-[180px] bg-white text-black flex items-center px-10 gap-8">
-              <div className="w-[140px] h-[140px] bg-white flex-shrink-0 flex items-center justify-center p-2 border-2 border-black/5 rounded-lg"><QRCodeSVG value={qrUrl} size="100%" /></div>
+              <div className="w-[140px] h-[140px] bg-white flex-shrink-0 flex items-center justify-center p-2 border-2 border-black/5 rounded-lg">
+                <QRCodeSVG value={qrUrl} size="100%" />
+              </div>
               <div className="flex flex-col justify-center overflow-hidden">
-                <p className="text-[12px] font-black tracking-[0.3em] uppercase mb-1 text-black">Mesa Disponible</p>
+                <p className="text-[12px] font-light tracking-[0.3em] uppercase mb-1 text-black opacity-40">Mesa Disponible</p>
                 <p className="text-[38px] font-light tracking-tighter leading-[0.85] uppercase">Escanea para<br/>comenzar a jugar</p>
               </div>
             </div>
@@ -73,11 +79,11 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
         </div>
       ) : (
         <div className="absolute inset-[4%] flex flex-col gap-4">
-          {/* HEADER TV: Mesa Izquierda, Contador Derecha (Blanco) */}
-          <div className="flex justify-between items-center px-2">
-            <span className="text-4xl font-black text-white/60">Mesa {mesaId.replace("mesa", "")}</span>
-            <div className="bg-[#111] border border-white/10 px-8 py-3 rounded-2xl">
-               <span className="text-2xl font-mono text-white tabular-nums leading-none">{tiempoReal}</span>
+          {/* HEADER TV REFINADO */}
+          <div className="flex justify-between items-center px-4">
+            <span className="text-3xl font-light text-white/40 tracking-[0.2em] uppercase">MESA {mesaId.replace("mesa", "")}</span>
+            <div className="bg-[#111] border border-white/5 px-6 py-2 rounded-xl">
+               <span className="text-lg font-mono font-light text-white/80 tabular-nums leading-none tracking-widest">{tiempoReal}</span>
             </div>
           </div>
           
@@ -96,14 +102,14 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
 function ScoreBox({ name, score, color }) {
   return (
     <div className="bg-[#111] rounded-[2rem] border border-white/5 flex flex-col overflow-hidden relative">
-      <div style={{ backgroundColor: color }} className="h-[18%] flex items-center justify-center text-white font-black uppercase tracking-[0.2em] text-[2.2vh] px-4 truncate">{name}</div>
+      <div style={{ backgroundColor: color }} className="h-[18%] flex items-center justify-center text-white font-light uppercase tracking-[0.3em] text-[2vh] px-4 truncate">{name}</div>
       <div className="flex-1 flex items-center justify-center text-white"><span className="text-[25vh] font-black leading-none">{score || 0}</span></div>
     </div>
   );
 }
 
 // =========================================================
-// --- VISTA MÓVIL (CONTADOR BLANCO Y MESA SIMPLIFICADA) ---
+// --- VISTA MÓVIL (ESTILO MINIMALISTA REFINADO) ---
 // =========================================================
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
@@ -142,38 +148,38 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#050505] text-white font-sans flex flex-col p-4 select-none overflow-hidden">
+    <div className="min-h-screen w-full bg-[#050505] text-white font-sans flex flex-col p-5 select-none overflow-hidden">
       {!enPartida ? (
-        <div className="flex-1 flex flex-col items-center justify-center py-6 text-white">
-          <img src={LogoBilliard} className="w-24 mb-6 opacity-80" alt="logo" />
-          <div className="w-full max-w-xs space-y-3">
+        <div className="flex-1 flex flex-col items-center justify-center py-6">
+          <img src={LogoBilliard} className="w-24 mb-10 opacity-70" alt="logo" />
+          <div className="w-full max-w-xs space-y-4">
             {[setN1, setN2, setN3, setN4].map((set, i) => (
-              <input key={i} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center outline-none text-white" 
-              placeholder={`Jugador ${i+1}`} onChange={e => set(e.target.value)} />
+              <input key={i} className="w-full bg-[#0a0a0a] border border-white/5 p-4 rounded-xl text-center outline-none text-white font-light tracking-widest placeholder:opacity-20" 
+              placeholder={`JUGADOR ${i+1}`} onChange={e => set(e.target.value)} />
             ))}
-            <button onClick={iniciarPartida} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase tracking-widest mt-6">Empezar</button>
+            <button onClick={iniciarPartida} className="w-full bg-white text-black font-light text-sm p-4 rounded-xl uppercase tracking-[0.3em] mt-8 active:scale-95 transition-transform">Empezar</button>
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col gap-4">
-          {/* HEADER MÓVIL: Mesa a la izquierda, Contador Blanco a la derecha */}
-          <div className="flex justify-between items-center py-2">
-            <span className="text-xl font-black text-white/60 leading-none">Mesa {mesaId.replace("mesa", "")}</span>
-            <div className="bg-[#111] border border-white/10 px-6 py-2 rounded-xl">
-               <span className="text-xl font-mono text-white tabular-nums leading-none">{tiempoReal}</span>
+        <div className="flex-1 flex flex-col gap-5">
+          {/* HEADER MÓVIL REFINADO */}
+          <div className="flex justify-between items-center py-2 px-1">
+            <span className="text-sm font-light text-white/30 tracking-[0.3em] uppercase leading-none">MESA {mesaId.replace("mesa", "")}</span>
+            <div className="bg-[#0a0a0a] border border-white/5 px-4 py-1.5 rounded-lg">
+               <span className="text-sm font-mono font-light text-white/60 tabular-nums leading-none tracking-widest">{tiempoReal}</span>
             </div>
           </div>
           
-          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3">
+          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-4">
             <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
             <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
             <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
             <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
           </div>
 
-          <div className="flex gap-3 pt-2">
-            <button onClick={reiniciarPuntos} className="flex-1 py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-white/40">Reiniciar</button>
-            <button onClick={finalizarSesion} className="flex-1 py-4 bg-red-500/5 border border-red-500/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-red-500/40">Finalizar</button>
+          <div className="flex gap-4 pt-4">
+            <button onClick={reiniciarPuntos} className="flex-1 py-4 bg-[#0a0a0a] border border-white/5 rounded-xl text-[10px] font-light uppercase tracking-[0.2em] text-white/20 active:bg-white/5 transition-colors">Reiniciar</button>
+            <button onClick={finalizarSesion} className="flex-1 py-4 bg-red-950/10 border border-red-500/5 rounded-xl text-[10px] font-light uppercase tracking-[0.2em] text-red-500/30 active:bg-red-500/10 transition-colors">Finalizar</button>
           </div>
         </div>
       )}
@@ -183,14 +189,14 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
 
 function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) {
   return (
-    <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative">
+    <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl flex flex-col overflow-hidden relative shadow-inner">
       <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)}
-        className="py-2 text-center text-white font-black uppercase text-[10px] tracking-widest outline-none border-none w-full"
+        className="py-2.5 text-center text-white font-light uppercase text-[9px] tracking-[0.3em] outline-none border-none w-full opacity-90"
         style={{ backgroundColor: color }} />
       <div className="flex-1 flex flex-col items-center justify-center py-2 relative">
-        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white text-xl z-10">-</button>
-        <div onClick={onPlus} className="text-6xl font-black tabular-nums">{score || 0}</div>
-        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white text-xl z-10">+</button>
+        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/5 rounded-full flex items-center justify-center text-white/30 text-lg z-10 active:bg-white/10">-</button>
+        <div onClick={onPlus} className="text-6xl font-black tabular-nums tracking-tighter active:scale-95 transition-transform">{score || 0}</div>
+        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/5 rounded-full flex items-center justify-center text-white/30 text-lg z-10 active:bg-white/10">+</button>
       </div>
     </div>
   );

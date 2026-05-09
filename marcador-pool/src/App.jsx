@@ -55,19 +55,34 @@ export default function App() {
   }
 }
 
-// --- SHOT CLOCK (SINCRONIZADO CON FIREBASE) ---
+// --- SHOT CLOCK (MÓVIL CON SONIDO) ---
 function ShotClock({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
   const isActive = data.shotActive || false;
+  const audioCtx = useRef(null);
+
+  // Función para emitir el beep de alerta
+  const playAlert = () => {
+    if (!audioCtx.current) audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.current.createOscillator();
+    const gain = audioCtx.current.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.current.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, audioCtx.current.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.current.currentTime);
+    osc.start();
+    osc.stop(audioCtx.current.currentTime + 0.1);
+  };
 
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
       interval = setInterval(async () => {
-        await updateDoc(doc(db, "mesas", mesaId), {
-          tiempoShot: timeLeft - 1
-        });
+        const nextTime = timeLeft - 1;
+        if (nextTime <= 10 && nextTime >= 0) playAlert();
+        await updateDoc(doc(db, "mesas", mesaId), { tiempoShot: nextTime });
       }, 1000);
     } else if (timeLeft === 0 && isActive) {
       updateDoc(doc(db, "mesas", mesaId), { shotActive: false });
@@ -83,14 +98,13 @@ function ShotClock({ data, mesaId }) {
     updateDoc(doc(db, "mesas", mesaId), { maxShot: val, tiempoShot: val, shotActive: false });
   };
 
+  const progress = ((maxTime - timeLeft) / maxTime) * 100;
   const getBarColor = () => {
     const elapsed = maxTime - timeLeft;
     if (elapsed >= 20) return '#ef4444';
     if (elapsed >= 10) return '#facc15';
     return '#f97316';
   };
-
-  const progress = ((maxTime - timeLeft) / maxTime) * 100;
 
   return (
     <div className="w-full flex flex-col items-start">
@@ -103,8 +117,7 @@ function ShotClock({ data, mesaId }) {
             {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'Pausa' : 'Play'}
           </button>
           <div className="relative flex items-center">
-            <select value={maxTime} onChange={handleMaxTimeChange}
-              className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
+            <select value={maxTime} onChange={handleMaxTimeChange} className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
               <option value={30} className="bg-black">30 SEG</option>
               <option value={40} className="bg-black">40 SEG</option>
               <option value={60} className="bg-black">60 SEG</option>
@@ -120,7 +133,7 @@ function ShotClock({ data, mesaId }) {
   );
 }
 
-// --- VISTA TV (AHORA MUESTRA LA BARRA) ---
+// --- VISTA TV (CON BARRA Y CONTADOR SEGUNDOS) ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -159,9 +172,12 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
             <ScoreBox name={data.jugador3} score={data.puntos3} color="#ec4899" />
             <ScoreBox name={data.jugador4} score={data.puntos4} color="#64748b" />
           </div>
-          {/* BARRA DE TIEMPO EN TV */}
-          <div className="h-6 bg-[#111] rounded-full border border-white/5 overflow-hidden mt-2 shadow-2xl">
-            <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getBarColor() }} />
+          {/* BARRA Y SEGUNDOS EN TV */}
+          <div className="flex flex-col items-center gap-2 mt-2">
+            <span className="text-2xl font-mono font-bold text-white/60">{timeLeft}s</span>
+            <div className="w-full h-8 bg-[#111] rounded-full border border-white px-1 flex items-center">
+              <div className="h-5 rounded-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getBarColor() }} />
+            </div>
           </div>
         </div>
       )}
@@ -220,7 +236,7 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   return (
     <div className="min-h-screen w-full bg-[#050505] text-white font-sans flex flex-col p-5 select-none overflow-hidden">
       {!enPartida ? (
-        <div className="flex-1 flex flex-col items-center justify-center py-6">
+        <div className="flex-1 flex flex-col items-center justify-center py-6 text-white">
           <img src={LogoBilliard} className="w-24 mb-10 opacity-70" alt="logo" />
           <div className="w-full max-w-xs space-y-4">
             {[setN1, setN2, setN3, setN4].map((set, i) => (
@@ -234,27 +250,18 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
           <div className="flex justify-between items-start py-2 px-1">
             <div className="flex flex-col gap-3">
               <span className="text-sm font-black text-white tracking-[0.3em] uppercase leading-none">MESA {mesaId.replace("mesa", "")}</span>
-              <button onClick={reiniciarPuntos} className="flex items-center text-[10px] font-black uppercase text-white/40">
-                <IconReset /> Reiniciar Todo
-              </button>
+              <button onClick={reiniciarPuntos} className="flex items-center text-[10px] font-black uppercase text-white/40"><IconReset /> Reiniciar Todo</button>
             </div>
-            <div className="bg-[#0a0a0a] border border-white px-4 py-1.5 rounded-lg">
-               <span className="text-sm font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span>
-            </div>
+            <div className="bg-[#0a0a0a] border border-white px-4 py-1.5 rounded-lg shadow-md"><span className="text-sm font-mono font-bold text-white tabular-nums leading-none tracking-widest">{tiempoReal}</span></div>
           </div>
-          
           <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3">
             <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
             <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
             <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
             <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
           </div>
-
           <ShotClock data={data} mesaId={mesaId} />
-
-          <div className="pt-2 flex justify-center">
-            <button onClick={finalizarSesion} className="w-full py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Cerrar Mesa</button>
-          </div>
+          <div className="pt-2 flex justify-center"><button onClick={finalizarSesion} className="w-full py-4 bg-red-950/10 border border-red-500/10 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Cerrar Mesa</button></div>
         </div>
       )}
     </div>
@@ -265,8 +272,7 @@ function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) 
   return (
     <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative shadow-inner">
       <div className="relative flex items-center justify-center" style={{ backgroundColor: color }}>
-        <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)}
-          style={{ fontSize: '16px' }} className="py-2.5 text-center text-white font-bold uppercase tracking-[0.3em] outline-none border-none w-full bg-transparent" />
+        <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)} style={{ fontSize: '16px' }} className="py-2.5 text-center text-white font-bold uppercase tracking-[0.3em] outline-none border-none w-full bg-transparent" />
         <div className="absolute right-2 pointer-events-none"><IconPencil /></div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center py-2 relative">

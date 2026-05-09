@@ -3,7 +3,7 @@ import { db } from './firebase';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { QRCodeSVG } from 'qrcode.react';
 import LogoBilliard from './assets/billiardplay.png'; 
-import KFCPubli from './assets/kfcpubli.jpg'; // Importación de la nueva publicidad
+import KFCPubli from './assets/kfcpubli.jpg'; 
 
 export default function App() {
   const [data, setData] = useState(null);
@@ -49,48 +49,37 @@ export default function App() {
 }
 
 // =========================================================
-// --- VISTA TV (BIENVENIDA CON PUBLICIDAD REAL) ---
+// --- VISTA TV (MARCADOR MORADO) ---
 // =========================================================
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
       {!enPartida ? (
         <div className="absolute inset-[5%] flex gap-6"> 
-          {/* BLOQUE IZQUIERDO */}
           <div className="w-[62%] h-full bg-[#1a1c1e] rounded-[2rem] relative overflow-hidden border border-white/5 shadow-2xl">
             <div className="absolute top-8 left-8">
               <span className="bg-[#4C5FD5] px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-white">En Espera</span>
             </div>
-            
             <div className="absolute inset-0 flex items-center justify-center pb-48">
               <img src={LogoBilliard} alt="Logo" className="w-[180px] object-contain opacity-90" />
             </div>
-
-            {/* BARRA BLANCA - TIPOGRAFÍA AJUSTADA */}
             <div className="absolute bottom-0 left-0 w-full h-[180px] bg-white text-black flex items-center px-10 gap-8">
               <div className="w-[140px] h-[140px] bg-white flex-shrink-0 flex items-center justify-center p-2 border-2 border-black/5 rounded-lg">
                 <QRCodeSVG value={qrUrl} size="100%" />
               </div>
               <div className="flex flex-col justify-center overflow-hidden">
-                {/* Mesa Disponible en NEGRITA (BOLD) */}
-                <p className="text-[12px] font-black tracking-[0.3em] uppercase mb-1 text-black">Mesa Disponible</p>
-                {/* Texto: MAYÚSCULAS y un punto más pequeño */}
+                <p className="text-[12px] font-bold tracking-[0.3em] uppercase mb-1 text-black">Mesa Disponible</p>
                 <p className="text-[38px] font-light tracking-tighter leading-[0.85] break-words uppercase">
                   Escanea para<br/>comenzar a jugar
                 </p>
               </div>
             </div>
           </div>
-
-          {/* CUADRO DE PUBLICIDAD CON IMAGEN REAL */}
           <div className="w-[38%] h-full bg-[#111] rounded-[2rem] border border-white/5 relative overflow-hidden">
              <img src={KFCPubli} alt="Publicidad KFC" className="w-full h-full object-cover" />
-             {/* Overlay sutil para indicar que es publicidad si la imagen no lo dice */}
-             <span className="absolute top-6 right-6 text-[8px] tracking-[0.5em] text-white/30 uppercase font-bold">Publicidad</span>
           </div>
         </div>
       ) : (
-        /* MARCADOR EN VIVO (INTACTO) */
         <div className="absolute inset-[4%] flex flex-col gap-6">
           <div className="h-[20%] bg-[#111] border border-white/10 rounded-[2rem] relative">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -102,12 +91,13 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
             </div>
           </div>
           <div className="flex-1 flex gap-6">
+            {/* Jugador 1 con fondo MORADO */}
             <div className="flex-1 bg-[#111] rounded-[3rem] border border-white/5 flex flex-col overflow-hidden relative">
-              <div className="bg-[#A2FF00] h-[15%] flex items-center justify-center text-black font-black uppercase tracking-[0.3em] text-[3vh]">{data.jugador1}</div>
+              <div className="bg-[#9333ea] h-[15%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[3vh]">{data.jugador1}</div>
               <div className="flex-1 flex items-center justify-center text-white"><span className="text-[40vh] font-black leading-none">{data.puntos1}</span></div>
             </div>
             <div className="flex-1 bg-[#111] rounded-[3rem] border border-white/5 flex flex-col overflow-hidden relative">
-              <div className="bg-[#00A3FF] h-[15%] flex items-center justify-center text-black font-black uppercase tracking-[0.3em] text-[3vh]">{data.jugador2}</div>
+              <div className="bg-[#00A3FF] h-[15%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[3vh]">{data.jugador2}</div>
               <div className="flex-1 flex items-center justify-center text-white"><span className="text-[40vh] font-black leading-none">{data.puntos2}</span></div>
             </div>
           </div>
@@ -118,7 +108,7 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
 }
 
 // =========================================================
-// --- VISTA MÓVIL (PROTEGIDA) ---
+// --- VISTA MÓVIL (MANTENIENDO MORADO PARA COHERENCIA) ---
 // =========================================================
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [nombre1, setNombre1] = useState('');
@@ -173,7 +163,7 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
           </div>
           <div className="flex-1 flex flex-col gap-4">
             <div onClick={(e) => updateScore('puntos1', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative active:bg-[#151515]">
-              <div className="bg-[#A2FF00] p-3 text-center text-black font-black uppercase text-xs">{data.jugador1}</div>
+              <div className="bg-[#9333ea] p-3 text-center text-white font-black uppercase text-xs">{data.jugador1}</div>
               <div className="flex-1 flex items-center justify-center text-[100px] font-black leading-none">{data.puntos1}</div>
               <div className="absolute left-0 bottom-0 w-24 h-24 flex items-center justify-center text-white/20 text-5xl" onClick={(e) => updateScore('puntos1', -1, e)}>-</div>
             </div>
@@ -182,7 +172,7 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
             </div>
             <div onClick={(e) => updateScore('puntos2', 1, e)} className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative active:bg-[#151515]">
               <div className="flex-1 flex items-center justify-center text-[100px] font-black leading-none">{data.puntos2}</div>
-              <div className="bg-[#00A3FF] p-3 text-center text-black font-black uppercase text-xs">{data.jugador2}</div>
+              <div className="bg-[#00A3FF] p-3 text-center text-white font-black uppercase text-xs">{data.jugador2}</div>
               <div className="absolute right-0 top-12 w-24 h-24 flex items-center justify-center text-white/20 text-5xl" onClick={(e) => updateScore('puntos2', -1, e)}>-</div>
             </div>
           </div>

@@ -48,7 +48,7 @@ export default function App() {
   }
 }
 
-// --- VISTA TV (RECIBE CAMBIOS DE NOMBRE EN TIEMPO REAL) ---
+// --- VISTA TV (NUEVA JERARQUÍA: CONTADOR ARRIBA) ---
 function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
   return (
     <div className="h-screen w-screen bg-black text-white font-sans overflow-hidden relative select-none">
@@ -66,10 +66,17 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
         </div>
       ) : (
         <div className="absolute inset-[4%] flex flex-col gap-4">
-          <div className="h-[15%] bg-[#111] border border-white/10 rounded-[2rem] flex items-center justify-center relative">
-            <span className="text-[10vh] font-mono font-normal text-[#D4AF37] tracking-[0.1em] tabular-nums">{tiempoReal}</span>
-            <div className="absolute right-10 text-white/50 text-right"><p className="text-[1vh] uppercase tracking-[0.4em]">Mesa</p><p className="text-[4vh] font-black">{mesaId.replace("mesa", "")}</p></div>
+          {/* CONTADOR ARRIBA (Rectángulo no protagonista) */}
+          <div className="flex justify-center">
+            <div className="bg-[#111] border border-white/10 px-8 py-2 rounded-2xl flex items-center gap-6">
+              <div className="flex flex-col">
+                <span className="text-[8px] uppercase tracking-[0.4em] opacity-30">Mesa {mesaId.replace("mesa", "")}</span>
+                <span className="text-xl font-mono text-[#D4AF37] leading-none">{tiempoReal}</span>
+              </div>
+            </div>
           </div>
+
+          {/* GRID DE MARCADORES (PROTAGONISTAS) */}
           <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-4">
             <ScoreBox name={data.jugador1} score={data.puntos1} color="#9333ea" />
             <ScoreBox name={data.jugador2} score={data.puntos2} color="#00A3FF" />
@@ -85,15 +92,13 @@ function TvView({ data, enPartida, tiempoReal, qrUrl, mesaId }) {
 function ScoreBox({ name, score, color }) {
   return (
     <div className="bg-[#111] rounded-[2rem] border border-white/5 flex flex-col overflow-hidden relative">
-      <div style={{ backgroundColor: color }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.2em] text-[2.5vh] px-4 truncate">{name}</div>
-      <div className="flex-1 flex items-center justify-center text-white"><span className="text-[22vh] font-black leading-none">{score || 0}</span></div>
+      <div style={{ backgroundColor: color }} className="h-[18%] flex items-center justify-center text-white font-black uppercase tracking-[0.2em] text-[2.2vh] px-4 truncate">{name}</div>
+      <div className="flex-1 flex items-center justify-center text-white"><span className="text-[25vh] font-black leading-none">{score || 0}</span></div>
     </div>
   );
 }
 
-// =========================================================
-// --- VISTA MÓVIL (CON EDICIÓN DE NOMBRES) ---
-// =========================================================
+// --- VISTA MÓVIL (MANTIENE EDICIÓN Y DISEÑO 2x2) ---
 function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
   const [n1, setN1] = useState(''); const [n2, setN2] = useState('');
   const [n3, setN3] = useState(''); const [n4, setN4] = useState('');
@@ -106,8 +111,7 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
     });
   };
 
-  const updateScore = async (campo, valor, e) => {
-    if (e) e.stopPropagation();
+  const updateScore = async (campo, valor) => {
     const valorActual = Number(data[campo]) || 0;
     await updateDoc(doc(db, "mesas", mesaId), { [campo]: Math.max(0, valorActual + valor) });
   };
@@ -146,10 +150,10 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
           </div>
           
           <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3">
-            <MobileScoreBox field="jugador1" label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
-            <MobileScoreBox field="jugador2" label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
-            <MobileScoreBox field="jugador3" label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
-            <MobileScoreBox field="jugador4" label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
+            <MobileScoreBox label={data.jugador1} score={data.puntos1} color="#9333ea" onPlus={() => updateScore('puntos1', 1)} onMinus={() => updateScore('puntos1', -1)} onNameChange={(val) => updateName('jugador1', val)} />
+            <MobileScoreBox label={data.jugador2} score={data.puntos2} color="#00A3FF" onPlus={() => updateScore('puntos2', 1)} onMinus={() => updateScore('puntos2', -1)} onNameChange={(val) => updateName('jugador2', val)} />
+            <MobileScoreBox label={data.jugador3} score={data.puntos3} color="#ec4899" onPlus={() => updateScore('puntos3', 1)} onMinus={() => updateScore('puntos3', -1)} onNameChange={(val) => updateName('jugador3', val)} />
+            <MobileScoreBox label={data.jugador4} score={data.puntos4} color="#64748b" onPlus={() => updateScore('puntos4', 1)} onMinus={() => updateScore('puntos4', -1)} onNameChange={(val) => updateName('jugador4', val)} />
           </div>
 
           <div className="flex items-center justify-center py-2"><div className="bg-[#111] px-8 py-2 rounded-xl text-3xl font-mono text-[#D4AF37]">{tiempoReal}</div></div>
@@ -163,21 +167,13 @@ function MobileView({ data, enPartida, tiempoReal, mesaId, db }) {
 function MobileScoreBox({ label, score, color, onPlus, onMinus, onNameChange }) {
   return (
     <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col overflow-hidden relative">
-      {/* Input de Nombre Editable */}
-      <input 
-        type="text" 
-        value={label} 
-        onChange={(e) => onNameChange(e.target.value)}
+      <input type="text" value={label} onChange={(e) => onNameChange(e.target.value)}
         className="py-2 text-center text-white font-black uppercase text-[10px] tracking-widest outline-none border-none w-full"
-        style={{ backgroundColor: color }}
-      />
-      
+        style={{ backgroundColor: color }} />
       <div className="flex-1 flex flex-col items-center justify-center py-4 relative">
-        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white text-2xl font-bold active:bg-white/20 z-10">-</button>
-        
-        <div onClick={onPlus} className="text-6xl font-black tabular-nums active:scale-95 transition-transform">{score || 0}</div>
-        
-        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white text-2xl font-bold active:bg-white/20 z-10">+</button>
+        <button onClick={(e) => { e.stopPropagation(); onMinus(); }} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white text-xl z-10">-</button>
+        <div onClick={onPlus} className="text-5xl font-black">{score || 0}</div>
+        <button onClick={(e) => { e.stopPropagation(); onPlus(); }} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white text-xl z-10">+</button>
       </div>
     </div>
   );

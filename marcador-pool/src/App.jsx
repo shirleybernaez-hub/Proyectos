@@ -25,8 +25,8 @@ export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
   
-  // Nuevo sonido: "Ding" resonante para la cuenta regresiva
-  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/2216/2216-preview.mp3'));
+  // AUDIO CORREGIDO: Sonido de "Short Beep" digital profesional para cuenta regresiva
+  const audioRef = useRef(new Audio('https://assets.mixkit.co/active_storage/sfx/3003/3003-preview.mp3'));
 
   const params = new URLSearchParams(window.location.search);
   const mesaId = params.get('mesa') || 'mesa1'; 
@@ -81,7 +81,7 @@ function ShotClock({ data, mesaId, audioRef }) {
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
-      // Suena el "Ding" cada segundo cuando faltan 10 o menos
+      // El sonido suena en cada uno de los últimos 10 segundos
       if (timeLeft <= 10) {
         audioRef.current.currentTime = 0;
         audioRef.current.play().catch(() => {});
@@ -151,7 +151,6 @@ function TvView({ data, mesaId, tiempoReal }) {
           </div>
         ))}
       </div>
-      {/* BARRA TV PROTEGIDA */}
       <div className="bg-[#111] border border-white p-5 rounded-[2rem] flex flex-col items-center gap-2">
         <span className="text-5xl font-mono font-black tabular-nums" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}</span>
         <div className="w-full h-8 bg-white/5 rounded-full overflow-hidden">
@@ -187,21 +186,21 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
           {names.map((n, i) => (
             <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white outline-none" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
           ))}
-          <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4">EMPEZAR PARTIDA</button>
+          <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4 active:scale-95 transition-transform">EMPEZAR PARTIDA</button>
         </div>
       ) : (
         <>
           <div className="flex justify-between items-start">
             <div className="flex flex-col gap-4">
               <span className="text-sm font-black tracking-widest uppercase text-white/60">MESA {mesaId.replace("mesa", "")}</span>
-              <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40"><IconReset /> REINICIAR TODO</button>
+              <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40 active:text-white/60"><IconReset /> REINICIAR TODO</button>
             </div>
             <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold tabular-nums">{tiempoReal}</div>
           </div>
 
           <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {players.map(i => (
-              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-inner">
                 <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-2 px-3 flex items-center justify-center">
                   <input 
                     defaultValue={data[`jugador${i}`]} 

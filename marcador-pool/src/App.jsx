@@ -5,10 +5,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import LogoBilliard from './assets/billiardplay.png'; 
 import KFCPubli from './assets/kfcpubli.jpg'; 
 
-/**
- * REGLA 1: FUNCIÓN checkAndCreateMesas
- * Si un documento de mesa desaparece de Firebase, se restaura automáticamente.
- */
+// --- PROTOCOLO DE RECUPERACIÓN DE DATOS (REGLA DE ORO 1) ---
 const checkAndCreateMesas = async () => {
   for (let i = 1; i <= 11; i++) {
     const id = `mesa${i}`;
@@ -67,10 +64,7 @@ export default function App() {
 
   if (!data) return null;
 
-  /**
-   * REGLA 2: LÓGICA enPartida UNIFICADA
-   * El estado del jugador1 determina si mostramos Ingreso o Marcador.
-   */
+  // --- 2. LÓGICA enPartida UNIFICADA (REGLA DE ORO 2) ---
   const enPartida = data.jugador1 && data.jugador1 !== "---";
 
   return (
@@ -83,9 +77,7 @@ export default function App() {
   );
 }
 
-/**
- * REGLA 3: MÓDULOS SEPARADOS (TvView)
- */
+// --- 3. MÓDULOS SEPARADOS (REGLA DE ORO 3) - VISTA TV ---
 function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
   const timeLeft = data.tiempoShot || 0;
@@ -127,7 +119,11 @@ function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
           <div key={i} className="bg-[#111] rounded-[3rem] border border-white/5 flex flex-col overflow-hidden relative shadow-2xl">
             <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[18%] flex items-center justify-center text-white font-black uppercase text-[2.5vh]">{data[`jugador${i}`]}</div>
             <div className="absolute top-[20%] right-8 bg-white/10 px-5 py-1.5 rounded-full"><span className="text-[1.8vh] font-black text-white/40 mr-3">SETS</span><span className="text-[3vh] font-black text-white">{data[`sets${i}`] || 0}</span></div>
-            <div className="flex-1 flex items-center justify-center text-[28vh] font-black leading-none">{data[`puntos${i}`] || 0}</div>
+            
+            {/* ELIMINADO DOBLE CONTROL: botones - y + laterales */}
+            <div className="flex-1 flex items-center justify-center text-[28vh] font-black leading-none">
+              {data[`puntos${i}`] || 0}
+            </div>
           </div>
         ))}
       </div>
@@ -141,9 +137,7 @@ function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
   );
 }
 
-/**
- * REGLA 3: MÓDULOS SEPARADOS (MobileView)
- */
+// --- 3. MÓDULOS SEPARADOS (REGLA DE ORO 3) - VISTA MÓVIL ---
 function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
   const [names, setNames] = useState(['','','','']);
 
@@ -172,6 +166,7 @@ function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
     );
   }
 
+  // PANEL DE CONTROL (BLINDADO)
   return (
     <div className="p-6 flex flex-col min-h-screen gap-5 bg-black">
       <div className="flex justify-between items-start">
@@ -184,19 +179,22 @@ function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
       <div className={`grid gap-3 flex-1 ${[1,2,3,4].filter(i => data[`jugador${i}`] !== "---").length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
         {[1,2,3,4].filter(i => data[`jugador${i}`] !== "---").map(i => (
           <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden flex flex-col relative shadow-inner">
+             
+             {/* MANTENEMOS ESTE CONTROL VERTICAL COMO ÚNICO MÉTODO */}
              <div className="absolute top-12 right-2 flex flex-col items-center bg-black/50 rounded-xl p-1 border border-white/5 z-10">
-                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`sets${i}`]:(data[`sets${i}`]||0)+1})} className="px-3 py-1 font-bold">+</button>
-                <span className="text-xs font-black">{data[`sets${i}`] || 0}</span>
-                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`sets${i}`]:Math.max(0,(data[`sets${i}`]||0)-1)})} className="px-3 py-1 font-bold">-</button>
+                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="px-3 py-1 font-bold">+</button>
+                <span className="text-xs font-black">{data[`puntos${i}`] || 0}</span>
+                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0,(data[`puntos${i}`]||0)-1)})} className="px-3 py-1 font-bold">-</button>
              </div>
+             
              <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-2.5 px-4 flex items-center justify-center">
                 <input value={data[`jugador${i}`]} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{[`jugador${i}`]:e.target.value || "JUGADOR"})} className="bg-transparent text-center font-black uppercase text-[10px] outline-none w-full text-white" />
                 <IconPencil />
              </div>
-             <div className="flex-1 flex items-center justify-between px-6 py-2 pr-14">
-                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-11 h-11 bg-white/10 rounded-full flex items-center justify-center text-2xl">-</button>
-                <span className="text-6xl font-black">{data[`puntos${i}`] || 0}</span>
-                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-11 h-11 bg-white/10 rounded-full flex items-center justify-center text-2xl">+</button>
+             
+             {/* ELIMINADO DOBLE CONTROL: botones circular - y + a los lados */}
+             <div className="flex-1 flex items-center justify-center px-6 py-2 pr-14">
+                <span className="text-6xl font-black tabular-nums">{data[`puntos${i}`] || 0}</span>
              </div>
           </div>
         ))}

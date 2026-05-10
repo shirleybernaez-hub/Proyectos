@@ -155,4 +155,75 @@ function TvView({ data, mesaId, tiempoReal }) {
       <div className="bg-[#111] border border-white p-5 rounded-[2rem] flex flex-col items-center gap-2">
         <span className="text-5xl font-mono font-black tabular-nums" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}</span>
         <div className="w-full h-8 bg-white/5 rounded-full overflow-hidden">
-          <div className="h-full transition-all duration-1000 ease
+          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- VISTA MÓVIL ---
+function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
+  const [names, setNames] = useState(['','','','']);
+  const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
+
+  const iniciar = async () => {
+    const valid = names.filter(n => n.trim() !== "");
+    if (valid.length < 2) return alert("Mínimo 2 jugadores");
+    const update = { inicio: new Date().getTime(), shotActive: false, tiempoShot: 30, maxShot: 30 };
+    names.forEach((n, i) => { update[`jugador${i+1}`] = n.trim() || "---"; update[`puntos${i+1}`] = 0; });
+    await updateDoc(doc(db, "mesas", mesaId), update);
+  };
+
+  const handleEditName = async (i, value) => {
+    const cleanValue = value.trim() === "" ? "JUGADOR " + i : value;
+    await updateDoc(doc(db, "mesas", mesaId), { [`jugador${i}`]: cleanValue });
+  };
+
+  return (
+    <div className="p-6 flex flex-col min-h-screen gap-5 bg-black">
+      {data.jugador1 === "---" ? (
+        <div className="flex-1 flex flex-col items-center justify-center gap-4">
+          <img src={LogoBilliard} className="w-32 mb-6 opacity-60" alt="logo" />
+          {names.map((n, i) => (
+            <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white outline-none" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
+          ))}
+          <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4 active:scale-95 transition-transform">EMPEZAR PARTIDA</button>
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-between items-start">
+            <div className="flex flex-col gap-4">
+              <span className="text-sm font-black tracking-widest uppercase text-white/60">MESA {mesaId.replace("mesa", "")}</span>
+              <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40 active:text-white/60"><IconReset /> REINICIAR TODO</button>
+            </div>
+            <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold tabular-nums">{tiempoReal}</div>
+          </div>
+
+          <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+            {players.map(i => (
+              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-inner">
+                <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-2 px-3 flex items-center justify-center">
+                  <input 
+                    defaultValue={data[`jugador${i}`]} 
+                    onBlur={(e) => handleEditName(i, e.target.value)}
+                    style={{fontSize:'16px'}} 
+                    className="bg-transparent text-center font-black uppercase text-[10px] outline-none w-full text-white" 
+                  />
+                  <IconPencil />
+                </div>
+                <div className="flex-1 flex items-center justify-between px-4 py-2">
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">-</button>
+                  <span className="text-5xl font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</span>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">+</button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <ShotClock data={data} mesaId={mesaId} audioRef={audioRef} />
+          <button onClick={() => window.confirm("¿Cerrar mesa?") && updateDoc(doc(db,"mesas",mesaId),{jugador1:"---",jugador2:"---",jugador3:"---",jugador4:"---"})} className="w-full py-4 bg-red-950/20 border border-red-500/20 rounded-xl text-[10px] font-black text-red-500 active:bg-red-900/30 transition-colors uppercase">CERRAR MESA</button>
+        </>
+      )}
+    </div>
+  );
+}

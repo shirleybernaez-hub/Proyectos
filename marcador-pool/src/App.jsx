@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db } from './firebase';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { QRCodeSVG } from 'qrcode.react';
@@ -24,25 +24,12 @@ const getColorBySeconds = (seconds) => {
 export default function App() {
   const [data, setData] = useState(null);
   const [tiempoReal, setTiempoReal] = useState("00:00:00");
-  const audioRef = useRef(new Audio('/alert.mp3'));
 
   const params = new URLSearchParams(window.location.search);
   const mesaId = params.get('mesa') || 'mesa1'; 
   const isTV = params.get('view') === 'tv'; 
 
-  const unlockAudio = () => {
-    audioRef.current.play().then(() => {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }).catch(() => {});
-    window.removeEventListener('click', unlockAudio);
-    window.removeEventListener('touchstart', unlockAudio);
-  };
-
   useEffect(() => {
-    window.addEventListener('click', unlockAudio);
-    window.addEventListener('touchstart', unlockAudio);
-    
     const unsub = onSnapshot(doc(db, "mesas", mesaId), (docSnap) => {
       if (docSnap.exists()) {
         setData(docSnap.data());
@@ -70,13 +57,13 @@ export default function App() {
     <div className="bg-black text-white font-sans min-h-screen">
       {isTV ? 
         <TvView data={data} mesaId={mesaId} tiempoReal={tiempoReal} /> : 
-        <MobileView data={data} mesaId={mesaId} tiempoReal={tiempoReal} db={db} audioRef={audioRef} />
+        <MobileView data={data} mesaId={mesaId} tiempoReal={tiempoReal} db={db} />
       }
     </div>
   );
 }
 
-function ShotClock({ data, mesaId, audioRef }) {
+function ShotClock({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
   const isActive = data.shotActive || false;
@@ -84,19 +71,14 @@ function ShotClock({ data, mesaId, audioRef }) {
   useEffect(() => {
     let interval = null;
     if (isActive && timeLeft > 0) {
-      if (timeLeft <= 10 && timeLeft > 0) {
-        audioRef.current.currentTime = 0; 
-        audioRef.current.play().catch(() => {});
-      }
       interval = setInterval(() => {
         updateDoc(doc(db, "mesas", mesaId), { tiempoShot: timeLeft - 1 });
       }, 1000);
     } else if (timeLeft <= 0 && isActive) {
-      audioRef.current.pause();
       updateDoc(doc(db, "mesas", mesaId), { shotActive: false, tiempoShot: 0 });
     }
     return () => clearInterval(interval);
-  }, [isActive, timeLeft, mesaId, audioRef]);
+  }, [isActive, timeLeft, mesaId]);
 
   const progress = ((maxTime - timeLeft) / maxTime) * 100;
 
@@ -138,16 +120,16 @@ function TvView({ data, mesaId, tiempoReal }) {
   const progress = ((maxT - timeLeft) / maxT) * 100;
 
   return (
-    <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none bg-black">
+    <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none bg-black text-white">
       <div className="flex justify-between items-center px-4">
         <span className="text-3xl font-black text-white/60 tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
-        <div className="bg-[#111] border border-white px-8 py-3 rounded-2xl shadow-xl"><span className="text-2xl font-mono font-bold text-white tabular-nums">{tiempoReal}</span></div>
+        <div className="bg-[#111] border border-white px-8 py-3 rounded-2xl shadow-xl"><span className="text-2xl font-mono font-bold tabular-nums">{tiempoReal}</span></div>
       </div>
       <div className={`flex-1 grid gap-6 ${players.length <= 2 ? 'grid-cols-2 grid-rows-1' : 'grid-cols-2 grid-rows-2'}`}>
         {players.map(i => (
           <div key={i} className="bg-[#111] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl">
-            <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh]">{data[`jugador${i}`]}</div>
-            <div className="flex-1 flex items-center justify-center text-[25vh] font-black">{data[`puntos${i}`] || 0}</div>
+            <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[20%] flex items-center justify-center font-black uppercase tracking-[0.3em] text-[2.5vh] text-white">{data[`jugador${i}`]}</div>
+            <div className="flex-1 flex items-center justify-center text-[25vh] font-black text-white">{data[`puntos${i}`] || 0}</div>
           </div>
         ))}
       </div>
@@ -161,7 +143,7 @@ function TvView({ data, mesaId, tiempoReal }) {
   );
 }
 
-function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
+function MobileView({ data, mesaId, tiempoReal, db }) {
   const [names, setNames] = useState(['','','','']);
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
 
@@ -190,24 +172,24 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
               <span className="text-sm font-black tracking-widest uppercase text-white/60">MESA {mesaId.replace("mesa", "")}</span>
               <button onClick={() => window.confirm("¿Reiniciar?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40"><IconReset /> REINICIAR TODO</button>
             </div>
-            <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold">{tiempoReal}</div>
+            <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold tabular-nums">{tiempoReal}</div>
           </div>
           <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {players.map(i => (
-              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-inner">
                 <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-2 px-3 flex items-center justify-center">
                   <input defaultValue={data[`jugador${i}`]} onBlur={(e) => updateDoc(doc(db,"mesas",mesaId),{[`jugador${i}`]:e.target.value || ("JUGADOR "+i)})} style={{fontSize:'16px'}} className="bg-transparent text-center font-black uppercase text-[10px] outline-none w-full text-white" />
                   <IconPencil />
                 </div>
                 <div className="flex-1 flex items-center justify-between px-4 py-2">
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl">-</button>
-                  <span className="text-5xl font-black">{data[`puntos${i}`] || 0}</span>
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl">+</button>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl text-white">-</button>
+                  <span className="text-5xl font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</span>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl text-white">+</button>
                 </div>
               </div>
             ))}
           </div>
-          <ShotClock data={data} mesaId={mesaId} audioRef={audioRef} />
+          <ShotClock data={data} mesaId={mesaId} />
           <button onClick={() => window.confirm("¿Cerrar mesa?") && updateDoc(doc(db,"mesas",mesaId),{jugador1:"---",jugador2:"---",jugador3:"---",jugador4:"---"})} className="w-full py-4 bg-red-950/20 border border-red-500/20 rounded-xl text-[10px] font-black text-red-500 uppercase">CERRAR MESA</button>
         </>
       )}

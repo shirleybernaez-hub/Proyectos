@@ -42,8 +42,13 @@ export default function App() {
   useEffect(() => {
     window.addEventListener('click', unlockAudio);
     window.addEventListener('touchstart', unlockAudio);
+    
     const unsub = onSnapshot(doc(db, "mesas", mesaId), (docSnap) => {
-      if (docSnap.exists()) setData(docSnap.data());
+      if (docSnap.exists()) {
+        setData(docSnap.data());
+      } else {
+        setData({ jugador1: "---", jugador2: "---", jugador3: "---", jugador4: "---" });
+      }
     });
     return () => unsub();
   }, [mesaId]);
@@ -59,7 +64,7 @@ export default function App() {
     return () => clearInterval(timer);
   }, [data]);
 
-  if (!data) return null;
+  if (!data) return <div className="bg-black min-h-screen" />;
 
   return (
     <div className="bg-black text-white font-sans min-h-screen">
@@ -71,7 +76,6 @@ export default function App() {
   );
 }
 
-// --- SHOT CLOCK ---
 function ShotClock({ data, mesaId, audioRef }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
@@ -84,13 +88,11 @@ function ShotClock({ data, mesaId, audioRef }) {
         audioRef.current.currentTime = 0; 
         audioRef.current.play().catch(() => {});
       }
-      
       interval = setInterval(() => {
         updateDoc(doc(db, "mesas", mesaId), { tiempoShot: timeLeft - 1 });
       }, 1000);
     } else if (timeLeft <= 0 && isActive) {
       audioRef.current.pause();
-      audioRef.current.currentTime = 0;
       updateDoc(doc(db, "mesas", mesaId), { shotActive: false, tiempoShot: 0 });
     }
     return () => clearInterval(interval);
@@ -108,17 +110,15 @@ function ShotClock({ data, mesaId, audioRef }) {
           <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{shotActive:!isActive})} className="flex items-center text-white font-black uppercase text-[12px] tracking-widest">
             {isActive ? <IconPause /> : <IconPlay />} {isActive ? 'PAUSAR' : 'INICIAR'}
           </button>
-          
           <div className="absolute left-1/2 -translate-x-1/2 -top-1">
             <span className="text-xl font-black tabular-nums transition-colors" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}s</span>
           </div>
-
           <div className="relative flex items-center">
             <select value={maxTime} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{maxShot:parseInt(e.target.value), tiempoShot:parseInt(e.target.value), shotActive:false})} 
               className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
-              <option value={30} className="bg-black text-white">30 SEG</option>
-              <option value={40} className="bg-black text-white">40 SEG</option>
-              <option value={60} className="bg-black text-white">60 SEG</option>
+              <option value={30} className="bg-black">30 SEG</option>
+              <option value={40} className="bg-black">40 SEG</option>
+              <option value={60} className="bg-black">60 SEG</option>
             </select>
             <div className="pointer-events-none absolute right-0"><IconChevron /></div>
           </div>
@@ -131,7 +131,6 @@ function ShotClock({ data, mesaId, audioRef }) {
   );
 }
 
-// --- VISTA TV ---
 function TvView({ data, mesaId, tiempoReal }) {
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
   const timeLeft = data.tiempoShot || 0;
@@ -139,7 +138,7 @@ function TvView({ data, mesaId, tiempoReal }) {
   const progress = ((maxT - timeLeft) / maxT) * 100;
 
   return (
-    <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none overflow-hidden bg-black">
+    <div className="h-screen w-screen p-8 flex flex-col gap-6 select-none bg-black">
       <div className="flex justify-between items-center px-4">
         <span className="text-3xl font-black text-white/60 tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
         <div className="bg-[#111] border border-white px-8 py-3 rounded-2xl shadow-xl"><span className="text-2xl font-mono font-bold text-white tabular-nums">{tiempoReal}</span></div>
@@ -147,8 +146,8 @@ function TvView({ data, mesaId, tiempoReal }) {
       <div className={`flex-1 grid gap-6 ${players.length <= 2 ? 'grid-cols-2 grid-rows-1' : 'grid-cols-2 grid-rows-2'}`}>
         {players.map(i => (
           <div key={i} className="bg-[#111] rounded-[2.5rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl">
-            <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh] text-white">{data[`jugador${i}`]}</div>
-            <div className="flex-1 flex items-center justify-center text-[25vh] font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</div>
+            <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[20%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh]">{data[`jugador${i}`]}</div>
+            <div className="flex-1 flex items-center justify-center text-[25vh] font-black">{data[`puntos${i}`] || 0}</div>
           </div>
         ))}
       </div>
@@ -162,7 +161,6 @@ function TvView({ data, mesaId, tiempoReal }) {
   );
 }
 
-// --- VISTA MÓVIL ---
 function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
   const [names, setNames] = useState(['','','','']);
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
@@ -175,11 +173,6 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
     await updateDoc(doc(db, "mesas", mesaId), update);
   };
 
-  const handleEditName = async (i, value) => {
-    const cleanValue = value.trim() === "" ? "JUGADOR " + i : value;
-    await updateDoc(doc(db, "mesas", mesaId), { [`jugador${i}`]: cleanValue });
-  };
-
   return (
     <div className="p-6 flex flex-col min-h-screen gap-5 bg-black">
       {data.jugador1 === "---" ? (
@@ -188,40 +181,34 @@ function MobileView({ data, mesaId, tiempoReal, db, audioRef }) {
           {names.map((n, i) => (
             <input key={i} style={{fontSize:'16px'}} className="w-full bg-[#111] border border-white/10 p-4 rounded-xl text-center font-black uppercase text-white outline-none" placeholder={`JUGADOR ${i+1}`} onChange={e => {const next = [...names]; next[i]=e.target.value; setNames(next);}} />
           ))}
-          <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4 active:scale-95 transition-transform">EMPEZAR PARTIDA</button>
+          <button onClick={iniciar} className="w-full bg-white text-black font-black p-4 rounded-xl uppercase mt-4">EMPEZAR PARTIDA</button>
         </div>
       ) : (
         <>
           <div className="flex justify-between items-start">
             <div className="flex flex-col gap-4">
               <span className="text-sm font-black tracking-widest uppercase text-white/60">MESA {mesaId.replace("mesa", "")}</span>
-              <button onClick={() => window.confirm("¿Reiniciar todo?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40 active:text-white/60"><IconReset /> REINICIAR TODO</button>
+              <button onClick={() => window.confirm("¿Reiniciar?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40"><IconReset /> REINICIAR TODO</button>
             </div>
-            <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold tabular-nums">{tiempoReal}</div>
+            <div className="bg-[#111] border border-white px-4 py-2 rounded-xl text-white font-bold">{tiempoReal}</div>
           </div>
-
           <div className={`grid gap-3 flex-1 ${players.length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {players.map(i => (
-              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-inner">
+              <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
                 <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-2 px-3 flex items-center justify-center">
-                  <input 
-                    defaultValue={data[`jugador${i}`]} 
-                    onBlur={(e) => handleEditName(i, e.target.value)}
-                    style={{fontSize:'16px'}} 
-                    className="bg-transparent text-center font-black uppercase text-[10px] outline-none w-full text-white" 
-                  />
+                  <input defaultValue={data[`jugador${i}`]} onBlur={(e) => updateDoc(doc(db,"mesas",mesaId),{[`jugador${i}`]:e.target.value || ("JUGADOR "+i)})} style={{fontSize:'16px'}} className="bg-transparent text-center font-black uppercase text-[10px] outline-none w-full text-white" />
                   <IconPencil />
                 </div>
                 <div className="flex-1 flex items-center justify-between px-4 py-2">
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">-</button>
-                  <span className="text-5xl font-black tabular-nums text-white">{data[`puntos${i}`] || 0}</span>
-                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl active:bg-white/20 transition-colors">+</button>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl">-</button>
+                  <span className="text-5xl font-black">{data[`puntos${i}`] || 0}</span>
+                  <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl">+</button>
                 </div>
               </div>
             ))}
           </div>
           <ShotClock data={data} mesaId={mesaId} audioRef={audioRef} />
-          <button onClick={() => window.confirm("¿Cerrar mesa?") && updateDoc(doc(db,"mesas",mesaId),{jugador1:"---",jugador2:"---",jugador3:"---",jugador4:"---"})} className="w-full py-4 bg-red-950/20 border border-red-500/20 rounded-xl text-[10px] font-black text-red-500 active:bg-red-900/30 transition-colors uppercase">CERRAR MESA</button>
+          <button onClick={() => window.confirm("¿Cerrar mesa?") && updateDoc(doc(db,"mesas",mesaId),{jugador1:"---",jugador2:"---",jugador3:"---",jugador4:"---"})} className="w-full py-4 bg-red-950/20 border border-red-500/20 rounded-xl text-[10px] font-black text-red-500 uppercase">CERRAR MESA</button>
         </>
       )}
     </div>

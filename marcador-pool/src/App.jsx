@@ -75,12 +75,12 @@ export default function App() {
   );
 }
 
-// --- VISTA TV (PROTEGIDA) ---
+// --- VISTA TV (LAYOUT BLINDADO) ---
 function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
   const timeLeft = data.tiempoShot || 0;
   const maxT = data.maxShot || 30;
-  const progress = ((maxT - timeLeft) / maxT) * 100;
+  const progress = (timeLeft / maxT) * 100; // IZQUIERDA A DERECHA
 
   if (!enPartida) {
     return (
@@ -131,7 +131,7 @@ function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
   );
 }
 
-// --- VISTA MÓVIL (PROTEGIDA) ---
+// --- VISTA MÓVIL (CORRECCIÓN TOTAL) ---
 function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
   const [names, setNames] = useState(['','','','']);
 
@@ -174,24 +174,24 @@ function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
         {[1,2,3,4].filter(i => data[`jugador${i}`] !== "---").map(i => (
           <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden flex flex-col relative shadow-inner">
              
-             {/* CONTROL DE SETS (UNIFICADO ARRIBA DERECHA) */}
+             {/* CONTROL DE SETS (ARRIBA DERECHA - ÚNICO CONTROL SECUNDARIO) */}
              <div className="absolute top-12 right-2 flex flex-col items-center bg-black/50 rounded-xl p-1 border border-white/5 z-10">
                 <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`sets${i}`]:(data[`sets${i}`]||0)+1})} className="px-3 py-1 font-bold text-white/60">+</button>
                 <span className="text-[10px] font-black">{data[`sets${i}`] || 0}</span>
                 <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`sets${i}`]:Math.max(0,(data[`sets${i}`]||0)-1)})} className="px-3 py-1 font-bold text-white/60">-</button>
              </div>
              
-             {/* CABECERA NOMBRE */}
-             <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-3 px-4 flex items-center justify-center">
-                <input value={data[`jugador${i}`]} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{[`jugador${i}`]:e.target.value || "---"})} className="bg-transparent text-center font-black uppercase text-xs outline-none w-full text-white" />
+             {/* CABECERA NOMBRE (GRANDE) */}
+             <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-4 px-4 flex items-center justify-center">
+                <input value={data[`jugador${i}`]} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{[`jugador${i}`]:e.target.value || "---"})} className="bg-transparent text-center font-black uppercase text-sm outline-none w-full text-white" />
                 <IconPencil />
              </div>
              
-             {/* CONTROL PUNTOS HORIZONTAL ÚNICO (ELIMINADA REPETICIÓN VERTICAL) */}
-             <div className="flex-1 flex items-center justify-between px-8 py-2 pr-14">
-                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-3xl font-bold">-</button>
+             {/* PUNTOS HORIZONTALES (ESTE ES EL ÚNICO CONTROL DE PUNTOS) */}
+             <div className="flex-1 flex items-center justify-between px-8 py-4 pr-16">
+                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center text-4xl font-bold active:bg-white/30">-</button>
                 <span className="text-7xl font-black tabular-nums">{data[`puntos${i}`] || 0}</span>
-                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-3xl font-bold">+</button>
+                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center text-4xl font-bold active:bg-white/30">+</button>
              </div>
           </div>
         ))}
@@ -208,6 +208,7 @@ function ShotClockMobile({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
   const isActive = data.shotActive || false;
+  const progress = (timeLeft / maxTime) * 100; // IZQUIERDA A DERECHA
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -222,15 +223,15 @@ function ShotClockMobile({ data, mesaId }) {
           <div className="relative flex items-center">
             <select value={maxTime} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{maxShot:parseInt(e.target.value), tiempoShot:parseInt(e.target.value), shotActive:false})} 
               className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none">
-              <option value={30} className="bg-black">30 SEG</option>
-              <option value={40} className="bg-black">40 SEG</option>
-              <option value={60} className="bg-black">60 SEG</option>
+              <option value={30} className="bg-black text-white">30 SEG</option>
+              <option value={40} className="bg-black text-white">40 SEG</option>
+              <option value={60} className="bg-black text-white">60 SEG</option>
             </select>
             <div className="pointer-events-none absolute right-0"><IconChevron /></div>
           </div>
         </div>
         <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden">
-          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${(timeLeft/maxTime)*100}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
+          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
         </div>
       </div>
     </div>

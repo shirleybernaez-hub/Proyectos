@@ -5,7 +5,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import LogoBilliard from './assets/billiardplay.png'; 
 import KFCPubli from './assets/kfcpubli.jpg'; 
 
-// --- 1. REGLA DE ORO: AUTO-RECUPERACIÓN (PROTEGIDA) ---
+// --- REGLA 1: AUTO-RECUPERACIÓN (11 MESAS) ---
 const checkAndCreateMesas = async () => {
   for (let i = 1; i <= 11; i++) {
     const id = `mesa${i}`;
@@ -15,7 +15,6 @@ const checkAndCreateMesas = async () => {
       await setDoc(docRef, {
         jugador1: "---", jugador2: "---", jugador3: "---", jugador4: "---",
         puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0,
-        sets1: 0, sets2: 0, sets3: 0, sets4: 0,
         inicio: null, shotActive: false, tiempoShot: 30, maxShot: 30
       });
     }
@@ -31,7 +30,6 @@ const getColorBySeconds = (seconds) => {
   return '#ef4444';
 };
 
-// --- ICONOS (RESTAURADOS Y PROTEGIDOS) ---
 const IconPencil = () => <svg className="w-3 h-3 ml-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>;
 const IconReset = () => <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>;
 const IconChevron = () => <svg className="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>;
@@ -64,8 +62,6 @@ export default function App() {
   }, [data]);
 
   if (!data) return null;
-
-  // --- 2. REGLA DE ORO: LÓGICA enPartida UNIFICADA ---
   const enPartida = data.jugador1 && data.jugador1 !== "---";
 
   return (
@@ -78,12 +74,12 @@ export default function App() {
   );
 }
 
-// --- VISTA TV (LAYOUT BLINDADO - NO CAMBIAR) ---
+// --- VISTA TV (SIN SETS) ---
 function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
-  const timeLeft = data.tiempoShot || 0;
+  const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : (data.maxShot || 30);
   const maxT = data.maxShot || 30;
-  const progress = (timeLeft / maxT) * 100; // Izquierda a Derecha
+  const progress = ((maxT - timeLeft) / maxT) * 100;
 
   if (!enPartida) {
     return (
@@ -121,10 +117,6 @@ function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
         {players.map(i => (
           <div key={i} className="bg-[#111] rounded-[3rem] border border-white/5 flex flex-col overflow-hidden relative shadow-2xl">
             <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[18%] flex items-center justify-center text-white font-black uppercase text-[2.5vh] tracking-widest">{data[`jugador${i}`]}</div>
-            <div className="absolute top-[20%] right-8 bg-white/10 px-5 py-1.5 rounded-full border border-white/10">
-              <span className="text-[1.8vh] font-black text-white/40 uppercase mr-3">SETS</span>
-              <span className="text-[3vh] font-black text-white">{data[`sets${i}`] || 0}</span>
-            </div>
             <div className="flex-1 flex items-center justify-center text-[28vh] font-black tabular-nums leading-none">
               {data[`puntos${i}`] || 0}
             </div>
@@ -141,7 +133,7 @@ function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
   );
 }
 
-// --- VISTA MÓVIL (REPARACIÓN DE EMERGENCIA - NO TOCAR) ---
+// --- VISTA MÓVIL (PUNTOS HORIZONTALES SIN REPETICIÓN) ---
 function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
   const [names, setNames] = useState(['','','','']);
 
@@ -152,7 +144,7 @@ function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
       inicio: new Date().getTime(), shotActive: false, tiempoShot: 30, maxShot: 30,
       jugador1: names[0].trim() || "---", jugador2: names[1].trim() || "---", 
       jugador3: names[2].trim() || "---", jugador4: names[3].trim() || "---",
-      puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0, sets1: 0, sets2: 0, sets3: 0, sets4: 0
+      puntos1: 0, puntos2: 0, puntos3: 0, puntos4: 0
     };
     await updateDoc(doc(db, "mesas", mesaId), update);
   };
@@ -175,50 +167,39 @@ function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
       <div className="flex justify-between items-start">
         <div className="flex flex-col gap-4">
           <span className="text-sm font-black text-white/50 uppercase tracking-widest">MESA {mesaId.replace("mesa", "")}</span>
-          <button onClick={() => window.confirm("¿Reiniciar?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0, sets1:0, sets2:0, sets3:0, sets4:0})} className="flex items-center text-[10px] font-black text-white/40"><IconReset /> REINICIAR</button>
+          <button onClick={() => window.confirm("¿Reiniciar?") && updateDoc(doc(db,"mesas",mesaId), {puntos1:0,puntos2:0,puntos3:0,puntos4:0})} className="flex items-center text-[10px] font-black text-white/40"><IconReset /> REINICIAR</button>
         </div>
         <div className="bg-[#111] border border-white px-5 py-2 rounded-xl text-white font-bold tabular-nums shadow-lg">{tiempoReal}</div>
       </div>
 
-      <div className={`grid gap-3 flex-1 ${[1,2,3,4].filter(i => data[`jugador${i}`] !== "---").length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
-        {[1,2,3,4].filter(i => data[`jugador${i}`] !== "---").map(i => (
+      <div className={`grid gap-3 flex-1 ${[1,2,3,4].filter(num => data[`jugador${num}`] !== "---").length <= 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+        {[1,2,3,4].filter(num => data[`jugador${num}`] !== "---").map(i => (
           <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden flex flex-col relative shadow-inner">
-             
-             {/* CONTROL DE SETS (EXTIRPADO EL CONTROL DE PUNTOS REPETIDO) */}
-             <div className="absolute top-12 right-2 flex flex-col items-center bg-black/50 backdrop-blur-sm rounded-xl p-1 border border-white/5 z-10">
-                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`sets${i}`]:(data[`sets${i}`]||0)+1})} className="px-3 py-1 font-bold text-white/60">+</button>
-                <span className="text-[12px] font-black">{data[`sets${i}`] || 0}</span>
-                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`sets${i}`]:Math.max(0,(data[`sets${i}`]||0)-1)})} className="px-3 py-1 font-bold text-white/60">-</button>
-             </div>
-             
-             {/* CABECERA NOMBRE ( text-xs para que sea más grande) */}
-             <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-3 px-4 flex items-center justify-center">
-                <input value={data[`jugador${i}`]} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{[`jugador${i}`]:e.target.value || "---"})} style={{fontSize:'16px'}} className="bg-transparent text-center font-black uppercase text-xs outline-none w-full text-white" />
+             <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="py-4 px-4 flex items-center justify-center">
+                <input value={data[`jugador${i}`]} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{[`jugador${i}`]:e.target.value || "---"})} style={{fontSize:'16px'}} className="bg-transparent text-center font-black uppercase text-sm outline-none w-full text-white" />
                 <IconPencil />
              </div>
-             
-             {/* CONTROL PUNTOS HORIZONTAL ÚNICO (CON BOTONES MÁS GRANDES) */}
-             <div className="flex-1 flex items-center justify-between px-8 py-2 pr-14">
-                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center text-4xl font-bold active:bg-white/30 transition-colors">-</button>
+             <div className="flex-1 flex items-center justify-between px-8 py-4">
+                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:Math.max(0, (data[`puntos${i}`]||0)-1)})} className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center text-4xl font-bold active:bg-white/30">-</button>
                 <span className="text-7xl font-black tabular-nums">{data[`puntos${i}`] || 0}</span>
-                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center text-4xl font-bold active:bg-white/30 transition-colors">+</button>
+                <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{[`puntos${i}`]:(data[`puntos${i}`]||0)+1})} className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center text-4xl font-bold active:bg-white/30">+</button>
              </div>
           </div>
         ))}
       </div>
 
       <ShotClockMobile data={data} mesaId={mesaId} />
-
-      <button onClick={() => window.confirm("¿Cerrar?") && updateDoc(doc(db,"mesas",mesaId),{jugador1:"---",jugador2:"---",jugador3:"---",jugador4:"---", inicio: null})} className="w-full py-5 bg-red-950/20 border border-red-500/20 rounded-2xl text-[11px] font-black text-red-500 uppercase tracking-widest active:bg-red-900/40 transition-colors shadow-lg">CERRAR MESA</button>
+      <button onClick={() => window.confirm("¿Cerrar mesa?") && updateDoc(doc(db,"mesas",mesaId),{jugador1:"---",jugador2:"---",jugador3:"---",jugador4:"---", inicio: null})} className="w-full py-5 bg-red-950/20 border border-red-500/20 rounded-2xl text-[11px] font-black text-red-500 uppercase tracking-widest">CERRAR MESA</button>
     </div>
   );
 }
 
-// --- COMPONENTE SHOTCLOCK MÓVIL (CORREGIDO Y BLINDADO) ---
+// --- SHOTCLOCK (REINICIO FIJO) ---
 function ShotClockMobile({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;
   const isActive = data.shotActive || false;
+  const progress = ((maxTime - timeLeft) / maxTime) * 100;
 
   useEffect(() => {
     let interval = null;
@@ -232,25 +213,13 @@ function ShotClockMobile({ data, mesaId }) {
 
   return (
     <div className="w-full flex flex-col gap-2">
-      {/* BOTÓN REINICIAR (RESTAURADA FUNCIONALIDAD) */}
-      <button 
-        onClick={() => {
-          updateDoc(doc(db,"mesas",mesaId),{shotActive:false, tiempoShot:maxTime})
-          .then(() => console.log("Tiempo Reiniciado"))
-          .catch(err => console.error("Error Reiniciando:", err));
-        }} 
-        className="flex items-center text-[10px] font-black text-white/40 uppercase ml-1 active:text-white/70"
-      >
+      <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{shotActive:false, tiempoShot:maxTime})} className="flex items-center text-[10px] font-black text-white/40 uppercase ml-1">
         <IconReset /> REINICIAR TIEMPO
       </button>
-
       <div className="w-full bg-[#111] p-5 rounded-2xl border border-white/5 shadow-xl">
         <div className="flex justify-between items-center mb-4">
           <button onClick={() => updateDoc(doc(db,"mesas",mesaId),{shotActive:!isActive})} className="font-black uppercase text-xs tracking-widest">{isActive ? 'PAUSAR' : 'INICIAR'}</button>
-          
           <span className="text-2xl font-black tabular-nums" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}s</span>
-          
-          {/* SELECTOR SEGUNDOS (PROTEGIDO) */}
           <div className="relative flex items-center">
             <select value={maxTime} onChange={(e) => updateDoc(doc(db,"mesas",mesaId),{maxShot:parseInt(e.target.value), tiempoShot:parseInt(e.target.value), shotActive:false})} 
               className="appearance-none bg-transparent text-white font-bold text-[12px] pr-4 outline-none border-none">
@@ -261,10 +230,8 @@ function ShotClockMobile({ data, mesaId }) {
             <div className="pointer-events-none absolute right-0"><IconChevron /></div>
           </div>
         </div>
-        
-        {/* BARRA DE TIEMPO (Izquierda a Derecha) */}
         <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden">
-          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${(timeLeft/maxTime)*100}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
+          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
         </div>
       </div>
     </div>

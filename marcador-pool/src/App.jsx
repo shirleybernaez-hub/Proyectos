@@ -73,19 +73,19 @@ function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
       <div className="h-screen w-screen bg-black flex overflow-hidden select-none">
         {/* Lado Izquierdo: Info y QR */}
         <div className="w-[55%] flex flex-col p-12 justify-between bg-black relative items-center">
-          {/* Logo bajado y centrado */}
-          <div className="flex-1 flex items-center justify-center -mt-10">
-            <img src={LogoBilliard} className="w-80 opacity-100 object-contain" alt="Logo" />
+          {/* Logo con máximo protagonismo */}
+          <div className="flex-1 flex items-center justify-center -mt-8">
+            <img src={LogoBilliard} className="w-[32rem] opacity-100 object-contain" alt="Logo" />
           </div>
           
-          {/* Rectángulo blanco más ancho */}
-          <div className="flex items-center gap-8 bg-white p-8 rounded-[2.5rem] shadow-2xl w-full max-w-[90%] mb-4">
+          {/* Rectángulo blanco extendido */}
+          <div className="flex items-center gap-10 bg-white p-10 rounded-[3rem] shadow-2xl w-full max-w-[95%] mb-4">
             <div className="bg-white p-1 rounded-lg">
-              <QRCodeSVG value={qrUrl} size={150} />
+              <QRCodeSVG value={qrUrl} size={160} />
             </div>
             <div className="flex flex-col">
-              <p className="text-[#999] font-bold text-xs tracking-widest uppercase mb-1">MESA DISPONIBLE</p>
-              <p className="text-black text-4xl font-light uppercase leading-none tracking-tighter">
+              <p className="text-[#999] font-bold text-sm tracking-[0.2em] uppercase mb-1">MESA DISPONIBLE</p>
+              <p className="text-black text-5xl font-light uppercase leading-none tracking-tighter">
                 ESCANEA PARA<br/><span className="font-black">JUGAR</span>
               </p>
             </div>
@@ -94,7 +94,7 @@ function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
 
         {/* Lado Derecho: Publicidad dentro de Card */}
         <div className="w-[45%] h-full p-12 flex flex-col justify-end">
-          <div className="w-full h-full rounded-[3rem] overflow-hidden border-4 border-[#1a1a1a] shadow-2xl relative bg-[#0a0a0a]">
+          <div className="w-full h-full rounded-[3.5rem] overflow-hidden border-4 border-[#1a1a1a] shadow-2xl relative bg-[#0a0a0a]">
             <img src={KFCPubli} className="w-full h-full object-cover" alt="Publicidad" />
           </div>
         </div>

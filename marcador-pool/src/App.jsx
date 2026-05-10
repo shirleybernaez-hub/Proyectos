@@ -61,6 +61,81 @@ export default function App() {
   );
 }
 
+// --- VISTA TV ---
+function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
+  const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
+  const timeLeft = data.tiempoShot || 0;
+  const maxT = data.maxShot || 30;
+  const progress = ((maxT - timeLeft) / maxT) * 100;
+
+  if (!enPartida) {
+    return (
+      <div className="h-screen w-screen bg-black flex overflow-hidden select-none">
+        {/* Lado Izquierdo: Info y QR */}
+        <div className="w-[55%] flex flex-col p-12 justify-between bg-black relative items-center">
+          {/* Logo bajado y centrado */}
+          <div className="flex-1 flex items-center justify-center -mt-10">
+            <img src={LogoBilliard} className="w-80 opacity-100 object-contain" alt="Logo" />
+          </div>
+          
+          {/* Rectángulo blanco más ancho */}
+          <div className="flex items-center gap-8 bg-white p-8 rounded-[2.5rem] shadow-2xl w-full max-w-[90%] mb-4">
+            <div className="bg-white p-1 rounded-lg">
+              <QRCodeSVG value={qrUrl} size={150} />
+            </div>
+            <div className="flex flex-col">
+              <p className="text-[#999] font-bold text-xs tracking-widest uppercase mb-1">MESA DISPONIBLE</p>
+              <p className="text-black text-4xl font-light uppercase leading-none tracking-tighter">
+                ESCANEA PARA<br/><span className="font-black">JUGAR</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Lado Derecho: Publicidad dentro de Card */}
+        <div className="w-[45%] h-full p-12 flex flex-col justify-end">
+          <div className="w-full h-full rounded-[3rem] overflow-hidden border-4 border-[#1a1a1a] shadow-2xl relative bg-[#0a0a0a]">
+            <img src={KFCPubli} className="w-full h-full object-cover" alt="Publicidad" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-screen w-screen p-8 flex flex-col gap-6 bg-black select-none overflow-hidden">
+      <div className="flex justify-between items-center px-4">
+        <span className="text-4xl font-black text-white/40 tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
+        <div className="bg-[#111] border border-white px-10 py-4 rounded-2xl shadow-xl">
+          <span className="text-3xl font-mono font-bold text-white tabular-nums">{tiempoReal}</span>
+        </div>
+      </div>
+      <div className={`flex-1 grid gap-6 ${players.length <= 2 ? 'grid-cols-2' : 'grid-cols-2 grid-rows-2'}`}>
+        {players.map(i => (
+          <div key={i} className="bg-[#111] rounded-[3rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl relative">
+            <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[18%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh]">
+              {data[`jugador${i}`]}
+            </div>
+            <div className="absolute top-[20%] right-8 bg-white/10 px-5 py-1.5 rounded-full border border-white/10">
+              <span className="text-[1.8vh] font-black text-white/40 uppercase mr-3">SETS</span>
+              <span className="text-[3vh] font-black text-white">{data[`sets${i}`] || 0}</span>
+            </div>
+            <div className="flex-1 flex items-center justify-center text-[28vh] font-black tabular-nums leading-none">
+              {data[`puntos${i}`] || 0}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="bg-[#111] border border-white p-6 rounded-[2.5rem] flex flex-col items-center gap-2 shadow-2xl">
+        <span className="text-6xl font-mono font-black tabular-nums transition-colors duration-500" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}</span>
+        <div className="w-full h-8 bg-white/5 rounded-full overflow-hidden">
+          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // --- SHOT CLOCK (SIN AUDIO) ---
 function ShotClock({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
@@ -105,72 +180,6 @@ function ShotClock({ data, mesaId }) {
           </div>
         </div>
         <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden mt-2">
-          <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// --- VISTA TV ---
-function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
-  const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
-  const timeLeft = data.tiempoShot || 0;
-  const maxT = data.maxShot || 30;
-  const progress = ((maxT - timeLeft) / maxT) * 100;
-
-  if (!enPartida) {
-    return (
-      <div className="h-screen w-screen bg-black flex overflow-hidden select-none">
-        <div className="w-[62%] flex flex-col p-20 justify-between bg-[#0a0a0a] relative">
-          <img src={LogoBilliard} className="w-56 opacity-90 object-contain" alt="Logo" />
-          <div className="flex items-center gap-10 bg-white p-10 rounded-[3rem] shadow-2xl w-fit">
-            <div className="bg-white p-2 rounded-xl">
-              <QRCodeSVG value={qrUrl} size={180} />
-            </div>
-            <div className="flex flex-col">
-              <p className="text-black font-black text-sm tracking-[0.3em] uppercase opacity-30 mb-2">Mesa Disponible</p>
-              <p className="text-black text-5xl font-light uppercase leading-[0.9] tracking-tighter">Escanea para<br/><span className="font-black">comenzar</span></p>
-            </div>
-          </div>
-        </div>
-        <div className="w-[38%] h-full border-l border-white/5 relative">
-          <img src={KFCPubli} className="w-full h-full object-cover" alt="Publicidad" />
-          <div className="absolute bottom-10 left-0 right-0 text-center">
-             <span className="bg-black/40 backdrop-blur-md px-6 py-2 rounded-full text-xs font-bold text-white/50 uppercase tracking-[0.4em]">Publicidad</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="h-screen w-screen p-8 flex flex-col gap-6 bg-black select-none overflow-hidden">
-      <div className="flex justify-between items-center px-4">
-        <span className="text-4xl font-black text-white/40 tracking-widest uppercase">MESA {mesaId.replace("mesa", "")}</span>
-        <div className="bg-[#111] border border-white px-10 py-4 rounded-2xl shadow-xl">
-          <span className="text-3xl font-mono font-bold text-white tabular-nums">{tiempoReal}</span>
-        </div>
-      </div>
-      <div className={`flex-1 grid gap-6 ${players.length <= 2 ? 'grid-cols-2' : 'grid-cols-2 grid-rows-2'}`}>
-        {players.map(i => (
-          <div key={i} className="bg-[#111] rounded-[3rem] border border-white/5 flex flex-col overflow-hidden shadow-2xl relative">
-            <div style={{ backgroundColor: ['#9333ea','#00A3FF','#ec4899','#64748b'][i-1] }} className="h-[18%] flex items-center justify-center text-white font-black uppercase tracking-[0.3em] text-[2.5vh]">
-              {data[`jugador${i}`]}
-            </div>
-            <div className="absolute top-[20%] right-8 bg-white/10 px-5 py-1.5 rounded-full border border-white/10">
-              <span className="text-[1.8vh] font-black text-white/40 uppercase mr-3">SETS</span>
-              <span className="text-[3vh] font-black text-white">{data[`sets${i}`] || 0}</span>
-            </div>
-            <div className="flex-1 flex items-center justify-center text-[28vh] font-black tabular-nums leading-none">
-              {data[`puntos${i}`] || 0}
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="bg-[#111] border border-white p-6 rounded-[2.5rem] flex flex-col items-center gap-2 shadow-2xl">
-        <span className="text-6xl font-mono font-black tabular-nums transition-colors duration-500" style={{ color: getColorBySeconds(timeLeft) }}>{timeLeft}</span>
-        <div className="w-full h-8 bg-white/5 rounded-full overflow-hidden">
           <div className="h-full transition-all duration-1000 ease-linear" style={{ width: `${progress}%`, backgroundColor: getColorBySeconds(timeLeft) }} />
         </div>
       </div>

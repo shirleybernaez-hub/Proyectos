@@ -5,7 +5,10 @@ import { QRCodeSVG } from 'qrcode.react';
 import LogoBilliard from './assets/billiardplay.png'; 
 import KFCPubli from './assets/kfcpubli.jpg'; 
 
-// --- 1. PROTOCOLO DE RECUPERACIÓN DE DATOS (11 Mesas) ---
+/**
+ * REGLA 1: FUNCIÓN checkAndCreateMesas
+ * Si un documento de mesa desaparece de Firebase, se restaura automáticamente.
+ */
 const checkAndCreateMesas = async () => {
   for (let i = 1; i <= 11; i++) {
     const id = `mesa${i}`;
@@ -31,7 +34,6 @@ const getColorBySeconds = (seconds) => {
   return '#ef4444';
 };
 
-// --- ICONOS ---
 const IconPencil = () => <svg className="w-3 h-3 ml-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>;
 const IconReset = () => <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>;
 
@@ -64,6 +66,11 @@ export default function App() {
   }, [data]);
 
   if (!data) return null;
+
+  /**
+   * REGLA 2: LÓGICA enPartida UNIFICADA
+   * El estado del jugador1 determina si mostramos Ingreso o Marcador.
+   */
   const enPartida = data.jugador1 && data.jugador1 !== "---";
 
   return (
@@ -76,7 +83,9 @@ export default function App() {
   );
 }
 
-// --- PANTALLA 1 & 2: VISTA TV ---
+/**
+ * REGLA 3: MÓDULOS SEPARADOS (TvView)
+ */
 function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
   const players = [1,2,3,4].filter(i => data[`jugador${i}`] && data[`jugador${i}`] !== "---");
   const timeLeft = data.tiempoShot || 0;
@@ -132,7 +141,9 @@ function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
   );
 }
 
-// --- PANTALLA 3 & 4: VISTA MÓVIL (INGRESO Y CONTROL) ---
+/**
+ * REGLA 3: MÓDULOS SEPARADOS (MobileView)
+ */
 function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
   const [names, setNames] = useState(['','','','']);
 
@@ -161,7 +172,6 @@ function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
     );
   }
 
-  // PANEL DE CONTROL (BLINDADO)
   return (
     <div className="p-6 flex flex-col min-h-screen gap-5 bg-black">
       <div className="flex justify-between items-start">
@@ -197,7 +207,6 @@ function MobileView({ data, mesaId, tiempoReal, db, enPartida }) {
   );
 }
 
-// --- COMPONENTE SHOTCLOCK MÓVIL ---
 function ShotClockMobile({ data, mesaId }) {
   const maxTime = data.maxShot || 30;
   const timeLeft = data.tiempoShot !== undefined ? data.tiempoShot : maxTime;

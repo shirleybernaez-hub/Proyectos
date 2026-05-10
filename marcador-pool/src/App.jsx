@@ -70,16 +70,16 @@ function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
 
   if (!enPartida) {
     return (
-      <div className="h-screen w-screen bg-black flex overflow-hidden select-none">
+      <div className="h-screen w-screen bg-black flex p-12 gap-12 overflow-hidden select-none">
         {/* Lado Izquierdo: Info y QR */}
-        <div className="w-[55%] flex flex-col p-12 justify-between bg-black relative items-center">
-          {/* Logo con máximo protagonismo */}
-          <div className="flex-1 flex items-center justify-center -mt-8">
+        <div className="flex-1 flex flex-col justify-between bg-black relative items-center">
+          {/* Logo Central */}
+          <div className="flex-1 flex items-center justify-center">
             <img src={LogoBilliard} className="w-[32rem] opacity-100 object-contain" alt="Logo" />
           </div>
           
-          {/* Rectángulo blanco extendido */}
-          <div className="flex items-center gap-10 bg-white p-10 rounded-[3rem] shadow-2xl w-full max-w-[95%] mb-4">
+          {/* Rectángulo blanco - Ahora alineado con el padding general */}
+          <div className="flex items-center gap-10 bg-white p-10 rounded-[3rem] shadow-2xl w-full">
             <div className="bg-white p-1 rounded-lg">
               <QRCodeSVG value={qrUrl} size={160} />
             </div>
@@ -92,8 +92,8 @@ function TvView({ data, mesaId, tiempoReal, qrUrl, enPartida }) {
           </div>
         </div>
 
-        {/* Lado Derecho: Publicidad dentro de Card */}
-        <div className="w-[45%] h-full p-12 flex flex-col justify-end">
+        {/* Lado Derecho: Publicidad - Alineado simétricamente */}
+        <div className="flex-1 h-full flex flex-col">
           <div className="w-full h-full rounded-[3.5rem] overflow-hidden border-4 border-[#1a1a1a] shadow-2xl relative bg-[#0a0a0a]">
             <img src={KFCPubli} className="w-full h-full object-cover" alt="Publicidad" />
           </div>

@@ -28,8 +28,18 @@
 
         .product-card { border: 1px solid #efefef; border-radius: 28px; padding: 24px; background: #fff; display: flex; flex-direction: column; gap: 18px; transition: box-shadow 0.3s ease; }
         .product-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .btn-download { border: 1.5px solid black; transition: all 0.2s ease; font-size: 10px; font-weight: 800; text-align: center; text-transform: uppercase; display: block; padding: 12px; border-radius: 9999px; text-decoration: none; color: black; }
+        .btn-download { border: 1.5px solid black; transition: all 0.2s ease; font-size: 10px; font-weight: 800; text-align: center; text-transform: uppercase; }
         .btn-download:hover { background: black; color: white; }
+
+        .chat-container { display: flex; flex-direction: column; gap: 8px; background: #f8f8f8; border-radius: 20px; padding: 15px; margin-top: 5px; }
+        .chat-feed { max-height: 180px; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; gap: 8px; }
+        .chat-bubble { padding: 10px 14px; border-radius: 15px; font-size: 12px; line-height: 1.4; border-left: 4px solid #ef4444; background: #fff; cursor: pointer; transition: all 0.2s; }
+        .chat-bubble.done { border-left-color: #22c55e; opacity: 0.8; }
+        .chat-bubble .date { font-size: 8px; color: #aaa; margin-top: 4px; display: block; text-transform: uppercase; }
+        
+        .chat-input-wrapper { display: flex; gap: 8px; margin-top: 10px; background: #fff; padding: 6px; border-radius: 30px; border: 1px solid #eee; }
+        .chat-input { flex-grow: 1; border: none; outline: none; padding: 8px 15px; font-size: 12px; background: transparent; }
+        .btn-send { background: #000; color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
     </style>
 </head>
 <body>
@@ -49,39 +59,148 @@
         </div>
 
         <nav class="tabs-container" id="tabsNav">
-            <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (1)</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-arena')">Arena Gatos</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-aves')">Aves</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-peces')">Peces/Tortugas</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-roedores')">Roedores</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-alimento')">Alimento Perros</button>
+            <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética (6)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (10)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (0)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-arena')">Arena Gatos (0)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-aves')">Aves (1)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-peces')">Peces/Tortugas (0)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-roedores')">Roedores (1)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-alimento')">Alimento Perros (0)</button>
         </nav>
 
-        <!-- SÚPER GALLETAS -->
-        <div id="cat-galletas" class="category-content active">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Súper Galletas (1)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
-            <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <article class="product-card" data-name="Supergalleta de Pollo">
-                    <h4 class="text-[13px] font-bold uppercase tracking-tight">Supergalleta de Pollo</h4>
-                    <div class="w-full bg-[#fcfcfc] p-2 rounded-2xl border border-zinc-50">
-                        <img src="fichas/supergalletas/supergalleta_pollo.jpg" class="w-full h-auto object-contain rounded-lg" alt="Supergalleta de Pollo">
-                    </div>
-                    <a href="fichas/supergalletas/supergalleta_pollo.pdf" download class="btn-download">Descargar PDF</a>
-                </article>
-            </section>
+        <div id="cat-cosmetica" class="category-content active">
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Cosmética (6)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-cosmetica"></section>
         </div>
 
-        <!-- OTRAS CATEGORÍAS -->
-        <div id="cat-cosmetica" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Sección de Cosmética</div></div>
-        <div id="cat-productos" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Sección Perros y Gatos</div></div>
-        <div id="cat-aves" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Sección Aves</div></div>
-        <div id="cat-roedores" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Sección Roedores</div></div>
+        <div id="cat-productos" class="category-content">
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Productos Perros y Gatos (10)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-productos"></section>
+        </div>
+
+        <div id="cat-aves" class="category-content">
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Aves (1)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-aves"></section>
+        </div>
+
+        <div id="cat-roedores" class="category-content">
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Roedores (1)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-roedores"></section>
+        </div>
+
+        <div id="cat-galletas" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
         <div id="cat-arena" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
         <div id="cat-peces" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
         <div id="cat-alimento" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
     </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCisKAs5PsiuP18OlpBS2PMdxh9IePKlR8",
+            authDomain: "kantal-fichas.firebaseapp.com",
+            projectId: "kantal-fichas",
+            storageBucket: "kantal-fichas.firebasestorage.app",
+            messagingSenderId: "69901829645",
+            appId: "1:69901829645:web:ba112e75efd6b7e1cc3744",
+            databaseURL: "https://kantal-fichas-default-rtdb.firebaseio.com/"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        function createProductCard(id, name, img, pdf, folder, targetGrid) {
+            const html = `
+                <article class="product-card" data-name="${name}">
+                    <h4 class="text-[13px] font-bold uppercase tracking-tight">${name}</h4>
+                    <div class="w-full bg-[#fcfcfc] p-2 rounded-2xl border border-zinc-50">
+                        <img src="fichas/${folder}/${img}" class="w-full h-auto object-contain rounded-lg">
+                    </div>
+                    <a href="fichas/${folder}/${pdf}" download class="btn-download px-6 py-3 rounded-full">Descargar PDF</a>
+                    <div class="chat-container">
+                        <div id="chat-${id}" class="chat-feed"></div>
+                        <div class="chat-input-wrapper">
+                            <input type="text" id="input-${id}" placeholder="Escribir comentario..." class="chat-input">
+                            <button onclick="window.sendChat('${id}')" class="btn-send">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `;
+            document.getElementById(targetGrid).insertAdjacentHTML('beforeend', html);
+            listenComments(id);
+        }
+
+        window.sendChat = function(id) {
+            const val = document.getElementById(`input-${id}`).value.trim();
+            if(!val) return;
+            push(ref(db, `chats/${id}`), {
+                text: val,
+                status: 'pending',
+                date: new Date().toLocaleString('es-ES', { hour:'2-digit', minute:'2-digit', day:'2-digit', month:'short' })
+            });
+            document.getElementById(`input-${id}`).value = "";
+        };
+
+        function listenComments(id) {
+            onValue(ref(db, `chats/${id}`), (snap) => {
+                const feed = document.getElementById(`chat-${id}`);
+                feed.innerHTML = "";
+                const data = snap.val();
+                if(data) {
+                    Object.keys(data).forEach(key => {
+                        const msg = data[key];
+                        const bubble = document.createElement('div');
+                        bubble.className = `chat-bubble ${msg.status === 'done' ? 'done' : ''}`;
+                        bubble.innerHTML = `
+                            <p>${msg.text}</p>
+                            <span class="date">${msg.date} • ${msg.status === 'pending' ? '🔴 Pendiente' : '🟢 Resuelto'}</span>
+                        `;
+                        bubble.onclick = () => {
+                            const newStatus = msg.status === 'pending' ? 'done' : 'pending';
+                            update(ref(db, `chats/${id}/${key}`), { status: newStatus });
+                        };
+                        feed.appendChild(bubble);
+                    });
+                    feed.scrollTop = feed.scrollHeight;
+                } else {
+                    feed.innerHTML = `<span class="text-[10px] text-zinc-300 uppercase font-bold tracking-tighter">Sin comentarios aún</span>`;
+                }
+            });
+        }
+
+        // CARGA DE PRODUCTOS ACTUALIZADOS
+        const cosm = [
+            ['c1', 'Enjuague desenredante', 'Enjuage desenredante.jpg', 'Enjuage desenredante.pdf', 'perrosygatos'],
+            ['c2', 'Champú cosmético', 'champucosmetico.jpg', 'champucosmetico.pdf', 'perrosygatos'],
+            ['c3', 'Colonia cachorros', 'coloniacachorros.jpg', 'coloniacachorros.pdf', 'perrosygatos'],
+            ['c4', 'Colonia perros y gatos', 'coloniaperrosygatos.jpg', 'coloniaperrosygatos.pdf', 'perrosygatos'],
+            ['c5', 'Colonia machos', 'coloniamachos.jpg', 'coloniamachos.pdf', 'perrosygatos'],
+            ['c6', 'Champú 180', 'champu180.jpg', 'champu180.pdf', 'perrosygatos']
+        ];
+        cosm.forEach(p => createProductCard(...p, 'grid-cosmetica'));
+
+        const prods = [
+            ['p1', 'Antimordeduras', 'antimordeduras.jpg', 'antimordeduras.pdf', 'productos_perros_gatos'],
+            ['p2', 'Antiparasitario', 'antiparasitario.jpg', 'antiparasitario.pdf', 'productos_perros_gatos'],
+            ['p3', 'Champú Antipulgas', 'champu antipulgas.jpg', 'champu antipulgas.pdf', 'productos_perros_gatos'],
+            ['p4', 'Ciper Baño', 'Ciper bano.jpg', 'Ciper bano.pdf', 'productos_perros_gatos'],
+            ['p5', 'Garrapaticida', 'garrapaticida.jpg', 'garrapaticida.pdf', 'productos_perros_gatos'],
+            ['p6', 'Jabón de Azufre', 'jabon de azufre.jpg', 'jabon de azufre.pdf', 'productos_perros_gatos'],
+            ['p7', 'Matagusanos Ultra', 'matagusanos ultra.jpg', 'matagusanos ultra.pdf', 'productos_perros_gatos'],
+            ['p8', 'Matagusanos', 'matagusanos.jpg', 'matagusanos.pdf', 'productos_perros_gatos'],
+            ['p9', 'Repelente', 'repelente.jpg', 'repelente.pdf', 'productos_perros_gatos'],
+            ['p10', 'Talco Antipulgas', 'talco antipulgas.jpg', 'talco antipulgas.pdf', 'productos_perros_gatos']
+        ];
+        prods.forEach(p => createProductCard(...p, 'grid-productos'));
+
+        createProductCard('a1', 'Antiparasitario Pájaros', 'antiparasitariopajaros.jpg', 'antiparasitariopajaros.pdf', 'aves', 'grid-aves');
+        createProductCard('r1', 'Alimento Hamster', 'alimentohamster.jpg', 'alimentohamster.pdf', 'roedores', 'grid-roedores');
+    </script>
 
     <script>
         function openTab(evt, tabId) {

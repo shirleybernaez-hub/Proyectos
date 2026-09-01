@@ -61,7 +61,7 @@
         <nav class="tabs-container" id="tabsNav">
             <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética (6)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (10)</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (0)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (1)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-arena')">Arena Gatos (0)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-aves')">Aves (1)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-peces')">Peces/Tortugas (0)</button>
@@ -79,6 +79,11 @@
             <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-productos"></section>
         </div>
 
+        <div id="cat-galletas" class="category-content">
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Súper Galletas (1)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-galletas"></section>
+        </div>
+
         <div id="cat-aves" class="category-content">
             <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Línea Aves (1)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-aves"></section>
@@ -89,7 +94,6 @@
             <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-roedores"></section>
         </div>
 
-        <div id="cat-galletas" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
         <div id="cat-arena" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
         <div id="cat-peces" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
         <div id="cat-alimento" class="category-content"><div class="p-20 text-center text-zinc-300 font-bold uppercase tracking-widest text-xs">Próximamente...</div></div>
@@ -198,6 +202,7 @@
         ];
         prods.forEach(p => createProductCard(...p, 'grid-productos'));
 
+        createProductCard('sg1', 'Súper Galleta de Pollo', 'supergalleta_pollo.jpg', 'supergalleta_pollo.pdf', 'supergalletas', 'grid-galletas');
         createProductCard('a1', 'Antiparasitario Pájaros', 'antiparasitariopajaros.jpg', 'antiparasitariopajaros.pdf', 'aves', 'grid-aves');
         createProductCard('r1', 'Alimento Hamster', 'alimentohamster.jpg', 'alimentohamster.pdf', 'roedores', 'grid-roedores');
     </script>

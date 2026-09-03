@@ -12,6 +12,13 @@
         .logo-kantal { height: auto; display: inline-block; width: 200px; }
         @media (min-width: 768px) { .logo-kantal { width: 350px; } }
         
+        /* Barra de navegación superior entre vistas */
+        .nav-switch { display: flex; justify-content: center; gap: 15px; padding: 20px 0; background: #f4f4f5; border-bottom: 1px solid #e5e7eb; margin-bottom: 20px; }
+        .switch-btn { padding: 10px 24px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 25px; border: 1.5px solid #000; cursor: pointer; text-decoration: none; transition: all 0.3s ease; }
+        .switch-btn.active { background-color: #000; color: #fff; }
+        .switch-btn:not(.active) { background-color: #fff; color: #000; }
+        .switch-btn:hover { opacity: 0.8; }
+
         .content-wrapper { max-width: 1400px; margin: 0 auto; padding: 20px 20px 80px 20px; }
         
         .search-input { width: 100%; padding: 14px 24px; border-radius: 30px; border: 1px solid #e5e7eb; background-color: #f4f4f5; font-size: 14px; outline: none; transition: all 0.3s ease; }
@@ -43,6 +50,12 @@
     <header id="main-header">
         <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal Logo">
     </header>
+
+    <!-- Menú de navegación entre secciones -->
+    <nav class="nav-switch">
+        <a href="index.html" class="switch-btn active">Fichas Técnicas</a>
+        <a href="catalogo.html" class="switch-btn">Catálogo Revista</a>
+    </nav>
 
     <div class="content-wrapper">
         <div class="text-center mb-8">
@@ -148,7 +161,7 @@
             }
         };
 
-        // CARGA DE PRODUCTOS ACTUALIZADOS
+        // CARGA DE PRODUCTOS
         const cosm = [
             ['c1', 'Enjuague desenredante', 'Enjuage desenredante.jpg', 'Enjuage desenredante.pdf', 'perrosygatos'],
             ['c2', 'Champú cosmético', 'champucosmetico.jpg', 'champucosmetico.pdf', 'perrosygatos'],

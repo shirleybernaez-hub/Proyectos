@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KANTAL | Catálogo Interactivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #fcfcfc; color: #000; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        header#main-header { width: 100%; padding: 15px 0; text-align: center; background: #fff; border-bottom: 1px solid #eee; }
+        .logo-kantal { height: auto; display: inline-block; width: 200px; }
+        @media (min-width: 768px) { .logo-kantal { width: 350px; } }
+        
+        /* Barra de navegación superior entre vistas */
+        .nav-switch { display: flex; justify-content: center; gap: 15px; padding: 20px 0; background: #f4f4f5; border-bottom: 1px solid #e5e7eb; }
+        .switch-btn { padding: 10px 24px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 25px; border: 1.5px solid #000; cursor: pointer; text-decoration: none; transition: all 0.3s ease; }
+        .switch-btn.active { background-color: #000; color: #fff; }
+        .switch-btn:not(.active) { background-color: #fff; color: #000; }
+        .switch-btn:hover { opacity: 0.8; }
+
+        /* Contenedor tipo Revista / Flipbook */
+        .magazine-wrapper { max-width: 1000px; margin: 40px auto; padding: 0 20px; display: flex; flex-direction: column; align-items: center; }
+        
+        .book-container { 
+            background-color: #f9f6f0; /* Fondo crema característico */
+            border: 1px solid #e7e2d8; 
+            border-radius: 32px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+            width: 100%; 
+            min-height: 550px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-content { display: flex; flex-direction: column; md:flex-row; align-items: center; justify-content: center; width: 100%; gap: 40px; flex-grow: 1; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        .product-image-box { max-height: 380px; display: flex; justify-content: center; align-items: center; }
+        .product-image-box img { max-height: 340px; width: auto; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); }
+
+        .product-info { max-width: 400px; text-align: left; }
+        .product-category-tag { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3em; color: #9E2300; margin-bottom: 10px; display: block; }
+        .product-title { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; margin-bottom: 15px; line-height: 1.1; }
+        .product-desc { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 25px; }
+
+        /* Controles de página (Avanzar / Retroceder) */
+        .controls-bar { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 30px; border-top: 1px solid #e7e2d8; padding-top: 20px; }
+        .nav-arrow { background: #000; color: #fff; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+        .nav-arrow:hover { transform: scale(1.08); background: #9E2300; }
+        .page-counter { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #888; }
+    </style>
+</head>
+<body>
+
+    <header id="main-header">
+        <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal Logo">
+    </header>
+
+    <!-- Menú de navegación entre secciones -->
+    <nav class="nav-switch">
+        <a href="index.html" class="switch-btn">Fichas Técnicas</a>
+        <a href="catalogo.html" class="switch-btn active">Catálogo Revista</a>
+    </nav>
+
+    <div class="magazine-wrapper">
+        <div class="text-center mb-6">
+            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-0">Catálogo Interactivo</h2>
+            <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Edición digital de productos</p>
+        </div>
+
+        <!-- Contenedor del Libro / Revista -->
+        <div class="book-container">
+            <div id="magazine-page" class="page-content">
+                <!-- Se inyecta dinámicamente con JavaScript -->
+            </div>
+
+            <div class="controls-bar">
+                <button class="nav-arrow" onclick="prevPage()">&#10094;</button>
+                <span id="pageCounter" class="page-counter">Página 1 de 5</span>
+                <button class="nav-arrow" onclick="nextPage()">&#10095;</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Array con los productos de muestra iniciales basados en tus imágenes PNG
+        const magazineProducts = [
+            {
+                category: "Línea Cosmética",
+                name: "Colonia para Mascotas Macho",
+                desc: "Fragancia exclusiva diseñada para resaltar un aroma duradero y varonil, manteniendo el cuidado delicado de su pelaje.",
+                img: "COLONIA MACHIOS.jpg"
+            },
+            {
+                category: "Línea Cosmética",
+                name: "Colonia para Perros y Gatos",
+                desc: "Spray sin gas de uso diario que neutraliza olores y proporciona una frescura natural y agradable sin irritar su piel.",
+                img: "COLONIA PERROS Y GATOS.jpg"
+            },
+            {
+                category: "Línea Cosmética",
+                name: "Colonia para Mascotas Cachorros",
+                desc: "Fórmula sumamente suave adaptada especialmente para la piel sensible de los cachorros, otorgando un aroma tierno y fresco.",
+                img: "COLONIA CACHORROS.jpg"
+            },
+            {
+                category: "Línea Cosmética",
+                name: "Champú Cosmético Perros y Gatos",
+                desc: "Deja el pelo de su mascota con suave aroma y un brillo natural radiante, limpiando profundamente sin resecar.",
+                img: "CHAMPU COSMETICO 240.jpg"
+            },
+            {
+                category: "Línea Cosmética",
+                name: "Enjuague Desenredante",
+                desc: "Suavizante de alto rendimiento que facilita el peinado, elimina nudos y aporta un brillo sedoso espectacular.",
+                img: "ENJUAGUE DESENREDANTE 240.jpg"
+            }
+        ];
+
+        let currentPage = 0;
+
+        function renderPage(index) {
+            const product = magazineProducts[index];
+            const pageContainer = document.getElementById('magazine-page');
+            
+            pageContainer.innerHTML = `
+                <div class="product-image-box w-full md:w-1/2">
+                    <img src="${product.img}" alt="${product.name}">
+                </div>
+                <div class="product-info w-full md:w-1/2">
+                    <span class="product-category-tag">${product.category}</span>
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-desc">${product.desc}</p>
+                    <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Kantal • Tradicionalmente Sano</span>
+                </div>
+            `;
+            
+            document.getElementById('pageCounter').innerText = `Página ${currentPage + 1} de ${magazineProducts.length}`;
+        }
+
+        function nextPage() {
+            currentPage = (currentPage + 1) % magazineProducts.length;
+            renderPage(currentPage);
+        }
+
+        function prevPage() {
+            currentPage = (currentPage - 1 + magazineProducts.length) % magazineProducts.length;
+            renderPage(currentPage);
+        }
+
+        // Cargar la primera página al iniciar
+        window.onload = function() {
+            renderPage(0);
+        };
+    </script>
+</body>
+</html>

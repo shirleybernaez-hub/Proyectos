@@ -3,94 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANTAL | Catálogo Interactivo</title>
+    <title>KANTAL | Catálogo Tipo Revista</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #fcfcfc; color: #000; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-        header#main-header { width: 100%; padding: 15px 0; text-align: center; background: #fff; border-bottom: 1px solid #eee; }
-        .logo-kantal { height: auto; display: inline-block; width: 200px; }
-        @media (min-width: 768px) { .logo-kantal { width: 350px; } }
+        body { background-color: #121212; color: #111; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
         
-        /* Barra de navegación superior entre vistas */
-        .nav-switch { display: flex; justify-content: center; gap: 15px; padding: 20px 0; background: #f4f4f5; border-bottom: 1px solid #e5e7eb; }
-        .switch-btn { padding: 10px 24px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 25px; border: 1.5px solid #000; cursor: pointer; text-decoration: none; transition: all 0.3s ease; }
-        .switch-btn.active { background-color: #000; color: #fff; }
-        .switch-btn:not(.active) { background-color: #fff; color: #000; }
-        .switch-btn:hover { opacity: 0.8; }
+        /* Barra superior general estilo visor profesional */
+        .top-toolbar { width: 100%; background: #1e1e1e; display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; border-bottom: 1px solid #333; }
+        .logo-kantal { width: 140px; height: auto; filter: brightness(0) invert(1); }
+        
+        /* Navegación entre secciones (Fichas y Catálogo) */
+        .section-switch { display: flex; gap: 10px; }
+        .switch-link { padding: 8px 18px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 20px; text-decoration: none; transition: all 0.2s; border: 1px solid #444; color: #ccc; background: #2a2a2a; }
+        .switch-link.active { background: #fff; color: #000; border-color: #fff; }
+        .switch-link:hover { background: #444; color: #fff; }
 
-        /* Contenedor tipo Revista / Flipbook */
-        .magazine-wrapper { max-width: 1000px; margin: 40px auto; padding: 0 20px; display: flex; flex-direction: column; align-items: center; }
+        /* Controles de la revista (arriba al centro como el ejemplo) */
+        .magazine-controls { display: flex; align-items: center; gap: 15px; background: #2a2a2a; padding: 6px 16px; border-radius: 20px; color: #fff; font-size: 12px; font-weight: 700; }
+        .ctrl-btn { background: none; border: none; color: #fff; cursor: pointer; font-size: 14px; padding: 0 5px; transition: opacity 0.2s; }
+        .ctrl-btn:hover { opacity: 0.7; }
+
+        /* Contenedor del libro abierto (Doble página) */
+        .book-viewport { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: flex; justify-content: center; align-items: center; }
         
-        .book-container { 
-            background-color: #f9f6f0; /* Fondo crema característico */
-            border: 1px solid #e7e2d8; 
-            border-radius: 32px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
-            width: 100%; 
-            min-height: 550px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: space-between; 
-            padding: 40px;
+        .book-spread {
+            background-color: #f6f1eb; /* Fondo crema elegante tipo papel de revista */
+            background-image: linear-gradient(to right, #ece4da 0%, #f6f1eb 3%, #f6f1eb 97%, #ece4da 100%); /* Sombra central del lomo */
+            border-radius: 8px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            width: 100%;
+            height: 600px;
+            display: flex;
             position: relative;
             overflow: hidden;
+            border: 1px solid #dcd3c7;
         }
 
-        .page-content { display: flex; flex-direction: column; md:flex-row; align-items: center; justify-content: center; width: 100%; gap: 40px; flex-grow: 1; animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        /* Mitad de página (Izquierda / Derecha) */
+        .book-page {
+            width: 50%;
+            height: 100%;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            position: relative;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .book-page.left { border-right: 1px solid #e2dad0; }
+        .book-page.right { border-left: 1px solid #fff; }
 
-        .product-image-box { max-height: 380px; display: flex; justify-content: center; align-items: center; }
-        .product-image-box img { max-height: 340px; width: auto; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.99); } to { opacity: 1; transform: scale(1); } }
 
-        .product-info { max-width: 400px; text-align: left; }
-        .product-category-tag { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3em; color: #9E2300; margin-bottom: 10px; display: block; }
-        .product-title { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; margin-bottom: 15px; line-height: 1.1; }
-        .product-desc { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 25px; }
-
-        /* Controles de página (Avanzar / Retroceder) */
-        .controls-bar { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 30px; border-top: 1px solid #e7e2d8; padding-top: 20px; }
-        .nav-arrow { background: #000; color: #fff; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
-        .nav-arrow:hover { transform: scale(1.08); background: #9E2300; }
-        .page-counter { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #888; }
+        .page-img { max-height: 380px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.08)); margin-bottom: 20px; }
+        .page-category { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3em; color: #9E2300; margin-bottom: 8px; }
+        .page-title { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 12px; text-align: center; line-height: 1.1; }
+        .page-desc { font-size: 12px; color: #666; text-align: center; line-height: 1.5; max-width: 380px; }
+        
+        .page-number-indicator { position: absolute; bottom: 20px; font-size: 10px; font-weight: 700; color: #aaa; letter-spacing: 0.1em; }
+        .left .page-number-indicator { left: 30px; }
+        .right .page-number-indicator { right: 30px; }
     </style>
 </head>
 <body>
 
-    <header id="main-header">
-        <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal Logo">
-    </header>
+    <!-- Barra Superior Profesional -->
+    <header class="top-toolbar">
+        <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal">
 
-    <!-- Menú de navegación entre secciones -->
-    <nav class="nav-switch">
-        <a href="index.html" class="switch-btn">Fichas Técnicas</a>
-        <a href="catalogo.html" class="switch-btn active">Catálogo Revista</a>
-    </nav>
-
-    <div class="magazine-wrapper">
-        <div class="text-center mb-6">
-            <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-0">Catálogo Interactivo</h2>
-            <p class="text-zinc-400 text-[9px] md:text-[10px] uppercase tracking-[0.4em]">Edición digital de productos</p>
+        <!-- Controles centrales de paginación estilo visor -->
+        <div class="magazine-controls">
+            <button class="ctrl-btn" onclick="goToStart()">&#10098;&#10098;</button>
+            <button class="ctrl-btn" onclick="prevSpread()">&#10094;</button>
+            <span id="spreadIndicator">1 / 3</span>
+            <button class="ctrl-btn" onclick="nextSpread()">&#10095;</button>
+            <button class="ctrl-btn" onclick="goToEnd()">&#10099;&#10099;</button>
         </div>
 
-        <!-- Contenedor del Libro / Revista -->
-        <div class="book-container">
-            <div id="magazine-page" class="page-content">
-                <!-- Se inyecta dinámicamente con JavaScript -->
-            </div>
+        <!-- Botones de navegación entre secciones (Fichas <-> Catálogo) -->
+        <nav class="section-switch">
+            <a href="index.html" class="switch-link">Fichas Técnicas</a>
+            <a href="catalogo.html" class="switch-link active">Catálogo Revista</a>
+        </nav>
+    </header>
 
-            <div class="controls-bar">
-                <button class="nav-arrow" onclick="prevPage()">&#10094;</button>
-                <span id="pageCounter" class="page-counter">Página 1 de 5</span>
-                <button class="nav-arrow" onclick="nextPage()">&#10095;</button>
-            </div>
+    <!-- Visor de la Revista (Doble Página) -->
+    <div class="book-viewport">
+        <div class="book-spread" id="bookSpread">
+            <!-- Inyectado dinámicamente por JavaScript -->
         </div>
     </div>
 
     <script>
-        // Array con los productos de muestra iniciales basados en tus imágenes PNG
-        const magazineProducts = [
+        // Lista de productos que forman las páginas de la revista
+        const magazineItems = [
+            {
+                category: "Edición Especial",
+                name: "Kantal • Catálogo Oficial",
+                desc: "Tradicionalmente Sano. Explora nuestra línea completa de productos desarrollados para el cuidado, bienestar y protección de tus mascotas.",
+                img: "logo/logokantal.svg",
+                isCover: true
+            },
             {
                 category: "Línea Cosmética",
                 name: "Colonia para Mascotas Macho",
@@ -123,40 +140,89 @@
             }
         ];
 
-        let currentPage = 0;
+        let currentSpread = 0;
+        const totalSpreads = Math.ceil(magazineItems.length / 2);
 
-        function renderPage(index) {
-            const product = magazineProducts[index];
-            const pageContainer = document.getElementById('magazine-page');
-            
-            pageContainer.innerHTML = `
-                <div class="product-image-box w-full md:w-1/2">
-                    <img src="${product.img}" alt="${product.name}">
-                </div>
-                <div class="product-info w-full md:w-1/2">
-                    <span class="product-category-tag">${product.category}</span>
-                    <h3 class="product-title">${product.name}</h3>
-                    <p class="product-desc">${product.desc}</p>
-                    <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Kantal • Tradicionalmente Sano</span>
-                </div>
-            `;
-            
-            document.getElementById('pageCounter').innerText = `Página ${currentPage + 1} de ${magazineProducts.length}`;
+        function renderSpread(index) {
+            const spreadContainer = document.getElementById('bookSpread');
+            const leftIndex = index * 2;
+            const rightIndex = leftIndex + 1;
+
+            const leftItem = magazineItems[leftIndex] || null;
+            const rightItem = magazineItems[rightIndex] || null;
+
+            let leftHtml = '';
+            let rightHtml = '';
+
+            if (leftItem) {
+                if (leftItem.isCover) {
+                    leftHtml = `
+                        <div class="book-page left" style="background: #111; color: #fff; justify-content: center; text-align: center;">
+                            <img src="${leftItem.img}" style="width: 220px; filter: brightness(0) invert(1); margin-bottom: 20px;">
+                            <h2 style="font-size: 26px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 10px;">${leftItem.name}</h2>
+                            <p style="font-size: 12px; color: #aaa; max-width: 300px; line-height: 1.5;">${leftItem.desc}</p>
+                            <span class="page-number-indicator" style="color: #666;">1</span>
+                        </div>
+                    `;
+                } else {
+                    leftHtml = `
+                        <div class="book-page left">
+                            <span class="page-category">${leftItem.category}</span>
+                            <h3 class="page-title">${leftItem.name}</h3>
+                            <img src="${leftItem.img}" class="page-img" alt="${leftItem.name}">
+                            <p class="page-desc">${leftItem.desc}</p>
+                            <span class="page-number-indicator">${leftIndex + 1}</span>
+                        </div>
+                    `;
+                }
+            } else {
+                leftHtml = `<div class="book-page left"><span class="page-number-indicator"></span></div>`;
+            }
+
+            if (rightItem) {
+                rightHtml = `
+                    <div class="book-page right">
+                        <span class="page-category">${rightItem.category}</span>
+                        <h3 class="page-title">${rightItem.name}</h3>
+                        <img src="${rightItem.img}" class="page-img" alt="${rightItem.name}">
+                        <p class="page-desc">${rightItem.desc}</p>
+                        <span class="page-number-indicator">${rightIndex + 1}</span>
+                    </div>
+                `;
+            } else {
+                rightHtml = `<div class="book-page right"><span class="page-number-indicator">Fin</span></div>`;
+            }
+
+            spreadContainer.innerHTML = leftHtml + rightHtml;
+            document.getElementById('spreadIndicator').innerText = `${index + 1} / ${totalSpreads}`;
         }
 
-        function nextPage() {
-            currentPage = (currentPage + 1) % magazineProducts.length;
-            renderPage(currentPage);
+        function nextSpread() {
+            if (currentSpread < totalSpreads - 1) {
+                currentSpread++;
+                renderSpread(currentSpread);
+            }
         }
 
-        function prevPage() {
-            currentPage = (currentPage - 1 + magazineProducts.length) % magazineProducts.length;
-            renderPage(currentPage);
+        function prevSpread() {
+            if (currentSpread > 0) {
+                currentSpread--;
+                renderSpread(currentSpread);
+            }
         }
 
-        // Cargar la primera página al iniciar
+        function goToStart() {
+            currentSpread = 0;
+            renderSpread(currentSpread);
+        }
+
+        function goToEnd() {
+            currentSpread = totalSpreads - 1;
+            renderSpread(currentSpread);
+        }
+
         window.onload = function() {
-            renderPage(0);
+            renderSpread(0);
         };
     </script>
 </body>

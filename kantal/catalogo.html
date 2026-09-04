@@ -20,6 +20,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            perspective: 2000px; /* Profundidad 3D */
         }
 
         header {
@@ -53,15 +54,8 @@
             border: 1.5px solid #000;
             transition: all 0.2s;
         }
-        .switch-btn.active {
-            background-color: #000;
-            color: #fff;
-        }
-        .switch-btn:not(.active) {
-            background-color: #ffffff;
-            color: #000;
-        }
-        .switch-btn:hover { opacity: 0.8; }
+        .switch-btn.active { background-color: #000; color: #fff; }
+        .switch-btn:not(.active) { background-color: #ffffff; color: #000; }
 
         .main-container {
             margin-top: 50px;
@@ -82,7 +76,6 @@
             z-index: 50;
         }
         .side-arrow:hover { color: #555; }
-        .side-arrow:active { transform: scale(0.95); }
 
         .magazine-spread {
             width: 480px;
@@ -94,22 +87,24 @@
             position: relative;
             overflow: hidden;
             border: 1px solid #eaeaea;
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
         }
 
-        .magazine-spread.open {
-            width: 960px;
-        }
+        .magazine-spread.open { width: 960px; }
 
+        /* Sombra central del lomo */
         .magazine-spread.open::before {
             content: '';
             position: absolute;
             top: 0;
             bottom: 0;
             left: 50%;
-            width: 2px;
-            background: #eaeaea;
+            width: 20px;
+            margin-left: -10px;
+            background: linear-gradient(to right, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.08) 100%);
             z-index: 10;
+            pointer-events: none;
         }
 
         .page {
@@ -123,23 +118,20 @@
             justify-content: space-between;
             overflow: hidden;
             user-select: none;
-            border-radius: 0px;
             position: relative;
+            will-change: transform;
         }
 
         .page-cover-solo {
             width: 100%;
             height: 100%;
             background-color: #ffffff;
-            background-image: none;
-            color: #000;
             padding: 50px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
             text-align: center;
-            border-radius: 0px;
             position: relative;
         }
 
@@ -183,7 +175,6 @@
             text-transform: uppercase;
             margin-bottom: 8px;
             line-height: 1.1;
-            letter-spacing: -0.02em;
         }
 
         .prod-desc {
@@ -194,60 +185,46 @@
             margin: 0 auto;
         }
 
-        /* Efecto CURL (Doblez de esquina realista al pasar el mouse) en la derecha */
+        /* Curvatura tridimensional de esquina (Curl Effect + Sombra Proyectada) */
         .corner-curl-right {
             position: absolute;
             right: 0;
             bottom: 0;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             cursor: pointer;
             z-index: 99;
-            background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.12) 100%);
-            box-shadow: inset 0 0 0 rgba(0,0,0,0);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-bottom-right-radius: 0px;
+            background: linear-gradient(135deg, transparent 45%, rgba(0,0,0,0.06) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.15) 100%);
+            transition: all 0.3s ease;
         }
-
         .corner-curl-right:hover {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.9) 50%, rgba(0,0,0,0.18) 100%);
-            box-shadow: -10px -10px 20px rgba(0,0,0,0.1);
-            transform: rotate(-5deg);
+            width: 100px;
+            height: 100px;
+            box-shadow: -8px -8px 15px rgba(0,0,0,0.12);
         }
 
-        /* Efecto CURL en la izquierda para retroceder */
         .corner-curl-left {
             position: absolute;
             left: 0;
             bottom: 0;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             cursor: pointer;
             z-index: 99;
-            background: linear-gradient(225deg, transparent 50%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.12) 100%);
-            box-shadow: inset 0 0 0 rgba(0,0,0,0);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-bottom-left-radius: 0px;
+            background: linear-gradient(225deg, transparent 45%, rgba(0,0,0,0.06) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.15) 100%);
+            transition: all 0.3s ease;
         }
-
         .corner-curl-left:hover {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(225deg, transparent 30%, rgba(255,255,255,0.9) 50%, rgba(0,0,0,0.18) 100%);
-            box-shadow: 10px -10px 20px rgba(0,0,0,0.1);
-            transform: rotate(5deg);
+            width: 100px;
+            height: 100px;
+            box-shadow: 8px -8px 15px rgba(0,0,0,0.12);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div>
-            <img src="logo/logokantal.png" alt="Kantal Logo">
-        </div>
-
+        <div><img src="logo/logokantal.png" alt="Kantal Logo"></div>
         <nav style="display: flex; gap: 10px;">
             <a href="index.html" class="switch-btn">Fichas Técnicas</a>
             <a href="catalogo.html" class="switch-btn active">Catálogo Revista</a>
@@ -256,9 +233,7 @@
 
     <div class="main-container">
         <button class="side-arrow" onclick="prevSpread()">&#10094;</button>
-        <div class="magazine-spread" id="spreadContainer">
-            <!-- Renderizado dinámico -->
-        </div>
+        <div class="magazine-spread" id="spreadContainer"></div>
         <button class="side-arrow" onclick="nextSpread()">&#10095;</button>
     </div>
 
@@ -341,6 +316,7 @@
 
         let currentIndex = 0;
 
+        /* Síntesis de sonido de papel por Web Audio API */
         function playPageSound() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;

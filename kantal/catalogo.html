@@ -179,7 +179,7 @@
         
         <!-- Contenedor del Libro -->
         <div id="book-container">
-            <!-- 1. Portada -->
+            <!-- 1. Portada (Única) -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
                     <img src="logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
@@ -187,7 +187,7 @@
                 </div>
             </div>
 
-            <!-- 2. Contraportada interna -->
+            <!-- 2. Página izquierda al abrir la portada (Índice / Presentación) -->
             <div class="page">
                 <div class="page-inner" style="background: #ffffff; color: #000; width: 100%; height: 100%;">
                     <img src="logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
@@ -195,7 +195,7 @@
                 </div>
             </div>
 
-            <!-- 3. Súper Galleta de Carne -->
+            <!-- 3. Súper Galleta de Carne (Quedará frente a la página 2 formando el primer pliegue doble) -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
@@ -235,7 +235,7 @@
                 <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
             </div>
 
-            <!-- 7. Súper Galletas de Salmón -->
+            <!-- 7. Súper Galletas de Salmón (Contraportada) -->
             <div class="page" data-density="hard">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
@@ -252,7 +252,6 @@
     <script>
         let pageFlip;
 
-        /* Sonido sintético de papel al voltear */
         function playPageSound() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -291,7 +290,6 @@
             const container = document.getElementById('book-container');
 
             try {
-                // Corrección clave: el espacio de nombres global correcto es StPageFlip.PageFlip
                 pageFlip = new StPageFlip.PageFlip(container, {
                     width: 480,
                     height: 600,
@@ -308,10 +306,8 @@
                     clickEventForward: true
                 });
 
-                // Cargamos las páginas directamente desde los elementos HTML hijos
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));
 
-                // Evento de sonido al pasar de página
                 pageFlip.on('flip', (e) => {
                     playPageSound();
                 });

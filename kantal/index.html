@@ -51,6 +51,7 @@
         <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal Logo">
     </header>
 
+    <!-- Menú de navegación entre secciones -->
     <nav class="nav-switch">
         <a href="index.html" class="switch-btn active">Fichas Técnicas</a>
         <a href="catalogo.html" class="switch-btn">Catálogo Revista</a>
@@ -69,7 +70,7 @@
         <nav class="tabs-container" id="tabsNav">
             <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética (6)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (10)</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (4)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (5)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-arena')">Arena Gatos (0)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-aves')">Aves (1)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-peces')">Peces/Tortugas (0)</button>
@@ -88,7 +89,7 @@
         </div>
 
         <div id="cat-galletas" class="category-content">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Súper Galletas (4)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Súper Galletas (5)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-galletas"></section>
         </div>
 
@@ -185,12 +186,13 @@
         ];
         prods.forEach(p => createProductCard(...p, 'grid-productos'));
 
-        // Súper Galletas (Actualizado con la nueva ficha de Salmón)
+        // Súper Galletas (Actualizado con Salmón y Queso)
         const galletas = [
             ['sg1', 'Súper Galleta Cachorros', 'supergalleta_cachorros.jpg', 'supergalleta_cachorros.pdf', 'supergalletas'],
             ['sg2', 'Súper Galleta de Carne', 'supergalleta_carne.jpg', 'supergalleta_carne.pdf', 'supergalletas'],
             ['sg3', 'Súper Galleta de Pollo', 'supergalleta_pollo.jpg', 'supergalleta_pollo.pdf', 'supergalletas'],
-            ['sg4', 'Súper Galletas de Salmón', 'supergalletas_salmon.jpg', 'supergalletas_salmon.pdf', 'supergalletas']
+            ['sg4', 'Súper Galletas de Salmón', 'supergalletas_salmon.jpg', 'supergalletas_salmon.pdf', 'supergalletas'],
+            ['sg5', 'Súper Galleta de Queso', 'supergalleta_queso.jpg', 'supergalleta_queso.pdf', 'supergalletas']
         ];
         galletas.forEach(p => createProductCard(...p, 'grid-galletas'));
 

@@ -194,33 +194,50 @@
             margin: 0 auto;
         }
 
-        /* Zonas de esquina limpias, invisibles pero funcionales al toque/clic sin gráficos extraños */
-        .corner-hotspot-right {
+        /* Efecto CURL (Doblez de esquina realista al pasar el mouse) en la derecha */
+        .corner-curl-right {
             position: absolute;
             right: 0;
             bottom: 0;
-            width: 70px;
-            height: 70px;
+            width: 50px;
+            height: 50px;
             cursor: pointer;
             z-index: 99;
-            background: transparent;
-        }
-        .corner-hotspot-right:hover {
-            background: rgba(0, 0, 0, 0.03);
+            background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.12) 100%);
+            box-shadow: inset 0 0 0 rgba(0,0,0,0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom-right-radius: 0px;
         }
 
-        .corner-hotspot-left {
+        .corner-curl-right:hover {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.9) 50%, rgba(0,0,0,0.18) 100%);
+            box-shadow: -10px -10px 20px rgba(0,0,0,0.1);
+            transform: rotate(-5deg);
+        }
+
+        /* Efecto CURL en la izquierda para retroceder */
+        .corner-curl-left {
             position: absolute;
             left: 0;
             bottom: 0;
-            width: 70px;
-            height: 70px;
+            width: 50px;
+            height: 50px;
             cursor: pointer;
             z-index: 99;
-            background: transparent;
+            background: linear-gradient(225deg, transparent 50%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.12) 100%);
+            box-shadow: inset 0 0 0 rgba(0,0,0,0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom-left-radius: 0px;
         }
-        .corner-hotspot-left:hover {
-            background: rgba(0, 0, 0, 0.03);
+
+        .corner-curl-left:hover {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(225deg, transparent 30%, rgba(255,255,255,0.9) 50%, rgba(0,0,0,0.18) 100%);
+            box-shadow: 10px -10px 20px rgba(0,0,0,0.1);
+            transform: rotate(5deg);
         }
     </style>
 </head>
@@ -255,7 +272,7 @@
                             <img src="logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
                             <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 0; margin-bottom: 15px; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
                         </div>
-                        <div class="corner-hotspot-right" onclick="nextSpread()" title="Avanzar página"></div>
+                        <div class="corner-curl-right" onclick="nextSpread()" title="Avanzar página"></div>
                     </div>
                 `
             },
@@ -266,7 +283,7 @@
                         <img src="logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
                         <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 8px;">Tradicionalmente Sano</p>
                     </div>
-                    <div class="corner-hotspot-left" onclick="prevSpread()" title="Retroceder página"></div>
+                    <div class="corner-curl-left" onclick="prevSpread()" title="Retroceder página"></div>
                 `,
                 right: `
                     <span class="cat-tag">Línea Súper Galletas</span>
@@ -275,7 +292,7 @@
                         <img src="fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
                     </div>
                     <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
-                    <div class="corner-hotspot-right" onclick="nextSpread()" title="Avanzar página"></div>
+                    <div class="corner-curl-right" onclick="nextSpread()" title="Avanzar página"></div>
                 `
             },
             {
@@ -287,7 +304,7 @@
                         <img src="fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
                     </div>
                     <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
-                    <div class="corner-hotspot-left" onclick="prevSpread()" title="Retroceder página"></div>
+                    <div class="corner-curl-left" onclick="prevSpread()" title="Retroceder página"></div>
                 `,
                 right: `
                     <span class="cat-tag">Línea Súper Galletas</span>
@@ -296,7 +313,7 @@
                         <img src="fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
                     </div>
                     <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
-                    <div class="corner-hotspot-right" onclick="nextSpread()" title="Avanzar página"></div>
+                    <div class="corner-curl-right" onclick="nextSpread()" title="Avanzar página"></div>
                 `
             },
             {
@@ -308,7 +325,7 @@
                         <img src="fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
                     </div>
                     <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
-                    <div class="corner-hotspot-left" onclick="prevSpread()" title="Retroceder página"></div>
+                    <div class="corner-curl-left" onclick="prevSpread()" title="Retroceder página"></div>
                 `,
                 right: `
                     <span class="cat-tag">Línea Súper Galletas</span>
@@ -317,7 +334,7 @@
                         <img src="fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
                     </div>
                     <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
-                    <div class="corner-hotspot-right" onclick="nextSpread()" title="Avanzar página"></div>
+                    <div class="corner-curl-right" onclick="nextSpread()" title="Avanzar página"></div>
                 `
             }
         ];

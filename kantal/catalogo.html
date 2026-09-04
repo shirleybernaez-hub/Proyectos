@@ -192,20 +192,23 @@
             margin: 0 auto;
         }
 
-        /* Área interactiva de la esquina para arrastrar o hacer clic */
+        /* Esquina interactiva mejorada con efecto visual de solapa */
         .corner-hotspot {
             position: absolute;
             right: 0;
             bottom: 0;
-            width: 100px;
-            height: 100px;
+            width: 90px;
+            height: 90px;
             cursor: pointer;
             z-index: 99;
-            background: radial-gradient(circle at bottom right, rgba(0,0,0,0.08) 0%, transparent 70%);
-            transition: transform 0.2s;
+            background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, 0.08) 50%);
+            transition: all 0.2s ease;
         }
         .corner-hotspot:hover {
-            transform: scale(1.1);
+            width: 130px;
+            height: 130px;
+            background: linear-gradient(135deg, transparent 40%, rgba(0, 0, 0, 0.15) 40%);
+            box-shadow: -5px -5px 15px rgba(0,0,0,0.05);
         }
     </style>
 </head>

@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANTAL | Catálogo Revista Digital</title>
+    <title>KANTAL | Catálogo de productos</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Motor físico StPageFlip para arrastre real desde la esquina -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -85,16 +84,19 @@
             border-color: #fff;
         }
 
-        /* Visor principal del libro */
+        /* Contenedor estricto para forzar la vista de libro abierto horizontal */
         .magazine-viewport {
             margin-top: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 840px;
+            height: 560px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            border-radius: 6px;
+            background: #0b1320;
         }
 
-        /* Páginas individuales de la revista */
         .page {
+            width: 420px;
+            height: 560px;
             background-color: #f9f6f0;
             background-image: linear-gradient(to right, #e8dfd2 0%, #f9f6f0 5%, #f9f6f0 95%, #e8dfd2 100%);
             box-sizing: border-box;
@@ -172,7 +174,6 @@
 
     <header class="top-nav">
         <div>
-            <!-- Logo blanco especificado -->
             <img src="logo/logo_kantal blanco.png" alt="Kantal Logo">
         </div>
 
@@ -188,7 +189,7 @@
         </nav>
     </header>
 
-    <main class="magazine-viewport">
+    <div class="magazine-viewport">
         <div id="magazine">
             <!-- Portada -->
             <div class="page page-cover" data-density="hard">
@@ -256,7 +257,7 @@
                 <div class="page-num">6</div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script>
         let bookObj;
@@ -291,10 +292,10 @@
                     width: 420,
                     height: 560,
                     size: "fixed",
-                    minWidth: 300,
-                    maxWidth: 700,
-                    minHeight: 400,
-                    maxHeight: 800,
+                    minWidth: 420,
+                    maxWidth: 420,
+                    minHeight: 560,
+                    maxHeight: 560,
                     drawShadow: true,
                     maxShadowOpacity: 0.8,
                     showCover: true,

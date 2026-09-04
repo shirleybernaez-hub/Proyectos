@@ -84,20 +84,16 @@
             border-color: #fff;
         }
 
-        /* Contenedor estricto para forzar el ancho de dos páginas juntas (480px * 2 = 960px) */
+        /* Contenedor estricto que obliga a la librería a abrirse en 960x600 (dos páginas de 480px) */
         .magazine-viewport {
             margin-top: 50px;
             width: 960px;
             height: 600px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #0b1320;
+            background: #f9f6f0;
         }
 
-        /* Página individual */
         .page {
             width: 480px;
             height: 600px;
@@ -131,7 +127,7 @@
         }
 
         .prod-image {
-            max-height: 260px;
+            max-height: 250px;
             max-width: 100%;
             object-fit: contain;
             filter: drop-shadow(0 12px 20px rgba(0,0,0,0.12));
@@ -195,7 +191,7 @@
 
     <div class="magazine-viewport">
         <div id="magazine">
-            <!-- Portada (Página 1) -->
+            <!-- Portada -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
                     <img src="logo/logo_kantal blanco.png" style="width: 160px; margin-bottom: 20px;" alt="Logo">

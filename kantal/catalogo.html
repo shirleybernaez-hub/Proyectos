@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo de productos</title>
-    <!-- Importación de la librería PageFlip para físicas y arrastre de esquinas -->
+    <!-- Importación oficial de PageFlip -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -86,16 +86,15 @@
         .side-arrow:hover { color: #555; }
         .side-arrow:active { transform: scale(0.95); }
 
-        /* Contenedor principal donde se dibuja el libro interactivo */
+        /* Contenedor donde se monta PageFlip */
         #book-canvas {
             width: 960px;
             height: 600px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.08);
             border: 1px solid #eaeaea;
-            display: none; /* Se muestra tras iniciar JS */
         }
 
-        /* Estilo de cada página individual para PageFlip */
+        /* Estilo de cada página individual */
         .page {
             background-color: #ffffff;
             background-image: linear-gradient(to right, #f4f4f4 0%, #ffffff 4%, #ffffff 96%, #f4f4f4 100%);
@@ -108,7 +107,6 @@
             border-radius: 0px;
         }
 
-        /* Página de portada inicial (Portada dura sin degradado central) */
         .page-cover {
             background: #ffffff !important;
             background-image: none !important;
@@ -182,7 +180,6 @@
     <div class="main-container">
         <button class="side-arrow" onclick="prevPage()">&#10094;</button>
         
-        <!-- Contenedor de la librería PageFlip -->
         <div id="book-canvas">
             <!-- 1. Portada del Catálogo -->
             <div class="page page-cover" data-density="hard">
@@ -291,10 +288,10 @@
             } catch (e) {}
         }
 
-        window.addEventListener('load', () => {
+        window.addEventListener('DOMContentLoaded', () => {
             const bookElement = document.getElementById('book-canvas');
+            const pagesNodeList = bookElement.querySelectorAll('.page');
 
-            // Inicializar PageFlip con soporte de arrastre de esquinas, sombras y portada inicial
             pageFlip = new StPageFlip.PageFlip(bookElement, {
                 width: 480,
                 height: 600,
@@ -311,11 +308,8 @@
                 clickEventForward: true
             });
 
-            // Cargar las páginas desde el HTML del DOM
-            pageFlip.loadFromHTML(bookElement.querySelectorAll('.page'));
-            bookElement.style.display = 'block';
+            pageFlip.loadFromHTML(pagesNodeList);
 
-            // Reproducir sonido realista al voltear la página
             pageFlip.on('flip', (e) => {
                 playPageSound();
             });

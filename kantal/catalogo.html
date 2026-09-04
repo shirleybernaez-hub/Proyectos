@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANTAL | Catálogo Revista Editorial</title>
+    <title>KANTAL | Revista Digital • Page Curl Interactivo con Sonido</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Motor físico oficial StPageFlip para el efecto Page Curl 3D real -->
+    <!-- Librería Turn.js / PageFlip con soporte completo de arrastre interactivo con el puntero (grab & drag) -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -13,7 +13,6 @@
             --bg-deep: #101c2d;
             --paper-cream: #f9f6f0;
             --paper-border: #e7e2d8;
-            --accent-magenta: #e91e63;
         }
 
         body {
@@ -121,13 +120,17 @@
             border-color: #fff;
         }
 
-        /* Contenedor del Visor Flipbook */
+        /* Visor del Flipbook */
         .magazine-viewport {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: calc(100vh - 60px);
+            cursor: grab;
+        }
+        .magazine-viewport:active {
+            cursor: grabbing;
         }
 
         /* Páginas individuales con textura crema editorial */
@@ -141,6 +144,7 @@
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
+            user-select: none;
         }
 
         .page-cover {
@@ -162,9 +166,9 @@
             text-align: center;
         }
 
-        .page-img { max-height: 280px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); margin-bottom: 15px; }
+        .page-img { max-height: 270px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); margin-bottom: 15px; }
         .page-category { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3em; color: #9E2300; margin-bottom: 6px; }
-        .page-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; line-height: 1.1; }
+        .page-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; line-height: 1.1; }
         .page-desc { font-size: 11px; color: #555; line-height: 1.5; max-width: 300px; margin: 0 auto; }
         .page-footer { font-size: 9px; font-weight: 700; color: #999; letter-spacing: 0.1em; text-align: center; width: 100%; }
 
@@ -256,7 +260,7 @@
         <button class="side-icon-btn" title="Pantalla Completa">⛶</button>
     </div>
 
-    <!-- Visor Principal con Motor Page-Curl 3D -->
+    <!-- Visor Principal con Page-Curl interactivo por puntero y sonido físico -->
     <main class="magazine-viewport">
         <div id="book">
             
@@ -266,17 +270,17 @@
                     <img src="logo/logokantal.svg" style="width: 180px; filter: brightness(0) invert(1); margin-bottom: 20px;" alt="Kantal">
                     <h1 style="font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 10px;">CATÁLOGO OFICIAL</h1>
                     <p style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 20px;">FASHION & CARE LOOKBOOK</p>
-                    <p style="font-size: 11px; color: #888; max-width: 260px; line-height: 1.5;">Tradicionalmente Sano. Edición digital interactiva con efecto realista de papel.</p>
+                    <p style="font-size: 11px; color: #888; max-width: 260px; line-height: 1.5;">Tradicionalmente Sano. Arrastra la esquina con el puntero para pasar las páginas.</p>
                 </div>
                 <div class="page-footer" style="color: #666;">1</div>
             </div>
 
-            <!-- Página 2: Colonia Machos -->
+            <!-- Página 2: Colonia Machios -->
             <div class="page">
                 <div class="page-content">
                     <span class="page-category">Línea Cosmética</span>
                     <h3 class="page-title">Colonia para Mascotas Macho</h3>
-                    <img src="fichas/catalogo/COLONIA MACHIOS.png" class="page-img" alt="Colonia Machos">
+                    <img src="fichas/catalogo/COLONIA MACHIOS.png" class="page-img" alt="Colonia Machios">
                     <p class="page-desc">Fragancia exclusiva diseñada para resaltar un aroma duradero y varonil, manteniendo el cuidado delicado de su pelaje.</p>
                 </div>
                 <div class="page-footer">2</div>
@@ -287,7 +291,7 @@
                 <div class="page-content">
                     <span class="page-category">Línea Cosmética</span>
                     <h3 class="page-title">Colonia para Perros y Gatos</h3>
-                    <img src="fichas/catalogo/COLONIA PERROS Y GATOS.png" class="page-img" alt="Colonia Perros y Gatos">
+                    <img src="fichas/catalogo/COLONIA PERROS...OS.png" class="page-img" alt="Colonia Perros y Gatos">
                     <p class="page-desc">Spray sin gas de uso diario que neutraliza olores y proporciona una frescura natural y agradable sin irritar su piel.</p>
                 </div>
                 <div class="page-footer">3</div>
@@ -309,7 +313,7 @@
                 <div class="page-content">
                     <span class="page-category">Línea Cosmética</span>
                     <h3 class="page-title">Champú Cosmético Perros y Gatos</h3>
-                    <img src="fichas/catalogo/CHAMPU COSMETICO 240.png" class="page-img" alt="Champú Cosmético">
+                    <img src="fichas/catalogo/CHAMPU COSME...240.png" class="page-img" alt="Champú Cosmético">
                     <p class="page-desc">Deja el pelo de su mascota con suave aroma y un brillo natural radiante, limpiando profundamente sin resecar.</p>
                 </div>
                 <div class="page-footer">5</div>
@@ -320,7 +324,7 @@
                 <div class="page-content">
                     <span class="page-category">Línea Cosmética</span>
                     <h3 class="page-title">Enjuague Desenredante</h3>
-                    <img src="fichas/catalogo/ENJUAGUE DESENREDANTE 240.png" class="page-img" alt="Enjuague Desenredante">
+                    <img src="fichas/catalogo/ENJUAGUE DESENR...240.png" class="page-img" alt="Enjuague Desenredante">
                     <p class="page-desc">Suavizante de alto rendimiento que facilita el peinado, elimina nudos y aporta un brillo sedoso espectacular.</p>
                 </div>
                 <div class="page-footer">6</div>
@@ -335,8 +339,45 @@
     <script>
         let bookObj;
 
+        // Generador de efecto de sonido de papel al pasar la página usando Web Audio API (sin dependencias externas de audio)
+        function playPageSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const bufferSize = audioCtx.sampleRate * 0.15; // 150ms de duración
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                
+                // Ruido blanco filtrado para imitar el roce de papel de revista
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.04));
+                }
+
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1200;
+                filter.Q.value = 3;
+
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                noise.start();
+            } catch (e) {
+                // Audio bloqueado por políticas del navegador hasta la primera interacción del usuario
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
-            // Inicializar el motor físico de Page Flip 3D (Efecto Curl de página real)
             const flipBook = new StPageFlip.PageFlip(
                 document.getElementById('book'),
                 {
@@ -347,10 +388,12 @@
                     maxWidth: 600,
                     minHeight: 400,
                     maxHeight: 800,
-                    maxShadowOpacity: 0.7, // Sombra dinámica muy realista durante el pliegue
+                    maxShadowOpacity: 0.75, // Sombra profunda de pliegue 3D
                     showCover: true,
                     mobileScrollSupport: false,
-                    swipeDistance: 30
+                    swipeDistance: 20,
+                    clickEventForward: true,
+                    useMouseEvents: true // Habilita el control interactivo absoluto con el puntero (grab & drag de esquinas)
                 }
             );
 
@@ -359,6 +402,7 @@
 
             flipBook.on('flip', (e) => {
                 document.getElementById('pageIndicator').innerText = `${e.data + 1} / ${flipBook.getPageCount()}`;
+                playPageSound(); // Reproduce el sonido realista de papel al voltear
             });
         });
 
@@ -370,7 +414,6 @@
             if (bookObj) bookObj.flipPrev();
         }
 
-        // Soporte de navegación por teclado
         window.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') turnNext();
             if (e.key === 'ArrowLeft') turnPrev();

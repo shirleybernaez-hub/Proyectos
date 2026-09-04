@@ -194,42 +194,33 @@
             margin: 0 auto;
         }
 
-        /* Esquina interactiva derecha (Avanzar) */
+        /* Zonas de esquina limpias, invisibles pero funcionales al toque/clic sin gráficos extraños */
         .corner-hotspot-right {
             position: absolute;
             right: 0;
             bottom: 0;
-            width: 90px;
-            height: 90px;
+            width: 70px;
+            height: 70px;
             cursor: pointer;
             z-index: 99;
-            background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, 0.08) 50%);
-            transition: all 0.2s ease;
+            background: transparent;
         }
         .corner-hotspot-right:hover {
-            width: 130px;
-            height: 130px;
-            background: linear-gradient(135deg, transparent 40%, rgba(0, 0, 0, 0.15) 40%);
-            box-shadow: -5px -5px 15px rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.03);
         }
 
-        /* Esquina interactiva izquierda (Retroceder) */
         .corner-hotspot-left {
             position: absolute;
             left: 0;
             bottom: 0;
-            width: 90px;
-            height: 90px;
+            width: 70px;
+            height: 70px;
             cursor: pointer;
             z-index: 99;
-            background: linear-gradient(225deg, transparent 50%, rgba(0, 0, 0, 0.08) 50%);
-            transition: all 0.2s ease;
+            background: transparent;
         }
         .corner-hotspot-left:hover {
-            width: 130px;
-            height: 130px;
-            background: linear-gradient(225deg, transparent 40%, rgba(0, 0, 0, 0.15) 40%);
-            box-shadow: 5px -5px 15px rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.03);
         }
     </style>
 </head>

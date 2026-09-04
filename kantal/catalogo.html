@@ -291,8 +291,8 @@
             const container = document.getElementById('book-container');
 
             try {
-                // Inicialización correcta del objeto global St.PageFlip
-                pageFlip = new St.PageFlip(container, {
+                // Corrección clave: el espacio de nombres global correcto es StPageFlip.PageFlip
+                pageFlip = new StPageFlip.PageFlip(container, {
                     width: 480,
                     height: 600,
                     size: "fixed",
@@ -311,7 +311,7 @@
                 // Cargamos las páginas directamente desde los elementos HTML hijos
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));
 
-                // Evento de sonido al pasar de página (por arrastre o botones)
+                // Evento de sonido al pasar de página
                 pageFlip.on('flip', (e) => {
                     playPageSound();
                 });

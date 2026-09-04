@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo Revista Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+    <!-- Motor físico StPageFlip para arrastre real desde la esquina -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -42,7 +42,6 @@
 
         .top-nav img {
             width: 120px;
-            filter: brightness(0) invert(1);
         }
 
         .nav-controls {
@@ -86,15 +85,15 @@
             border-color: #fff;
         }
 
+        /* Visor principal del libro */
         .magazine-viewport {
             margin-top: 40px;
-            width: 900px;
-            height: 560px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            border-radius: 6px;
-            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* Páginas individuales de la revista */
         .page {
             background-color: #f9f6f0;
             background-image: linear-gradient(to right, #e8dfd2 0%, #f9f6f0 5%, #f9f6f0 95%, #e8dfd2 100%);
@@ -167,34 +166,20 @@
             text-align: center;
             width: 100%;
         }
-
-        .cta-floating {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: #0052cc;
-            color: #fff;
-            padding: 10px 22px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: 600;
-            text-decoration: none;
-            box-shadow: 0 8px 20px rgba(0, 82, 204, 0.4);
-            z-index: 100;
-        }
     </style>
 </head>
 <body>
 
     <header class="top-nav">
         <div>
-            <img src="logo/logokantal.svg" alt="Kantal Logo">
+            <!-- Logo blanco especificado -->
+            <img src="logo/logo_kantal blanco.png" alt="Kantal Logo">
         </div>
 
         <div class="nav-controls">
-            <button class="nav-btn" onclick="$('#magazine').turn('previous')">&#10094;</button>
+            <button class="nav-btn" onclick="turnPrev()">&#10094;</button>
             <span id="pageIndicator">Página 1 / 6</span>
-            <button class="nav-btn" onclick="$('#magazine').turn('next')">&#10095;</button>
+            <button class="nav-btn" onclick="turnNext()">&#10095;</button>
         </div>
 
         <nav style="display: flex; gap: 10px;">
@@ -203,77 +188,79 @@
         </nav>
     </header>
 
-    <div id="magazine" class="magazine-viewport">
-        <!-- Portada -->
-        <div class="page page-cover">
-            <div class="page-inner">
-                <img src="logo/logokantal.svg" style="width: 150px; filter: brightness(0) invert(1); margin-bottom: 15px;" alt="Logo">
-                <h1 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px;">CATÁLOGO OFICIAL</h1>
-                <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 15px;">FASHION & CARE LOOKBOOK</p>
-                <p style="font-size: 10px; color: #888; max-width: 240px; line-height: 1.4;">Tradicionalmente Sano. Toca o arrastra las esquinas de la revista.</p>
+    <main class="magazine-viewport">
+        <div id="magazine">
+            <!-- Portada -->
+            <div class="page page-cover" data-density="hard">
+                <div class="page-inner">
+                    <img src="logo/logo_kantal blanco.png" style="width: 150px; margin-bottom: 15px;" alt="Logo">
+                    <h1 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px;">CATÁLOGO OFICIAL</h1>
+                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 15px;">FASHION & CARE LOOKBOOK</p>
+                    <p style="font-size: 10px; color: #888; max-width: 240px; line-height: 1.4;">Tradicionalmente Sano. Arrastra las esquinas con el puntero.</p>
+                </div>
+                <div class="page-num" style="color: #666;">1</div>
             </div>
-            <div class="page-num" style="color: #666;">1</div>
-        </div>
 
-        <!-- Página 2 -->
-        <div class="page">
-            <div class="page-inner">
-                <span class="cat-tag">Línea Cosmética</span>
-                <h3 class="prod-title">Enjuague Desenredante</h3>
-                <img src="fichas/catalogo/ENJUAGUE DESENR...240.png" class="prod-image" alt="Enjuague Desenredante">
-                <p class="prod-desc">Suavizante de alto rendimiento que facilita el peinado, elimina nudos y aporta un brillo sedoso espectacular.</p>
+            <!-- Página 2 -->
+            <div class="page">
+                <div class="page-inner">
+                    <span class="cat-tag">Línea Cosmética</span>
+                    <h3 class="prod-title">Enjuague Desenredante</h3>
+                    <img src="fichas/catalogo/ENJUAGUE DESENR...240.png" class="prod-image" alt="Enjuague Desenredante">
+                    <p class="prod-desc">Suavizante de alto rendimiento que facilita el peinado, elimina nudos y aporta un brillo sedoso espectacular.</p>
+                </div>
+                <div class="page-num">2</div>
             </div>
-            <div class="page-num">2</div>
-        </div>
 
-        <!-- Página 3 -->
-        <div class="page">
-            <div class="page-inner">
-                <span class="cat-tag">Línea Cosmética</span>
-                <h3 class="prod-title">Champú Cosmético</h3>
-                <img src="fichas/catalogo/CHAMPU COSME...240.png" class="prod-image" alt="Champú Cosmético">
-                <p class="prod-desc">Deja el pelo de su mascota con suave aroma y un brillo natural radiante, limpiando profundamente sin resecar.</p>
+            <!-- Página 3 -->
+            <div class="page">
+                <div class="page-inner">
+                    <span class="cat-tag">Línea Cosmética</span>
+                    <h3 class="prod-title">Champú Cosmético</h3>
+                    <img src="fichas/catalogo/CHAMPU COSME...240.png" class="prod-image" alt="Champú Cosmético">
+                    <p class="prod-desc">Deja el pelo de su mascota con suave aroma y un brillo natural radiante, limpiando profundamente sin resecar.</p>
+                </div>
+                <div class="page-num">3</div>
             </div>
-            <div class="page-num">3</div>
-        </div>
 
-        <!-- Página 4 -->
-        <div class="page">
-            <div class="page-inner">
-                <span class="cat-tag">Línea Cosmética</span>
-                <h3 class="prod-title">Colonia Cachorros</h3>
-                <img src="fichas/catalogo/COLONIA CACHORROS.png" class="prod-image" alt="Colonia Cachorros">
-                <p class="prod-desc">Fórmula sumamente suave adaptada especialmente para la piel sensible de los cachorros, otorgando un aroma tierno y fresco.</p>
+            <!-- Página 4 -->
+            <div class="page">
+                <div class="page-inner">
+                    <span class="cat-tag">Línea Cosmética</span>
+                    <h3 class="prod-title">Colonia Cachorros</h3>
+                    <img src="fichas/catalogo/COLONIA CACHORROS.png" class="prod-image" alt="Colonia Cachorros">
+                    <p class="prod-desc">Fórmula sumamente suave adaptada especialmente para la piel sensible de los cachorros, otorgando un aroma tierno y fresco.</p>
+                </div>
+                <div class="page-num">4</div>
             </div>
-            <div class="page-num">4</div>
-        </div>
 
-        <!-- Página 5 -->
-        <div class="page">
-            <div class="page-inner">
-                <span class="cat-tag">Línea Cosmética</span>
-                <h3 class="prod-title">Colonia Mascotas Macho</h3>
-                <img src="fichas/catalogo/COLONIA MACHIOS.png" class="prod-image" alt="Colonia Machios">
-                <p class="prod-desc">Fragancia exclusiva diseñada para resaltar un aroma duradero y varonil, manteniendo el cuidado delicado de su pelaje.</p>
+            <!-- Página 5 -->
+            <div class="page">
+                <div class="page-inner">
+                    <span class="cat-tag">Línea Cosmética</span>
+                    <h3 class="prod-title">Colonia Mascotas Macho</h3>
+                    <img src="fichas/catalogo/COLONIA MACHIOS.png" class="prod-image" alt="Colonia Machios">
+                    <p class="prod-desc">Fragancia exclusiva diseñada para resaltar un aroma duradero y varonil, manteniendo el cuidado delicado de su pelaje.</p>
+                </div>
+                <div class="page-num">5</div>
             </div>
-            <div class="page-num">5</div>
-        </div>
 
-        <!-- Página 6 -->
-        <div class="page">
-            <div class="page-inner">
-                <span class="cat-tag">Línea Cosmética</span>
-                <h3 class="prod-title">Colonia Perros y Gatos</h3>
-                <img src="fichas/catalogo/COLONIA PERROS...OS.png" class="prod-image" alt="Colonia Perros y Gatos">
-                <p class="prod-desc">Spray sin gas de uso diario que neutraliza olores y proporciona una frescura natural y agradable sin irritar su piel.</p>
+            <!-- Página 6 -->
+            <div class="page" data-density="hard">
+                <div class="page-inner">
+                    <span class="cat-tag">Línea Cosmética</span>
+                    <h3 class="prod-title">Colonia Perros y Gatos</h3>
+                    <img src="fichas/catalogo/COLONIA PERROS...OS.png" class="prod-image" alt="Colonia Perros y Gatos">
+                    <p class="prod-desc">Spray sin gas de uso diario que neutraliza olores y proporciona una frescura natural y agradable sin irritar su piel.</p>
+                </div>
+                <div class="page-num">6</div>
             </div>
-            <div class="page-num">6</div>
         </div>
-    </div>
-
-    <a href="#" class="cta-floating">Edit it now →</a>
+    </main>
 
     <script>
+        let bookObj;
+
         function playPageSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -297,38 +284,47 @@
             } catch (e) {}
         }
 
-        $(document).ready(function() {
-            $('#magazine').turn({
-                width: 900,
-                height: 560,
-                autoCenter: true,
-                elevation: 50,
-                gradients: true,
-                duration: 1000,
-                when: {
-                    turned: function(e, page) {
-                        $('#pageIndicator').text(`Página ${page} / ${$('#magazine').turn('pages')}`);
-                        playPageSound();
-                    }
+        window.addEventListener('DOMContentLoaded', () => {
+            const flipBook = new StPageFlip.PageFlip(
+                document.getElementById('magazine'),
+                {
+                    width: 420,
+                    height: 560,
+                    size: "fixed",
+                    minWidth: 300,
+                    maxWidth: 700,
+                    minHeight: 400,
+                    maxHeight: 800,
+                    drawShadow: true,
+                    maxShadowOpacity: 0.8,
+                    showCover: true,
+                    mobileScrollSupport: false,
+                    swipeDistance: 20,
+                    clickEventForward: true,
+                    useMouseEvents: true
                 }
-            });
+            );
 
-            // Permite pasar la página haciendo clic directamente sobre las esquinas de la revista
-            $('#magazine').bind('click', function(e) {
-                const rect = this.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                // Si hace clic en el tercio derecho avanza, si hace clic en el tercio izquierdo retrocede
-                if (clickX > rect.width * 0.65) {
-                    $('#magazine').turn('next');
-                } else if (clickX < rect.width * 0.35) {
-                    $('#magazine').turn('previous');
-                }
+            flipBook.loadFromHTML(document.querySelectorAll('.page'));
+            bookObj = flipBook;
+
+            flipBook.on('flip', (e) => {
+                document.getElementById('pageIndicator').innerText = `Página ${e.data + 1} / ${flipBook.getPageCount()}`;
+                playPageSound();
             });
         });
 
-        $(window).bind('keydown', function(e){
-            if (e.keyCode == 37) $('#magazine').turn('previous');
-            if (e.keyCode == 39) $('#magazine').turn('next');
+        function turnNext() {
+            if (bookObj) bookObj.flipNext();
+        }
+
+        function turnPrev() {
+            if (bookObj) bookObj.flipPrev();
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') turnNext();
+            if (e.key === 'ArrowLeft') turnPrev();
         });
     </script>
 </body>

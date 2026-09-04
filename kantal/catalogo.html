@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANTAL | Revista Digital • Page Curl 3D</title>
+    <title>KANTAL | Catálogo Revista Editorial</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Motor físico oficial StPageFlip para el efecto Page Curl 3D real -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -119,104 +121,53 @@
             border-color: #fff;
         }
 
-        /* Visor de Revista con Perspectiva 3D */
+        /* Contenedor del Visor Flipbook */
         .magazine-viewport {
-            width: 72vw;
-            height: 78vh;
-            max-width: 1300px;
-            max-height: 800px;
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 3000px;
+            width: 100%;
+            height: calc(100vh - 60px);
         }
 
-        .book {
-            position: relative;
-            width: 900px;
-            height: 600px;
-            display: flex;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            background: var(--paper-cream);
-            border-radius: 4px;
-            transform-style: preserve-3d;
-        }
-
-        /* Páginas base */
+        /* Páginas individuales con textura crema editorial */
         .page {
-            position: absolute;
-            width: 50%;
-            height: 100%;
-            top: 0;
             background-color: var(--paper-cream);
-            background-image: linear-gradient(to right, #ece4da 0%, var(--paper-cream) 4%, var(--paper-cream) 96%, #ece4da 100%);
+            background-image: linear-gradient(to right, #ece4da 0%, var(--paper-cream) 5%, var(--paper-cream) 95%, #ece4da 100%);
+            border: 1px solid var(--paper-border);
             box-sizing: border-box;
-            overflow: hidden;
+            padding: 45px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .page-cover {
+            background-color: #111 !important;
+            background-image: none !important;
+            color: #fff;
             padding: 50px;
-            border-right: 1px solid var(--paper-border);
-            backface-visibility: hidden;
-            transform-style: preserve-3d;
-            transform-origin: left center;
-            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), box-shadow 1.2s ease;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
-        .page.right {
-            right: 0;
-            transform-origin: left center;
-            z-index: 1;
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
         }
 
-        .page.left {
-            left: 0;
-            transform-origin: right center;
-            z-index: 1;
-        }
+        .page-img { max-height: 280px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); margin-bottom: 15px; }
+        .page-category { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3em; color: #9E2300; margin-bottom: 6px; }
+        .page-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; line-height: 1.1; }
+        .page-desc { font-size: 11px; color: #555; line-height: 1.5; max-width: 300px; margin: 0 auto; }
+        .page-footer { font-size: 9px; font-weight: 700; color: #999; letter-spacing: 0.1em; text-align: center; width: 100%; }
 
-        /* Efecto de despegue y giro de esquina 3D (Page Curl previo al giro total) */
-        .page.curling {
-            animation: cornerCurl 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
-        }
-
-        @keyframes cornerCurl {
-            0% {
-                transform: rotateY(0deg) translateZ(0px);
-                box-shadow: 0 0 0 rgba(0,0,0,0);
-            }
-            30% {
-                /* La esquina y el lateral se levantan hacia el usuario con deformación de perspectiva */
-                transform: rotateY(-25deg) translateZ(70px) rotateX(5deg);
-                box-shadow: -20px 20px 40px rgba(0,0,0,0.3);
-            }
-            100% {
-                transform: rotateY(-180deg) translateZ(20px);
-                box-shadow: 20px 20px 40px rgba(0,0,0,0.4);
-            }
-        }
-
-        /* Sombra dinámica de pliegue a lo largo del giro */
-        .page::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.15) 100%);
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none;
-        }
-        .page.curling::after {
-            opacity: 1;
-        }
-
-        .serif-title {
-            font-family: 'Playfair Display', serif;
-        }
-        
         /* Botón CTA Flotante */
         .cta-button {
             position: fixed;
@@ -286,9 +237,9 @@
         </div>
 
         <div class="magazine-controls">
-            <button class="ctrl-btn" onclick="prevPage()">&#10094;</button>
+            <button class="ctrl-btn" onclick="turnPrev()">&#10094;</button>
             <span id="pageIndicator">1 / 6</span>
-            <button class="ctrl-btn" onclick="nextPage()">&#10095;</button>
+            <button class="ctrl-btn" onclick="turnNext()">&#10095;</button>
         </div>
 
         <nav class="section-switch">
@@ -305,10 +256,76 @@
         <button class="side-icon-btn" title="Pantalla Completa">⛶</button>
     </div>
 
-    <!-- Visor Principal -->
+    <!-- Visor Principal con Motor Page-Curl 3D -->
     <main class="magazine-viewport">
-        <div class="book" id="bookContainer">
-            <!-- Renderizado dinámico desde JS -->
+        <div id="book">
+            
+            <!-- Página 1: Portada -->
+            <div class="page page-cover">
+                <div class="page-content">
+                    <img src="logo/logokantal.svg" style="width: 180px; filter: brightness(0) invert(1); margin-bottom: 20px;" alt="Kantal">
+                    <h1 style="font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 10px;">CATÁLOGO OFICIAL</h1>
+                    <p style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 20px;">FASHION & CARE LOOKBOOK</p>
+                    <p style="font-size: 11px; color: #888; max-width: 260px; line-height: 1.5;">Tradicionalmente Sano. Edición digital interactiva con efecto realista de papel.</p>
+                </div>
+                <div class="page-footer" style="color: #666;">1</div>
+            </div>
+
+            <!-- Página 2: Colonia Machos -->
+            <div class="page">
+                <div class="page-content">
+                    <span class="page-category">Línea Cosmética</span>
+                    <h3 class="page-title">Colonia para Mascotas Macho</h3>
+                    <img src="fichas/catalogo/COLONIA MACHIOS.png" class="page-img" alt="Colonia Machos">
+                    <p class="page-desc">Fragancia exclusiva diseñada para resaltar un aroma duradero y varonil, manteniendo el cuidado delicado de su pelaje.</p>
+                </div>
+                <div class="page-footer">2</div>
+            </div>
+
+            <!-- Página 3: Colonia Perros y Gatos -->
+            <div class="page">
+                <div class="page-content">
+                    <span class="page-category">Línea Cosmética</span>
+                    <h3 class="page-title">Colonia para Perros y Gatos</h3>
+                    <img src="fichas/catalogo/COLONIA PERROS Y GATOS.png" class="page-img" alt="Colonia Perros y Gatos">
+                    <p class="page-desc">Spray sin gas de uso diario que neutraliza olores y proporciona una frescura natural y agradable sin irritar su piel.</p>
+                </div>
+                <div class="page-footer">3</div>
+            </div>
+
+            <!-- Página 4: Colonia Cachorros -->
+            <div class="page">
+                <div class="page-content">
+                    <span class="page-category">Línea Cosmética</span>
+                    <h3 class="page-title">Colonia para Mascotas Cachorros</h3>
+                    <img src="fichas/catalogo/COLONIA CACHORROS.png" class="page-img" alt="Colonia Cachorros">
+                    <p class="page-desc">Fórmula sumamente suave adaptada especialmente para la piel sensible de los cachorros, otorgando un aroma tierno y fresco.</p>
+                </div>
+                <div class="page-footer">4</div>
+            </div>
+
+            <!-- Página 5: Champú Cosmético -->
+            <div class="page">
+                <div class="page-content">
+                    <span class="page-category">Línea Cosmética</span>
+                    <h3 class="page-title">Champú Cosmético Perros y Gatos</h3>
+                    <img src="fichas/catalogo/CHAMPU COSMETICO 240.png" class="page-img" alt="Champú Cosmético">
+                    <p class="page-desc">Deja el pelo de su mascota con suave aroma y un brillo natural radiante, limpiando profundamente sin resecar.</p>
+                </div>
+                <div class="page-footer">5</div>
+            </div>
+
+            <!-- Página 6: Enjuague Desenredante -->
+            <div class="page">
+                <div class="page-content">
+                    <span class="page-category">Línea Cosmética</span>
+                    <h3 class="page-title">Enjuague Desenredante</h3>
+                    <img src="fichas/catalogo/ENJUAGUE DESENREDANTE 240.png" class="page-img" alt="Enjuague Desenredante">
+                    <p class="page-desc">Suavizante de alto rendimiento que facilita el peinado, elimina nudos y aporta un brillo sedoso espectacular.</p>
+                </div>
+                <div class="page-footer">6</div>
+            </div>
+
         </div>
     </main>
 
@@ -316,159 +333,48 @@
     <a href="#" class="cta-button">Edit it now →</a>
 
     <script>
-        const magazinePages = [
-            {
-                type: "cover",
-                category: "EDICIÓN DIGITAL",
-                title: "KANTAL",
-                subtitle: "FASHION & CARE LOOKBOOK",
-                desc: "Tradicionalmente Sano. Una muestra exclusiva del cuidado y bienestar de alta gama para mascotas.",
-                image: "logo/logokantal.svg"
-            },
-            {
-                type: "editorial",
-                category: "LÍNEA COSMÉTICA",
-                title: "Colonia para Mascotas Macho",
-                desc: "Fragancia exclusiva diseñada para resaltar un aroma duradero y varonil, manteniendo el cuidado delicado de su pelaje.",
-                image: "COLONIA MACHIOS.jpg"
-            },
-            {
-                type: "editorial",
-                category: "LÍNEA COSMÉTICA",
-                title: "Colonia para Perros y Gatos",
-                desc: "Spray sin gas de uso diario que neutraliza olores y proporciona una frescura natural y agradable sin irritar su piel.",
-                image: "COLONIA PERROS Y GATOS.jpg"
-            },
-            {
-                type: "editorial",
-                category: "LÍNEA COSMÉTICA",
-                title: "Colonia para Mascotas Cachorros",
-                desc: "Fórmula sumamente suave adaptada especialmente para la piel sensible de los cachorros, otorgando un aroma tierno y fresco.",
-                image: "COLONIA CACHORROS.jpg"
-            },
-            {
-                type: "editorial",
-                category: "LÍNEA COSMÉTICA",
-                title: "Champú Cosmético Perros y Gatos",
-                desc: "Deja el pelo de su mascota con suave aroma y un brillo natural radiante, limpiando profundamente sin resecar.",
-                image: "CHAMPU COSMETICO 240.jpg"
-            },
-            {
-                type: "editorial",
-                category: "LÍNEA COSMÉTICA",
-                title: "Enjuague Desenredante",
-                desc: "Suavizante de alto rendimiento que facilita el peinado, elimina nudos y aporta un brillo sedoso espectacular.",
-                image: "ENJUAGUE DESENREDANTE 240.jpg"
-            }
-        ];
+        let bookObj;
 
-        let currentPageIndex = 0;
-        let isAnimating = false;
-
-        function renderMagazine() {
-            const container = document.getElementById('bookContainer');
-            container.innerHTML = '';
-
-            magazinePages.forEach((page, index) => {
-                const pageDiv = document.createElement('div');
-                pageDiv.className = `page ${index % 2 === 0 ? 'right' : 'left'}`;
-                pageDiv.style.zIndex = magazinePages.length - index;
-
-                if (page.type === 'cover') {
-                    pageDiv.style.backgroundColor = '#111';
-                    pageDiv.style.backgroundImage = 'none';
-                    pageDiv.style.color = '#fff';
-                    pageDiv.innerHTML = `
-                        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100%; text-align:center;">
-                            <span style="font-size:9px; letter-spacing:0.4em; color:#e91e63; margin-bottom:15px; font-weight:600;">${page.category}</span>
-                            <h1 class="serif-title" style="font-size:38px; font-weight:700; letter-spacing:0.05em; margin-bottom:5px;">${page.title}</h1>
-                            <p style="font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:#aaa; margin-bottom:30px;">${page.subtitle}</p>
-                            <p style="font-size:11px; color:#888; max-width:280px; line-height:1.6;">${page.desc}</p>
-                        </div>
-                        <div style="font-size:10px; color:#555; text-align:center;">1</div>
-                    `;
-                } else {
-                    pageDiv.innerHTML = `
-                        <div>
-                            <span style="font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.3em; color:#9E2300; display:block; margin-bottom:8px;">${page.category}</span>
-                            <h2 class="serif-title" style="font-size:20px; font-weight:700; text-transform:uppercase; letter-spacing:-0.01em; margin-bottom:20px; line-height:1.1;">${page.title}</h2>
-                            <div style="text-align:center; margin-bottom:20px;">
-                                <img src="${page.image}" alt="${page.title}" style="max-height:240px; max-width:100%; object-fit:contain; filter:drop-shadow(0 10px 15px rgba(0,0,0,0.08));">
-                            </div>
-                        </div>
-                        <div>
-                            <p style="font-size:11px; color:#555; line-height:1.6; margin-bottom:15px;">${page.desc}</p>
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #e7e2d8; padding-top:10px;">
-                                <span style="font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.2em; color:#888;">Kantal Digital</span>
-                                <span style="font-size:10px; font-weight:600; color:#888;">${index + 1}</span>
-                            </div>
-                        </div>
-                    `;
+        window.addEventListener('DOMContentLoaded', () => {
+            // Inicializar el motor físico de Page Flip 3D (Efecto Curl de página real)
+            const flipBook = new StPageFlip.PageFlip(
+                document.getElementById('book'),
+                {
+                    width: 420,
+                    height: 560,
+                    size: "stretch",
+                    minWidth: 300,
+                    maxWidth: 600,
+                    minHeight: 400,
+                    maxHeight: 800,
+                    maxShadowOpacity: 0.7, // Sombra dinámica muy realista durante el pliegue
+                    showCover: true,
+                    mobileScrollSupport: false,
+                    swipeDistance: 30
                 }
+            );
 
-                container.appendChild(pageDiv);
+            flipBook.loadFromHTML(document.querySelectorAll('.page'));
+            bookObj = flipBook;
+
+            flipBook.on('flip', (e) => {
+                document.getElementById('pageIndicator').innerText = `${e.data + 1} / ${flipBook.getPageCount()}`;
             });
-
-            updatePagesState();
-        }
-
-        function updatePagesState() {
-            const pages = document.querySelectorAll('.page');
-            pages.forEach((page, index) => {
-                page.classList.remove('curling');
-                if (index < currentPageIndex) {
-                    page.style.transform = 'rotateY(-180deg) translateZ(0px)';
-                    page.style.zIndex = index;
-                } else {
-                    page.style.transform = 'rotateY(0deg) translateZ(0px)';
-                    page.style.zIndex = magazinePages.length - index;
-                }
-            });
-            document.getElementById('pageIndicator').innerText = `${currentPageIndex + 1} / ${magazinePages.length}`;
-        }
-
-        function nextPage() {
-            if (isAnimating || currentPageIndex >= magazinePages.length - 1) return;
-            isAnimating = true;
-
-            const pages = document.querySelectorAll('.page');
-            const activePage = pages[currentPageIndex];
-            
-            // Activar la animación de rizo en la esquina / página actual antes de voltear por completo
-            activePage.classList.add('curling');
-
-            setTimeout(() => {
-                currentPageIndex++;
-                updatePagesState();
-                isAnimating = false;
-            }, 1000); // Sincronizado con la duración del efecto de rizo 3D
-        }
-
-        function prevPage() {
-            if (isAnimating || currentPageIndex <= 0) return;
-            isAnimating = true;
-
-            currentPageIndex--;
-            const pages = document.querySelectorAll('.page');
-            const targetPage = pages[currentPageIndex];
-            
-            targetPage.style.zIndex = magazinePages.length + 5;
-            targetPage.classList.add('curling');
-            // Revertir transform
-            targetPage.style.transform = 'rotateY(0deg) translateZ(0px)';
-
-            setTimeout(() => {
-                updatePagesState();
-                isAnimating = false;
-            }, 1000);
-        }
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextPage();
-            if (e.key === 'ArrowLeft') prevPage();
         });
 
-        window.onload = renderMagazine;
+        function turnNext() {
+            if (bookObj) bookObj.flipNext();
+        }
+
+        function turnPrev() {
+            if (bookObj) bookObj.flipPrev();
+        }
+
+        // Soporte de navegación por teclado
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') turnNext();
+            if (e.key === 'ArrowLeft') turnPrev();
+        });
     </script>
 </body>
 </html>

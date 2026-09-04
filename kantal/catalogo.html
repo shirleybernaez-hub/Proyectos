@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo de productos</title>
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
@@ -79,41 +80,21 @@
             padding: 20px;
             transition: color 0.2s;
             user-select: none;
+            z-index: 50;
         }
         .side-arrow:hover { color: #555; }
         .side-arrow:active { transform: scale(0.95); }
 
-        .magazine-spread {
-            width: 480px;
-            height: 600px;
-            background: #ffffff;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
-            border-radius: 0px; /* Puntas cuadradas */
-            display: flex;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #eaeaea;
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .magazine-spread.open {
+        #magazine {
             width: 960px;
-        }
-
-        .magazine-spread.open::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 2px;
-            background: #eaeaea;
-            z-index: 10;
+            height: 600px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+            display: none; /* Se muestra tras cargar */
         }
 
         .page {
-            width: 50%;
-            height: 100%;
+            width: 480px;
+            height: 600px;
             background-color: #ffffff;
             background-image: linear-gradient(to right, #f4f4f4 0%, #ffffff 4%, #ffffff 96%, #f4f4f4 100%);
             padding: 45px;
@@ -122,22 +103,15 @@
             justify-content: space-between;
             overflow: hidden;
             user-select: none;
-            border-radius: 0px; /* Puntas cuadradas */
+            border-radius: 0px;
         }
 
-        .page-cover-solo {
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            background-image: none;
-            color: #000;
-            padding: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        .page-cover {
+            background: #ffffff !important;
+            background-image: none !important;
             align-items: center;
+            justify-content: center;
             text-align: center;
-            border-radius: 0px; /* Puntas cuadradas */
         }
 
         .page-inner {
@@ -206,84 +180,81 @@
     </header>
 
     <div class="main-container">
-        <button class="side-arrow" onclick="prevSpread()">&#10094;</button>
-        <div class="magazine-spread" id="spreadContainer">
-            <!-- Renderizado dinámico -->
+        <button class="side-arrow" onclick="turnPrev()">&#10094;</button>
+        
+        <div id="magazine">
+            <!-- Portada (Página 1: Solo derecha al iniciar con showCover) -->
+            <div class="page page-cover" data-density="hard">
+                <div class="page-inner">
+                    <img src="logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
+                    <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 0; margin-bottom: 15px; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
+                </div>
+            </div>
+
+            <!-- Página 2 (Contraportada interna) -->
+            <div class="page">
+                <div class="page-inner" style="background: #ffffff; color: #000; width: 100%; height: 100%; padding: 30px;">
+                    <img src="logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
+                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 8px;">Tradicionalmente Sano</p>
+                </div>
+            </div>
+
+            <!-- Página 3: Súper Galleta de Carne -->
+            <div class="page">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta de Carne</h3>
+                <div class="prod-image-container">
+                    <img src="fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
+                </div>
+                <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
+            </div>
+
+            <!-- Página 4: Súper Galleta Cachorros -->
+            <div class="page">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta Cachorros</h3>
+                <div class="prod-image-container">
+                    <img src="fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
+                </div>
+                <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
+            </div>
+
+            <!-- Página 5: Súper Galleta de Queso -->
+            <div class="page">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta de Queso</h3>
+                <div class="prod-image-container">
+                    <img src="fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
+                </div>
+                <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
+            </div>
+
+            <!-- Página 6: Súper Galleta de Pollo -->
+            <div class="page">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta de Pollo</h3>
+                <div class="prod-image-container">
+                    <img src="fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
+                </div>
+                <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
+            </div>
+
+            <!-- Página 7: Súper Galletas de Salmón -->
+            <div class="page" data-density="hard">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galletas de Salmón</h3>
+                <div class="prod-image-container">
+                    <img src="fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
+                </div>
+                <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
+            </div>
         </div>
-        <button class="side-arrow" onclick="nextSpread()">&#10095;</button>
+
+        <button class="side-arrow" onclick="turnNext()">&#10095;</button>
     </div>
 
     <script>
-        const spreads = [
-            {
-                type: 'cover',
-                html: `
-                    <div class="page-cover-solo">
-                        <div class="page-inner">
-                            <img src="logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
-                            <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 0; margin-bottom: 15px; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                type: 'spread',
-                left: `
-                    <div class="page-inner" style="background: #ffffff; color: #000; width: 100%; height: 100%; padding: 30px;">
-                        <img src="logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
-                        <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 8px;">Tradicionalmente Sano</p>
-                    </div>
-                `,
-                right: `
-                    <span class="cat-tag">Línea Súper Galletas</span>
-                    <h3 class="prod-title">Súper Galleta de Carne</h3>
-                    <div class="prod-image-container">
-                        <img src="fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
-                    </div>
-                    <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
-                `
-            },
-            {
-                type: 'spread',
-                left: `
-                    <span class="cat-tag">Línea Súper Galletas</span>
-                    <h3 class="prod-title">Súper Galleta Cachorros</h3>
-                    <div class="prod-image-container">
-                        <img src="fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
-                    </div>
-                    <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
-                `,
-                right: `
-                    <span class="cat-tag">Línea Súper Galletas</span>
-                    <h3 class="prod-title">Súper Galleta de Queso</h3>
-                    <div class="prod-image-container">
-                        <img src="fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
-                    </div>
-                    <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
-                `
-            },
-            {
-                type: 'spread',
-                left: `
-                    <span class="cat-tag">Línea Súper Galletas</span>
-                    <h3 class="prod-title">Súper Galleta de Pollo</h3>
-                    <div class="prod-image-container">
-                        <img src="fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
-                    </div>
-                    <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
-                `,
-                right: `
-                    <span class="cat-tag">Línea Súper Galletas</span>
-                    <h3 class="prod-title">Súper Galletas de Salmón</h3>
-                    <div class="prod-image-container">
-                        <img src="fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
-                    </div>
-                    <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
-                `
-            }
-        ];
-
-        let currentIndex = 0;
+        let pageFlip;
 
         function playPageSound() {
             try {
@@ -319,45 +290,44 @@
             } catch (e) {}
         }
 
-        function renderSpread() {
-            const container = document.getElementById('spreadContainer');
-            const data = spreads[currentIndex];
+        window.addEventListener('load', () => {
+            const magazineDiv = document.getElementById('magazine');
+            
+            pageFlip = new StPageFlip.PageFlip(magazineDiv, {
+                width: 480,
+                height: 600,
+                size: "fixed",
+                minWidth: 480,
+                maxWidth: 480,
+                minHeight: 600,
+                maxHeight: 600,
+                drawShadow: true,
+                maxShadowOpacity: 0.5,
+                showCover: true,
+                mobileScrollSupport: false,
+                useMouseEvents: true,
+                clickEventForward: true
+            });
 
-            if (data.type === 'cover') {
-                container.classList.remove('open');
-                container.innerHTML = data.html;
-            } else {
-                container.classList.add('open');
-                container.innerHTML = `
-                    <div class="page">${data.left}</div>
-                    <div class="page">${data.right}</div>
-                `;
-            }
+            pageFlip.loadFromHTML(magazineDiv.querySelectorAll('.page'));
+            magazineDiv.style.display = 'block';
+
+            pageFlip.on('flip', (e) => {
+                playPageSound();
+            });
+        });
+
+        function turnNext() {
+            if (pageFlip) pageFlip.flipNext();
         }
 
-        function nextSpread() {
-            if (currentIndex < spreads.length - 1) {
-                currentIndex++;
-                renderSpread();
-                playPageSound();
-            }
-        }
-
-        function prevSpread() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                renderSpread();
-                playPageSound();
-            }
+        function turnPrev() {
+            if (pageFlip) pageFlip.flipPrev();
         }
 
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextSpread();
-            if (e.key === 'ArrowLeft') prevSpread();
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderSpread();
+            if (e.key === 'ArrowRight') turnNext();
+            if (e.key === 'ArrowLeft') turnPrev();
         });
     </script>
 </body>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo de productos</title>
-    <!-- Librería oficial PageFlip versión estable por CDN -->
+    <!-- Librería oficial PageFlip con el CDN correcto -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -80,7 +80,7 @@
         .side-arrow:hover { color: #555; }
         .side-arrow:active { transform: scale(0.95); }
 
-        /* Contenedor principal para el motor de la revista */
+        /* Contenedor principal del libro interactivo */
         #book-container {
             width: 960px;
             height: 600px;
@@ -90,7 +90,7 @@
             margin: 0 auto;
         }
 
-        /* Estilo de cada página individual de la revista */
+        /* Estilo de cada página individual */
         .page {
             background-color: #ffffff;
             background-image: linear-gradient(to right, #f4f4f4 0%, #ffffff 4%, #ffffff 96%, #f4f4f4 100%);
@@ -286,12 +286,12 @@
             } catch (e) {}
         }
 
-        // Inicialización robusta asegurando la carga completa del DOM y recursos
         window.addEventListener('load', () => {
             const container = document.getElementById('book-container');
 
             try {
-                pageFlip = new StPageFlip.PageFlip(container, {
+                // Objeto global correcto para el bundle de navegador de PageFlip
+                pageFlip = new St.PageFlip(container, {
                     width: 480,
                     height: 600,
                     size: "fixed",

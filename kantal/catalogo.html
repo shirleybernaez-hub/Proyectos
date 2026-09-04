@@ -58,7 +58,7 @@
         .switch-btn:hover { opacity: 0.8; }
 
         .main-container {
-            margin-top: 70px;
+            margin-top: 60px;
             display: flex;
             align-items: center;
             gap: 20px;
@@ -67,23 +67,23 @@
         .side-arrow {
             background: none;
             border: none;
-            color: #b0b0b0;
+            color: #666;
             font-size: 40px;
             cursor: pointer;
             padding: 15px;
-            transition: color 0.2s;
+            transition: color 0.2s, transform 0.1s;
             user-select: none;
             z-index: 50;
         }
-        .side-arrow:hover { color: #555; }
-        .side-arrow:active { transform: scale(0.95); }
+        .side-arrow:hover { color: #000; }
+        .side-arrow:active { transform: scale(0.9); }
 
-        /* Contenedor principal de la revista */
+        /* Contenedor principal tipo revista de doble página */
         .magazine-book {
             width: 960px;
             height: 560px;
             background: #ffffff;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
             border: 1px solid #eaeaea;
             display: flex;
             position: relative;
@@ -110,7 +110,7 @@
             display: flex;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.25s ease-in-out;
         }
 
         .page-sheet.active {
@@ -200,22 +200,33 @@
             position: absolute;
             right: 0;
             bottom: 0;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             cursor: pointer;
             z-index: 99;
-            background: linear-gradient(135deg, transparent 45%, rgba(0,0,0,0.05) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.12) 100%);
+            background: linear-gradient(135deg, transparent 45%, rgba(0,0,0,0.06) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.15) 100%);
         }
 
         .corner-curl-left {
             position: absolute;
             left: 0;
             bottom: 0;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             cursor: pointer;
             z-index: 99;
-            background: linear-gradient(225deg, transparent 45%, rgba(0,0,0,0.05) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.12) 100%);
+            background: linear-gradient(225deg, transparent 45%, rgba(0,0,0,0.06) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.15) 100%);
+        }
+
+        .page-counter {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 10px;
+            color: #888;
+            letter-spacing: 0.1em;
         }
     </style>
 </head>
@@ -240,10 +251,11 @@
             <div class="page-sheet active" id="sheet-0">
                 <div class="page-full">
                     <div class="page-inner">
-                        <img src="../logo/logokantal.png" style="width: 170px; height: auto; margin-bottom: 20px;" alt="Logo Kantal">
-                        <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
+                        <img src="../logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
+                        <h1 style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
                     </div>
-                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar"></div>
+                    <div class="page-counter">Portada</div>
+                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar página"></div>
                 </div>
             </div>
 
@@ -251,10 +263,11 @@
             <div class="page-sheet" id="sheet-1">
                 <div class="page">
                     <div class="page-inner">
-                        <img src="../logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 12px;" alt="Logo Kantal">
+                        <img src="../logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
                         <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin: 0;">Tradicionalmente Sano</p>
                     </div>
-                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder"></div>
+                    <div class="page-counter">Página 1</div>
+                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder página"></div>
                 </div>
                 <div class="page">
                     <div>
@@ -265,7 +278,8 @@
                         </div>
                         <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
                     </div>
-                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar"></div>
+                    <div class="page-counter">Página 2</div>
+                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar página"></div>
                 </div>
             </div>
 
@@ -280,7 +294,8 @@
                         </div>
                         <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
                     </div>
-                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder"></div>
+                    <div class="page-counter">Página 3</div>
+                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder página"></div>
                 </div>
                 <div class="page">
                     <div>
@@ -291,7 +306,8 @@
                         </div>
                         <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
                     </div>
-                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar"></div>
+                    <div class="page-counter">Página 4</div>
+                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar página"></div>
                 </div>
             </div>
 
@@ -306,7 +322,8 @@
                         </div>
                         <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
                     </div>
-                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder"></div>
+                    <div class="page-counter">Página 5</div>
+                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder página"></div>
                 </div>
                 <div class="page">
                     <div>
@@ -317,7 +334,8 @@
                         </div>
                         <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
                     </div>
-                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar"></div>
+                    <div class="page-counter">Página 6</div>
+                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar página"></div>
                 </div>
             </div>
         </div>

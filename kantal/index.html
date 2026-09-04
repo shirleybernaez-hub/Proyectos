@@ -35,7 +35,7 @@
 
         .product-card { border: 1px solid #efefef; border-radius: 28px; padding: 24px; background: #fff; display: flex; flex-direction: column; gap: 18px; transition: box-shadow 0.3s ease; }
         .product-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .btn-download { border: 1.5px solid black; transition: all 0.2s ease; font-size: 10px; font-weight: 800; text-align: center; text-transform: uppercase; text-decoration: none; display: block; padding: 12px; border-radius: 9999px; }
+        .btn-download { border: 1.5px solid black; transition: all 0.2s ease; font-size: 10px; font-weight: 800; text-align: center; text-transform: uppercase; }
         .btn-download:hover { background: black; color: white; }
 
         .chat-container { display: flex; flex-direction: column; gap: 8px; background: #f8f8f8; border-radius: 20px; padding: 15px; margin-top: 5px; }
@@ -116,7 +116,7 @@
                     <div class="w-full bg-[#fcfcfc] p-2 rounded-2xl border border-zinc-50">
                         <img src="fichas/${folder}/${img}" class="w-full h-auto object-contain rounded-lg">
                     </div>
-                    <a href="fichas/${folder}/${pdf}" download class="btn-download">Descargar PDF</a>
+                    <a href="fichas/${folder}/${pdf}" download class="btn-download px-6 py-3 rounded-full">Descargar PDF</a>
                     
                     <div class="chat-container">
                         <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Dejar comentario sobre este producto:</span>
@@ -161,6 +161,7 @@
             }
         };
 
+        // CARGA DE PRODUCTOS
         const cosm = [
             ['c1', 'Enjuague desenredante', 'Enjuage desenredante.jpg', 'Enjuage desenredante.pdf', 'perrosygatos'],
             ['c2', 'Champú cosmético', 'champucosmetico.jpg', 'champucosmetico.pdf', 'perrosygatos'],

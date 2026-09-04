@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo Revista Digital</title>
-    <!-- Tailwind CSS para el entorno -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- jQuery y Turn.js para el efecto físico de libro real de doble página -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -26,7 +24,6 @@
             justify-content: center;
         }
 
-        /* Barra Superior Profesional */
         .top-nav {
             position: fixed;
             top: 0;
@@ -89,16 +86,15 @@
             border-color: #fff;
         }
 
-        /* Contenedor del Libro (Turn.js) */
         .magazine-viewport {
             margin-top: 40px;
             width: 900px;
             height: 560px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             border-radius: 6px;
+            cursor: pointer;
         }
 
-        /* Estilo de cada página individual */
         .page {
             background-color: #f9f6f0;
             background-image: linear-gradient(to right, #e8dfd2 0%, #f9f6f0 5%, #f9f6f0 95%, #e8dfd2 100%);
@@ -190,7 +186,6 @@
 </head>
 <body>
 
-    <!-- Barra Superior de Navegación -->
     <header class="top-nav">
         <div>
             <img src="logo/logokantal.svg" alt="Kantal Logo">
@@ -208,7 +203,6 @@
         </nav>
     </header>
 
-    <!-- Contenedor Turn.js de Doble Página Horizontal -->
     <div id="magazine" class="magazine-viewport">
         <!-- Portada -->
         <div class="page page-cover">
@@ -216,7 +210,7 @@
                 <img src="logo/logokantal.svg" style="width: 150px; filter: brightness(0) invert(1); margin-bottom: 15px;" alt="Logo">
                 <h1 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px;">CATÁLOGO OFICIAL</h1>
                 <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 15px;">FASHION & CARE LOOKBOOK</p>
-                <p style="font-size: 10px; color: #888; max-width: 240px; line-height: 1.4;">Tradicionalmente Sano. Arrastra las esquinas con el puntero.</p>
+                <p style="font-size: 10px; color: #888; max-width: 240px; line-height: 1.4;">Tradicionalmente Sano. Toca o arrastra las esquinas de la revista.</p>
             </div>
             <div class="page-num" style="color: #666;">1</div>
         </div>
@@ -318,9 +312,20 @@
                     }
                 }
             });
+
+            // Permite pasar la página haciendo clic directamente sobre las esquinas de la revista
+            $('#magazine').bind('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                // Si hace clic en el tercio derecho avanza, si hace clic en el tercio izquierdo retrocede
+                if (clickX > rect.width * 0.65) {
+                    $('#magazine').turn('next');
+                } else if (clickX < rect.width * 0.35) {
+                    $('#magazine').turn('previous');
+                }
+            });
         });
 
-        // Soporte teclado
         $(window).bind('keydown', function(e){
             if (e.keyCode == 37) $('#magazine').turn('previous');
             if (e.keyCode == 39) $('#magazine').turn('next');

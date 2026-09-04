@@ -5,33 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo Revista Interactiva</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Librería oficial PageFlip para el efecto físico de pasar página 3D -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #121212; color: #111; font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
-        /* Barra superior estilo visor profesional */
         .top-toolbar { width: 100%; background: #1e1e1e; display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; border-bottom: 1px solid #333; box-sizing: border-box; z-index: 50; position: relative; }
         .logo-kantal { width: 130px; height: auto; filter: brightness(0) invert(1); }
         
-        /* Navegación de secciones */
         .section-switch { display: flex; gap: 10px; }
         .switch-link { padding: 8px 18px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 20px; text-decoration: none; transition: all 0.2s; border: 1px solid #444; color: #ccc; background: #2a2a2a; }
         .switch-link.active { background: #fff; color: #000; border-color: #fff; }
         .switch-link:hover { background: #444; color: #fff; }
 
-        /* Controles superiores de la revista */
         .magazine-controls { display: flex; align-items: center; gap: 15px; background: #2a2a2a; padding: 6px 16px; border-radius: 20px; color: #fff; font-size: 12px; font-weight: 700; }
         .ctrl-btn { background: none; border: none; color: #fff; cursor: pointer; font-size: 14px; padding: 0 5px; transition: opacity 0.2s; }
         .ctrl-btn:hover { opacity: 0.7; }
 
-        /* Contenedor central del libro 3D */
         .book-viewport { display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 70px); padding: 20px; }
         
-        /* Estilo de cada página del flipbook */
         .page {
-            background-color: #f6f1eb; /* Fondo crema característico */
+            background-color: #f6f1eb;
             background-image: linear-gradient(to right, #ece4da 0%, #f6f1eb 5%, #f6f1eb 95%, #ece4da 100%);
             border: 1px solid #dcd3c7;
             overflow: hidden;
@@ -61,43 +55,39 @@
             text-align: center;
         }
 
-        .page-img { max-height: 320px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); margin-bottom: 20px; }
-        .page-category { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3em; color: #9E2300; margin-bottom: 8px; }
-        .page-title { font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.1; }
-        .page-desc { font-size: 11px; color: #555; line-height: 1.5; max-width: 320px; margin: 0 auto; }
+        .page-img { max-height: 300px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); margin-bottom: 15px; }
+        .page-category { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3em; color: #9E2300; margin-bottom: 6px; }
+        .page-title { font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 10px; line-height: 1.1; }
+        .page-desc { font-size: 11px; color: #555; line-height: 1.4; max-width: 300px; margin: 0 auto; }
         .page-footer { font-size: 9px; font-weight: 700; color: #999; letter-spacing: 0.1em; text-align: center; width: 100%; }
     </style>
 </head>
 <body>
 
-    <!-- Barra Superior Profesional -->
     <header class="top-toolbar">
         <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal">
 
-        <!-- Controles centrales de paginación -->
         <div class="magazine-controls">
             <button class="ctrl-btn" onclick="turnPrev()">&#10094;</button>
             <span id="pageIndicator">1 / 6</span>
             <button class="ctrl-btn" onclick="turnNext()">&#10095;</button>
         </div>
 
-        <!-- Navegación entre Fichas y Catálogo -->
         <nav class="section-switch">
             <a href="index.html" class="switch-link">Fichas Técnicas</a>
             <a href="catalogo.html" class="switch-link active">Catálogo Revista</a>
         </nav>
     </header>
 
-    <!-- Visor Interactivos de Páginas 3D -->
     <div class="book-viewport">
         <div id="book">
             
             <!-- Página 1: Portada -->
             <div class="page page-cover">
                 <div class="page-content">
-                    <img src="logo/logokantal.svg" style="width: 200px; filter: brightness(0) invert(1); margin-bottom: 20px;" alt="Kantal">
-                    <h1 style="font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 10px;">Catálogo Oficial</h1>
-                    <p style="font-size: 11px; color: #aaa; max-width: 280px; line-height: 1.5;">Tradicionalmente Sano. Edición digital interactiva de productos.</p>
+                    <img src="logo/logokantal.svg" style="width: 180px; filter: brightness(0) invert(1); margin-bottom: 20px;" alt="Kantal">
+                    <h1 style="font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 10px;">Catálogo Oficial</h1>
+                    <p style="font-size: 11px; color: #aaa; max-width: 260px; line-height: 1.5;">Tradicionalmente Sano. Edición digital interactiva.</p>
                 </div>
                 <div class="page-footer" style="color: #666;">1</div>
             </div>
@@ -168,7 +158,7 @@
                 document.getElementById('book'),
                 {
                     width: 420,
-                    height: 580,
+                    height: 560,
                     size: "stretch",
                     minWidth: 300,
                     maxWidth: 600,

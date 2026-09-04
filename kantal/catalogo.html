@@ -58,10 +58,10 @@
         .switch-btn:hover { opacity: 0.8; }
 
         .main-container {
-            margin-top: 50px;
+            margin-top: 70px;
             display: flex;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
         }
 
         .side-arrow {
@@ -70,7 +70,7 @@
             color: #b0b0b0;
             font-size: 40px;
             cursor: pointer;
-            padding: 20px;
+            padding: 15px;
             transition: color 0.2s;
             user-select: none;
             z-index: 50;
@@ -79,18 +79,18 @@
         .side-arrow:active { transform: scale(0.95); }
 
         /* Contenedor principal de la revista */
-        .magazine-spread {
+        .magazine-book {
             width: 960px;
-            height: 600px;
+            height: 560px;
             background: #ffffff;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             border: 1px solid #eaeaea;
             display: flex;
             position: relative;
             overflow: hidden;
         }
 
-        .magazine-spread::before {
+        .magazine-book::before {
             content: '';
             position: absolute;
             top: 0;
@@ -110,7 +110,7 @@
             display: flex;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.35s ease-in-out;
+            transition: opacity 0.3s ease-in-out;
         }
 
         .page-sheet.active {
@@ -123,7 +123,7 @@
             height: 100%;
             background-color: #ffffff;
             background-image: linear-gradient(to right, #f4f4f4 0%, #ffffff 4%, #ffffff 96%, #f4f4f4 100%);
-            padding: 45px;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -136,7 +136,7 @@
             width: 100%;
             height: 100%;
             background-color: #ffffff;
-            padding: 50px;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -155,18 +155,18 @@
         }
 
         .prod-image-container {
-            height: 220px;
+            height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .prod-image {
-            max-height: 220px;
+            max-height: 200px;
             max-width: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.05));
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.05));
         }
 
         .cat-tag {
@@ -180,10 +180,10 @@
 
         .prod-title {
             font-family: 'Inter', sans-serif;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             line-height: 1.1;
             letter-spacing: -0.02em;
         }
@@ -191,8 +191,8 @@
         .prod-desc {
             font-size: 11px;
             color: #555;
-            line-height: 1.5;
-            max-width: 300px;
+            line-height: 1.4;
+            max-width: 280px;
             margin: 0 auto;
         }
 
@@ -200,27 +200,23 @@
             position: absolute;
             right: 0;
             bottom: 0;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             cursor: pointer;
             z-index: 99;
-            background: linear-gradient(135deg, transparent 45%, rgba(0,0,0,0.06) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.15) 100%);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, transparent 45%, rgba(0,0,0,0.05) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.12) 100%);
         }
-        .corner-curl-right:hover { width: 90px; height: 90px; }
 
         .corner-curl-left {
             position: absolute;
             left: 0;
             bottom: 0;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             cursor: pointer;
             z-index: 99;
-            background: linear-gradient(225deg, transparent 45%, rgba(0,0,0,0.06) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.15) 100%);
-            transition: all 0.3s ease;
+            background: linear-gradient(225deg, transparent 45%, rgba(0,0,0,0.05) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.12) 100%);
         }
-        .corner-curl-left:hover { width: 90px; height: 90px; }
     </style>
 </head>
 <body>
@@ -237,26 +233,28 @@
     </header>
 
     <div class="main-container">
-        <button class="side-arrow" onclick="prevSpread()">&#10094;</button>
+        <button class="side-arrow" onclick="prevSheet()">&#10094;</button>
         
-        <div class="magazine-spread">
+        <div class="magazine-book">
+            <!-- Hoja 0: Portada -->
             <div class="page-sheet active" id="sheet-0">
                 <div class="page-full">
                     <div class="page-inner">
-                        <img src="./logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
-                        <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 0; margin-bottom: 15px; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
+                        <img src="./logo/logokantal.png" style="width: 170px; height: auto; margin-bottom: 20px;" alt="Logo Kantal">
+                        <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
                     </div>
-                    <div class="corner-curl-right" onclick="nextSpread()" title="Avanzar página"></div>
+                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar"></div>
                 </div>
             </div>
 
+            <!-- Hoja 1: Presentación y Carne -->
             <div class="page-sheet" id="sheet-1">
                 <div class="page">
                     <div class="page-inner">
-                        <img src="./logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
-                        <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 8px;">Tradicionalmente Sano</p>
+                        <img src="./logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 12px;" alt="Logo Kantal">
+                        <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin: 0;">Tradicionalmente Sano</p>
                     </div>
-                    <div class="corner-curl-left" onclick="prevSpread()" title="Retroceder página"></div>
+                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder"></div>
                 </div>
                 <div class="page">
                     <div>
@@ -267,10 +265,11 @@
                         </div>
                         <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
                     </div>
-                    <div class="corner-curl-right" onclick="nextSpread()" title="Avanzar página"></div>
+                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar"></div>
                 </div>
             </div>
 
+            <!-- Hoja 2: Cachorros y Queso -->
             <div class="page-sheet" id="sheet-2">
                 <div class="page">
                     <div>
@@ -281,7 +280,7 @@
                         </div>
                         <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
                     </div>
-                    <div class="corner-curl-left" onclick="prevSpread()" title="Retroceder página"></div>
+                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder"></div>
                 </div>
                 <div class="page">
                     <div>
@@ -292,10 +291,11 @@
                         </div>
                         <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
                     </div>
-                    <div class="corner-curl-right" onclick="nextSpread()" title="Avanzar página"></div>
+                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar"></div>
                 </div>
             </div>
 
+            <!-- Hoja 3: Pollo y Salmón -->
             <div class="page-sheet" id="sheet-3">
                 <div class="page">
                     <div>
@@ -306,7 +306,7 @@
                         </div>
                         <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
                     </div>
-                    <div class="corner-curl-left" onclick="prevSpread()" title="Retroceder página"></div>
+                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder"></div>
                 </div>
                 <div class="page">
                     <div>
@@ -317,12 +317,12 @@
                         </div>
                         <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
                     </div>
-                    <div class="corner-curl-right" onclick="nextSpread()" title="Avanzar página"></div>
+                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar"></div>
                 </div>
             </div>
         </div>
 
-        <button class="side-arrow" onclick="nextSpread()">&#10095;</button>
+        <button class="side-arrow" onclick="nextSheet()">&#10095;</button>
     </div>
 
     <script>
@@ -335,12 +335,12 @@
                 const ctx = new AudioCtx();
                 if (ctx.state === 'suspended') ctx.resume();
 
-                const bufferSize = ctx.sampleRate * 0.12;
+                const bufferSize = ctx.sampleRate * 0.1;
                 const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
                 const data = buffer.getChannelData(0);
                 
                 for (let i = 0; i < bufferSize; i++) {
-                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.04));
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.03));
                 }
 
                 const noise = ctx.createBufferSource();
@@ -348,12 +348,12 @@
 
                 const filter = ctx.createBiquadFilter();
                 filter.type = 'bandpass';
-                filter.frequency.value = 1200;
-                filter.Q.value = 1.2;
+                filter.frequency.value = 1400;
+                filter.Q.value = 1.0;
 
                 const gain = ctx.createGain();
-                gain.gain.setValueAtTime(0.35, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
 
                 noise.connect(filter);
                 filter.connect(gain);
@@ -363,7 +363,7 @@
             } catch (e) {}
         }
 
-        function updateSheets() {
+        function updateView() {
             for (let i = 0; i < totalSheets; i++) {
                 const sheet = document.getElementById(`sheet-${i}`);
                 if (sheet) {
@@ -376,25 +376,25 @@
             }
         }
 
-        function nextSpread() {
+        function nextSheet() {
             if (currentSheet < totalSheets - 1) {
                 currentSheet++;
-                updateSheets();
+                updateView();
                 playPageSound();
             }
         }
 
-        function prevSpread() {
+        function prevSheet() {
             if (currentSheet > 0) {
                 currentSheet--;
-                updateSheets();
+                updateView();
                 playPageSound();
             }
         }
 
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextSpread();
-            if (e.key === 'ArrowLeft') prevSpread();
+            if (e.key === 'ArrowRight') nextSheet();
+            if (e.key === 'ArrowLeft') prevSheet();
         });
     </script>
 </body>

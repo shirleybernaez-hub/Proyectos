@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo de productos</title>
-    <!-- 1. AQUÍ SE PONE EL SCRIPT DE LA LIBRERÍA (CDN OFICIAL) -->
+    <!-- Librería oficial PageFlip optimizada para navegador -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -80,16 +80,17 @@
         .side-arrow:hover { color: #555; }
         .side-arrow:active { transform: scale(0.95); }
 
-        /* Contenedor donde la librería dibujará el canvas interactivo */
+        /* Contenedor principal donde la librería montará el libro interactivo */
         #book-container {
             width: 960px;
             height: 600px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
             border: 1px solid #eaeaea;
             background: #ffffff;
+            margin: 0 auto;
         }
 
-        /* Estilo de cada página individual que lee la librería */
+        /* Estilo de cada página individual procesada por PageFlip */
         .page {
             background-color: #ffffff;
             background-image: linear-gradient(to right, #f4f4f4 0%, #ffffff 4%, #ffffff 96%, #f4f4f4 100%);
@@ -176,7 +177,7 @@
     <div class="main-container">
         <button class="side-arrow" onclick="prevPage()">&#10094;</button>
         
-        <!-- Contenedor estático que PageFlip transformará en libro interactivo -->
+        <!-- Contenedor del Libro -->
         <div id="book-container">
             <!-- 1. Portada -->
             <div class="page page-cover" data-density="hard">
@@ -248,10 +249,10 @@
         <button class="side-arrow" onclick="nextPage()">&#10095;</button>
     </div>
 
-    <!-- 2. AQUÍ SE PONE EL CÓDIGO JAVASCRIPT DE INICIALIZACIÓN -->
     <script>
         let pageFlip;
 
+        /* Sonido sintético de papel al voltear */
         function playPageSound() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -286,12 +287,12 @@
             } catch (e) {}
         }
 
-        // Se inicializa al cargar la ventana para asegurar que el DOM esté listo
         window.addEventListener('load', () => {
             const container = document.getElementById('book-container');
 
             try {
-                pageFlip = new StPageFlip.PageFlip(container, {
+                // Inicialización correcta del objeto global St.PageFlip
+                pageFlip = new St.PageFlip(container, {
                     width: 480,
                     height: 600,
                     size: "fixed",
@@ -307,10 +308,10 @@
                     clickEventForward: true
                 });
 
-                // Cargamos las páginas internas del HTML
+                // Cargamos las páginas directamente desde los elementos HTML hijos
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));
 
-                // Sonido realista al pasar página
+                // Evento de sonido al pasar de página (por arrastre o botones)
                 pageFlip.on('flip', (e) => {
                     playPageSound();
                 });

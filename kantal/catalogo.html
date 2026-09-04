@@ -165,12 +165,12 @@
 
     <header>
         <div>
-            <img src="logo/logokantal.png" alt="Kantal Logo">
+            <img src="./logo/logokantal.png" alt="Kantal Logo">
         </div>
 
         <nav style="display: flex; gap: 10px;">
-            <a href="index.html" class="switch-btn">Fichas Técnicas</a>
-            <a href="catalogo.html" class="switch-btn active">Catálogo Revista</a>
+            <a href="./index.html" class="switch-btn">Fichas Técnicas</a>
+            <a href="./catalogo.html" class="switch-btn active">Catálogo Revista</a>
         </nav>
     </header>
 
@@ -182,7 +182,7 @@
             <!-- 1. Portada -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
-                    <img src="logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
+                    <img src="./logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
                     <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 0; margin-bottom: 15px; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
                 </div>
             </div>
@@ -190,7 +190,7 @@
             <!-- 2. Contraportada interna -->
             <div class="page">
                 <div class="page-inner" style="background: #ffffff; color: #000; width: 100%; height: 100%;">
-                    <img src="logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
+                    <img src="./logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
                     <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 8px;">Tradicionalmente Sano</p>
                 </div>
             </div>
@@ -200,7 +200,7 @@
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
                 <div class="prod-image-container">
-                    <img src="fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
+                    <img src="./fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
                 </div>
                 <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
             </div>
@@ -210,7 +210,7 @@
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta Cachorros</h3>
                 <div class="prod-image-container">
-                    <img src="fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
+                    <img src="./fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
                 </div>
                 <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
             </div>
@@ -220,7 +220,7 @@
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Queso</h3>
                 <div class="prod-image-container">
-                    <img src="fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
+                    <img src="./fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
                 </div>
                 <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
             </div>
@@ -230,7 +230,7 @@
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Pollo</h3>
                 <div class="prod-image-container">
-                    <img src="fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
+                    <img src="./fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
                 </div>
                 <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
             </div>
@@ -240,7 +240,7 @@
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
                 <div class="prod-image-container">
-                    <img src="fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
+                    <img src="./fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
                 </div>
                 <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
             </div>
@@ -286,8 +286,7 @@
             } catch (e) {}
         }
 
-        // Inicialización segura asegurando que el DOM esté completamente pintado
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('load', () => {
             const container = document.getElementById('book-container');
 
             try {

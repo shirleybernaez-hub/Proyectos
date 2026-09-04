@@ -84,7 +84,6 @@
             border-color: #fff;
         }
 
-        /* Contenedor principal de la revista */
         .main-container {
             margin-top: 50px;
             display: flex;
@@ -96,6 +95,7 @@
             width: 960px;
             height: 600px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            display: none; /* Se muestra tras cargar para evitar parpadeos */
         }
 
         .page {
@@ -103,7 +103,7 @@
             height: 600px;
             background-color: #f9f6f0;
             background-image: linear-gradient(to right, #e8dfd2 0%, #f9f6f0 5%, #f9f6f0 95%, #e8dfd2 100%);
-            padding: 45px;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -129,12 +129,19 @@
             text-align: center;
         }
 
+        .prod-image-container {
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
         .prod-image {
-            max-height: 250px;
+            max-height: 220px;
             max-width: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 12px 20px rgba(0,0,0,0.12));
-            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
         }
 
         .cat-tag {
@@ -143,23 +150,23 @@
             text-transform: uppercase;
             letter-spacing: 0.3em;
             color: #9E2300;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .prod-title {
             font-family: 'Playfair Display', serif;
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             line-height: 1.1;
         }
 
         .prod-desc {
-            font-size: 12px;
+            font-size: 11px;
             color: #555;
             line-height: 1.5;
-            max-width: 320px;
+            max-width: 300px;
             margin: 0 auto;
         }
 
@@ -197,10 +204,10 @@
             <!-- Portada -->
             <div class="page page-cover">
                 <div class="page-inner">
-                    <img src="logo/logo_kantal blanco.png" style="width: 160px; margin-bottom: 20px;" alt="Logo">
-                    <h1 style="font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; margin-bottom: 10px;">SÚPER GALLETAS KANTAL</h1>
-                    <p style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 20px;">LOOKBOOK OFICIAL</p>
-                    <p style="font-size: 11px; color: #888; max-width: 260px; line-height: 1.4;">Tradicionalmente Sano. Arrastra las esquinas para pasar de página.</p>
+                    <img src="logo/logo_kantal blanco.png" style="width: 150px; margin-bottom: 15px;" alt="Logo">
+                    <h1 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px;">SÚPER GALLETAS KANTAL</h1>
+                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 15px;">LOOKBOOK OFICIAL</p>
+                    <p style="font-size: 10px; color: #888; max-width: 250px; line-height: 1.4;">Tradicionalmente Sano. Arrastra las esquinas para pasar de página.</p>
                 </div>
                 <div class="page-num" style="color: #666;">1</div>
             </div>
@@ -210,7 +217,9 @@
                 <div class="page-inner">
                     <span class="cat-tag">Línea Súper Galletas</span>
                     <h3 class="prod-title">Súper Galleta de Carne</h3>
-                    <img src="fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
+                    <div class="prod-image-container">
+                        <img src="fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
+                    </div>
                     <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
                 </div>
                 <div class="page-num">2</div>
@@ -221,7 +230,9 @@
                 <div class="page-inner">
                     <span class="cat-tag">Línea Súper Galletas</span>
                     <h3 class="prod-title">Súper Galleta Cachorros</h3>
-                    <img src="fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
+                    <div class="prod-image-container">
+                        <img src="fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
+                    </div>
                     <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
                 </div>
                 <div class="page-num">3</div>
@@ -232,7 +243,9 @@
                 <div class="page-inner">
                     <span class="cat-tag">Línea Súper Galletas</span>
                     <h3 class="prod-title">Súper Galleta de Queso</h3>
-                    <img src="fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
+                    <div class="prod-image-container">
+                        <img src="fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
+                    </div>
                     <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
                 </div>
                 <div class="page-num">4</div>
@@ -243,7 +256,9 @@
                 <div class="page-inner">
                     <span class="cat-tag">Línea Súper Galletas</span>
                     <h3 class="prod-title">Súper Galleta de Pollo</h3>
-                    <img src="fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
+                    <div class="prod-image-container">
+                        <img src="fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
+                    </div>
                     <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
                 </div>
                 <div class="page-num">5</div>
@@ -254,7 +269,9 @@
                 <div class="page-inner">
                     <span class="cat-tag">Línea Súper Galletas</span>
                     <h3 class="prod-title">Súper Galletas de Salmón</h3>
-                    <img src="fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
+                    <div class="prod-image-container">
+                        <img src="fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
+                    </div>
                     <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
                 </div>
                 <div class="page-num">6</div>
@@ -265,7 +282,7 @@
     <script>
         let pageFlip;
 
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('load', () => {
             const magazineDiv = document.getElementById('magazine');
             
             pageFlip = new StPageFlip.PageFlip(magazineDiv, {
@@ -284,6 +301,7 @@
             });
 
             pageFlip.loadFromHTML(magazineDiv.querySelectorAll('.page'));
+            magazineDiv.style.display = 'block';
 
             pageFlip.on('flip', (e) => {
                 const currentPage = pageFlip.getCurrentPageIndex() + 1;

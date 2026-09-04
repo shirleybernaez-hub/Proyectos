@@ -191,6 +191,22 @@
             max-width: 300px;
             margin: 0 auto;
         }
+
+        /* Área interactiva de la esquina para arrastrar o hacer clic */
+        .corner-hotspot {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            z-index: 99;
+            background: radial-gradient(circle at bottom right, rgba(0,0,0,0.08) 0%, transparent 70%);
+            transition: transform 0.2s;
+        }
+        .corner-hotspot:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -209,7 +225,7 @@
     <div class="main-container">
         <button class="side-arrow" onclick="prevSpread()">&#10094;</button>
         <div class="magazine-spread" id="spreadContainer">
-            <!-- Renderizado dinámico limpio y estable -->
+            <!-- Renderizado dinámico -->
         </div>
         <button class="side-arrow" onclick="nextSpread()">&#10095;</button>
     </div>
@@ -323,16 +339,17 @@
         function renderSpread() {
             const container = document.getElementById('spreadContainer');
             const data = spreads[currentIndex];
+            const cornerHTML = `<div class="corner-hotspot" onclick="nextSpread()" title="Pasar página"></div>`;
 
             if (data.type === 'cover') {
                 container.classList.remove('open');
-                container.innerHTML = data.html;
+                container.innerHTML = data.html + cornerHTML;
             } else {
                 container.classList.add('open');
                 container.innerHTML = `
                     <div class="page">${data.left}</div>
                     <div class="page">${data.right}</div>
-                `;
+                ` + cornerHTML;
             }
         }
 

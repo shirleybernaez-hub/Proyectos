@@ -3,18 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANTAL | Catálogo Revista Editorial</title>
+    <title>KANTAL | Catálogo Revista</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-deep: #101c2d;
-            --paper-cream: #f9f6f0;
-            --paper-border: #e7e2d8;
-        }
-
         body {
-            background-color: var(--bg-deep);
+            background-color: #101c2d;
             color: #111;
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -24,58 +18,27 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-        }
-
-        /* Fondo de líneas neón sutiles */
-        .neon-bg {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            z-index: -1;
-            background: radial-gradient(circle at center, #182c4d 0%, #101c2d 100%);
-        }
-        .neon-line {
-            position: absolute;
-            width: 200%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(233, 30, 99, 0.4), transparent);
-            transform: rotate(-35deg);
-            animation: moveNeon 12s linear infinite;
-            filter: drop-shadow(0 0 8px rgba(233, 30, 99, 0.6));
-        }
-        .neon-line:nth-child(2) {
-            top: 40%;
-            animation-duration: 18s;
-            animation-delay: -5s;
-            background: linear-gradient(90deg, transparent, rgba(233, 30, 99, 0.25), transparent);
-        }
-        @keyframes moveNeon {
-            0% { transform: translateY(-150px) rotate(-35deg); }
-            100% { transform: translateY(800px) rotate(-35deg); }
+            justify-content: center;
         }
 
         /* Barra Superior */
         .top-toolbar {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
             height: 60px;
+            background: rgba(16, 28, 45, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 30px;
             z-index: 100;
-            background: rgba(16, 28, 45, 0.9);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-sizing: border-box;
         }
-        .top-logo img {
-            width: 120px;
-            filter: brightness(0) invert(1);
-        }
+        .top-logo img { width: 120px; filter: brightness(0) invert(1); }
         .magazine-controls {
             display: flex;
             align-items: center;
@@ -83,25 +46,13 @@
             background: rgba(0, 0, 0, 0.4);
             padding: 6px 18px;
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
             font-size: 13px;
             font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .ctrl-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            font-size: 14px;
-            transition: opacity 0.2s;
-        }
-        .ctrl-btn:hover { opacity: 0.6; }
-
-        .section-switch {
-            display: flex;
-            gap: 10px;
-        }
+        .ctrl-btn { background: none; border: none; color: #fff; cursor: pointer; font-size: 14px; }
+        .ctrl-btn:hover { opacity: 0.7; }
         .switch-link {
             padding: 6px 16px;
             font-size: 10px;
@@ -115,50 +66,46 @@
             background: rgba(0,0,0,0.2);
             transition: all 0.2s;
         }
-        .switch-link.active, .switch-link:hover {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
-        }
+        .switch-link.active, .switch-link:hover { background: #fff; color: #000; border-color: #fff; }
 
-        /* Contenedor Doble Página Abierta (Estilo Libro Real) */
-        .magazine-viewport {
-            margin-top: 40px;
+        /* Contenedor Fijo del Libro (Obliga el formato horizontal de doble página) */
+        .book-container {
             width: 900px;
             height: 560px;
+            background: #f9f6f0;
             display: flex;
+            flex-direction: row;
             box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            border-radius: 6px;
+            border-radius: 4px;
+            overflow: hidden;
             position: relative;
-            background: #fff;
+            margin-top: 40px;
         }
 
         .book-page {
             width: 50%;
             height: 100%;
-            background-color: var(--paper-cream);
+            background-color: #f9f6f0;
+            background-image: linear-gradient(to right, #ece4da 0%, #f9f6f0 5%, #f9f6f0 95%, #ece4da 100%);
             box-sizing: border-box;
-            padding: 45px;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            overflow: hidden;
-            transition: opacity 0.3s ease;
         }
 
         .book-page.left {
-            border-right: 1px solid var(--paper-border);
-            background-image: linear-gradient(to right, #e2dad0 0%, var(--paper-cream) 8%);
+            border-right: 1px solid #e7e2d8;
         }
 
         .book-page.right {
             border-left: 1px solid #fff;
-            background-image: linear-gradient(to left, #e2dad0 0%, var(--paper-cream) 8%);
         }
 
         .page-cover {
             background: #111 !important;
+            background-image: none !important;
             color: #fff;
             align-items: center;
             justify-content: center;
@@ -176,11 +123,10 @@
 
         .page-img { max-height: 240px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); margin-bottom: 15px; }
         .page-category { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3em; color: #9E2300; margin-bottom: 6px; }
-        .page-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; line-height: 1.1; }
-        .page-desc { font-size: 11px; color: #555; line-height: 1.5; max-width: 300px; margin: 0 auto; }
+        .page-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; line-height: 1.1; }
+        .page-desc { font-size: 11px; color: #555; line-height: 1.5; max-width: 280px; margin: 0 auto; }
         .page-footer { font-size: 9px; font-weight: 700; color: #999; letter-spacing: 0.1em; text-align: center; width: 100%; }
 
-        /* Botón CTA Flotante */
         .cta-button {
             position: fixed;
             bottom: 25px;
@@ -191,24 +137,13 @@
             border-radius: 30px;
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: 0.05em;
             text-decoration: none;
             box-shadow: 0 8px 20px rgba(0, 82, 204, 0.4);
             z-index: 100;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(0, 82, 204, 0.6);
         }
     </style>
 </head>
 <body>
-
-    <div class="neon-bg">
-        <div class="neon-line" style="top: 20%;"></div>
-        <div class="neon-line" style="top: 70%;"></div>
-    </div>
 
     <header class="top-toolbar">
         <div class="top-logo">
@@ -217,30 +152,29 @@
 
         <div class="magazine-controls">
             <button class="ctrl-btn" onclick="prevSpread()">&#10094;</button>
-            <span id="pageIndicator">Páginas 1-2 / 6</span>
+            <span id="pageIndicator">Páginas 1-2 de 6</span>
             <button class="ctrl-btn" onclick="nextSpread()">&#10095;</button>
         </div>
 
-        <nav class="section-switch">
+        <nav style="display: flex; gap: 10px;">
             <a href="index.html" class="switch-link">Fichas Técnicas</a>
             <a href="catalogo.html" class="switch-link active">Catálogo Revista</a>
         </nav>
     </header>
 
-    <main class="magazine-viewport" id="bookSpread">
-        <!-- Renderizado dinámico de doble página -->
-    </main>
+    <!-- Contenedor estricto de doble página -->
+    <div class="book-container" id="bookSpread"></div>
 
     <a href="#" class="cta-button">Edit it now →</a>
 
     <script>
-        const pagesData = [
+        const catalogPages = [
             {
                 type: "cover",
                 category: "EDICIÓN DIGITAL",
                 title: "CATÁLOGO OFICIAL",
                 subtitle: "FASHION & CARE LOOKBOOK",
-                desc: "Tradicionalmente Sano. Explora la línea exclusiva de productos para tus mascotas.",
+                desc: "Tradicionalmente Sano. Explora nuestra línea exclusiva para mascotas.",
                 img: "logo/logokantal.svg"
             },
             {
@@ -280,60 +214,52 @@
             }
         ];
 
-        let currentSpread = 0; // 0 = Portada/Página 2, 1 = Páginas 3-4, 2 = Páginas 5-6
-        const maxSpreads = Math.ceil(pagesData.length / 2);
+        let currentSpread = 0;
+        const totalSpreads = Math.ceil(catalogPages.length / 2);
 
-        function playPageSound() {
+        function playSound() {
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-                const bufferSize = audioCtx.sampleRate * 0.15;
-                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if (ctx.state === 'suspended') ctx.resume();
+                const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
                 const data = buffer.getChannelData(0);
-                
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.04));
+                for (let i = 0; i < buffer.length; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.03));
                 }
-
-                const noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
-                const filter = audioCtx.createBiquadFilter();
+                const src = ctx.createBufferSource();
+                src.buffer = buffer;
+                const filter = ctx.createBiquadFilter();
                 filter.type = 'bandpass';
-                filter.frequency.value = 1200;
-                filter.Q.value = 3;
-
-                const gain = audioCtx.createGain();
-                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-
-                noise.connect(filter);
+                filter.frequency.value = 1000;
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                src.connect(filter);
                 filter.connect(gain);
-                gain.connect(audioCtx.destination);
-                noise.start();
+                gain.connect(ctx.destination);
+                src.start();
             } catch (e) {}
         }
 
-        function renderSpread() {
+        function render() {
             const container = document.getElementById('bookSpread');
             const leftIdx = currentSpread * 2;
             const rightIdx = leftIdx + 1;
 
-            const leftData = pagesData[leftIdx];
-            const rightData = pagesData[rightIdx];
+            const left = catalogPages[leftIdx];
+            const right = catalogPages[rightIdx];
 
             let leftHtml = '';
             let rightHtml = '';
 
-            // Renderizar página izquierda
-            if (leftData) {
-                if (leftData.type === 'cover') {
+            if (left) {
+                if (left.type === 'cover') {
                     leftHtml = `
                         <div class="book-page left page-cover">
                             <div class="page-content">
-                                <img src="${leftData.img}" style="width: 140px; filter: brightness(0) invert(1); margin-bottom: 12px;" alt="Logo">
-                                <h1 style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 6px;">${leftData.title}</h1>
-                                <p style="font-size: 9px; letter-spacing: 0.3s; text-transform: uppercase; color: #aaa; margin-bottom: 12px;">${leftData.subtitle}</p>
-                                <p style="font-size: 10px; color: #888; max-width: 220px; line-height: 1.4;">${leftData.desc}</p>
+                                <img src="${left.img}" style="width: 150px; filter: brightness(0) invert(1); margin-bottom: 15px;" alt="Logo">
+                                <h1 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px;">${left.title}</h1>
+                                <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 15px;">${left.subtitle}</p>
+                                <p style="font-size: 10px; color: #888; max-width: 240px; line-height: 1.4;">${left.desc}</p>
                             </div>
                             <div class="page-footer" style="color: #666;">1</div>
                         </div>
@@ -342,10 +268,10 @@
                     leftHtml = `
                         <div class="book-page left">
                             <div class="page-content">
-                                <span class="page-category">${leftData.category}</span>
-                                <h3 class="page-title">${leftData.title}</h3>
-                                <img src="${leftData.img}" class="page-img" alt="${leftData.title}">
-                                <p class="page-desc">${leftData.desc}</p>
+                                <span class="page-category">${left.category}</span>
+                                <h3 class="page-title">${left.title}</h3>
+                                <img src="${left.img}" class="page-img" alt="${left.title}">
+                                <p class="page-desc">${left.desc}</p>
                             </div>
                             <div class="page-footer">${leftIdx + 1}</div>
                         </div>
@@ -355,15 +281,14 @@
                 leftHtml = `<div class="book-page left"></div>`;
             }
 
-            // Renderizar página derecha
-            if (rightData) {
+            if (right) {
                 rightHtml = `
                     <div class="book-page right">
                         <div class="page-content">
-                            <span class="page-category">${rightData.category}</span>
-                            <h3 class="page-title">${rightData.title}</h3>
-                            <img src="${rightData.img}" class="page-img" alt="${rightData.title}">
-                            <p class="page-desc">${rightData.desc}</p>
+                            <span class="page-category">${right.category}</span>
+                            <h3 class="page-title">${right.title}</h3>
+                            <img src="${right.img}" class="page-img" alt="${right.title}">
+                            <p class="page-desc">${right.desc}</p>
                         </div>
                         <div class="page-footer">${rightIdx + 1}</div>
                     </div>
@@ -373,22 +298,22 @@
             }
 
             container.innerHTML = leftHtml + rightHtml;
-            document.getElementById('pageIndicator').innerText = `Páginas ${leftIdx + 1}-${Math.min(rightIdx + 1, pagesData.length)} / ${pagesData.length}`;
+            document.getElementById('pageIndicator').innerText = `Páginas ${leftIdx + 1}-${Math.min(rightIdx + 1, catalogPages.length)} de ${catalogPages.length}`;
         }
 
         function nextSpread() {
-            if (currentSpread < maxSpreads - 1) {
+            if (currentSpread < totalSpreads - 1) {
                 currentSpread++;
-                renderSpread();
-                playPageSound();
+                render();
+                playSound();
             }
         }
 
         function prevSpread() {
             if (currentSpread > 0) {
                 currentSpread--;
-                renderSpread();
-                playPageSound();
+                render();
+                playSound();
             }
         }
 
@@ -397,7 +322,7 @@
             if (e.key === 'ArrowLeft') prevSpread();
         });
 
-        window.onload = renderSpread;
+        window.onload = render;
     </script>
 </body>
 </html>

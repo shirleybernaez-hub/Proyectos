@@ -95,7 +95,7 @@
             width: 960px;
             height: 600px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            display: none;
+            margin: 0 auto;
         }
 
         .page {
@@ -111,7 +111,6 @@
             user-select: none;
         }
 
-        /* Portada exterior elegante en negro */
         .page-cover-external {
             background: #111 !important;
             background-image: none !important;
@@ -121,7 +120,6 @@
             text-align: center;
         }
 
-        /* Portada interna en negro */
         .page-cover-internal {
             background: #111 !important;
             background-image: none !important;
@@ -300,7 +298,6 @@
     <script>
         let pageFlip;
 
-        // Sonido sintético realista de paso de página por Web Audio API
         function playPageSound() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -350,11 +347,12 @@
                 maxShadowOpacity: 0.75,
                 showCover: true,
                 mobileScrollSupport: false,
-                useMouseEvents: true
+                useMouseEvents: true,
+                clickEventForward: true,
+                swipeDistance: 20
             });
 
             pageFlip.loadFromHTML(magazineDiv.querySelectorAll('.page'));
-            magazineDiv.style.display = 'block';
 
             pageFlip.on('flip', (e) => {
                 const currentPage = pageFlip.getCurrentPageIndex() + 1;

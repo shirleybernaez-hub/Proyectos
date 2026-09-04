@@ -35,7 +35,7 @@
 
         .product-card { border: 1px solid #efefef; border-radius: 28px; padding: 24px; background: #fff; display: flex; flex-direction: column; gap: 18px; transition: box-shadow 0.3s ease; }
         .product-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .btn-download { border: 1.5px solid black; transition: all 0.2s ease; font-size: 10px; font-weight: 800; text-align: center; text-transform: uppercase; }
+        .btn-download { border: 1.5px solid black; transition: all 0.2s ease; font-size: 10px; font-weight: 800; text-align: center; text-transform: uppercase; text-decoration: none; display: block; padding: 12px; border-radius: 9999px; }
         .btn-download:hover { background: black; color: white; }
 
         .chat-container { display: flex; flex-direction: column; gap: 8px; background: #f8f8f8; border-radius: 20px; padding: 15px; margin-top: 5px; }
@@ -70,7 +70,7 @@
         <nav class="tabs-container" id="tabsNav">
             <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética (6)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (10)</button>
-            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (2)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (3)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-arena')">Arena Gatos (0)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-aves')">Aves (1)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-peces')">Peces/Tortugas (0)</button>
@@ -89,7 +89,7 @@
         </div>
 
         <div id="cat-galletas" class="category-content">
-            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Súper Galletas (2)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Súper Galletas (3)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-galletas"></section>
         </div>
 
@@ -116,7 +116,7 @@
                     <div class="w-full bg-[#fcfcfc] p-2 rounded-2xl border border-zinc-50">
                         <img src="fichas/${folder}/${img}" class="w-full h-auto object-contain rounded-lg">
                     </div>
-                    <a href="fichas/${folder}/${pdf}" download class="btn-download px-6 py-3 rounded-full">Descargar PDF</a>
+                    <a href="fichas/${folder}/${pdf}" download class="btn-download">Descargar PDF</a>
                     
                     <div class="chat-container">
                         <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Dejar comentario sobre este producto:</span>
@@ -186,8 +186,14 @@
         ];
         prods.forEach(p => createProductCard(...p, 'grid-productos'));
 
-        createProductCard('sg1', 'Súper Galleta de Pollo', 'supergalleta_pollo.jpg', 'supergalleta_pollo.pdf', 'supergalletas', 'grid-galletas');
-        createProductCard('sg2', 'Súper Galleta de Carne', 'supergalleta_carne.jpg', 'supergalleta_carne.pdf', 'supergalletas', 'grid-galletas');
+        // Súper Galletas (3 sabores actualizados según la carpeta supergalletas)
+        const galletas = [
+            ['sg1', 'Súper Galleta Cachorros', 'supergalleta_cachorros.jpg', 'supergalleta_cachorros.pdf', 'supergalletas'],
+            ['sg2', 'Súper Galleta de Carne', 'supergalleta_carne.jpg', 'supergalleta_carne.pdf', 'supergalletas'],
+            ['sg3', 'Súper Galleta de Pollo', 'supergalleta_pollo.jpg', 'supergalleta_pollo.pdf', 'supergalletas']
+        ];
+        galletas.forEach(p => createProductCard(...p, 'grid-galletas'));
+
         createProductCard('a1', 'Antiparasitario Pájaros', 'antiparasitariopajaros.jpg', 'antiparasitariopajaros.pdf', 'aves', 'grid-aves');
         createProductCard('r1', 'Alimento Hamster', 'alimentohamster.jpg', 'alimentohamster.pdf', 'roedores', 'grid-roedores');
     </script>

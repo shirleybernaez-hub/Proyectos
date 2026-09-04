@@ -20,7 +20,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            perspective: 2000px;
         }
 
         header {
@@ -85,32 +84,24 @@
         .side-arrow:hover { color: #555; }
         .side-arrow:active { transform: scale(0.95); }
 
-        /* Contenedor principal con soporte 3D */
-        .book-container {
-            width: 960px;
-            height: 600px;
-            position: relative;
-            transform-style: preserve-3d;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
-            border: 1px solid #eaeaea;
-            background: #ffffff;
-        }
-
-        .book-container.single-mode {
+        .magazine-spread {
             width: 480px;
-        }
-
-        .spread-view {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            position: absolute;
-            top: 0;
-            left: 0;
+            height: 600px;
             background: #ffffff;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+            border-radius: 0px;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #eaeaea;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .spread-view::before {
+        .magazine-spread.open {
+            width: 960px;
+        }
+
+        .magazine-spread.open::before {
             content: '';
             position: absolute;
             top: 0;
@@ -135,11 +126,12 @@
             border-radius: 0px;
         }
 
-        .page-single-full {
+        .page-cover-solo {
             width: 100%;
             height: 100%;
             background-color: #ffffff;
             background-image: none;
+            color: #000;
             padding: 50px;
             display: flex;
             flex-direction: column;
@@ -199,50 +191,6 @@
             max-width: 300px;
             margin: 0 auto;
         }
-
-        /* Capa animada de giro de página 3D */
-        .flipping-page {
-            position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            background: #ffffff;
-            transform-style: preserve-3d;
-            transform-origin: left center;
-            transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
-            z-index: 30;
-            box-shadow: 10px 0 20px rgba(0,0,0,0.1);
-        }
-
-        .flipping-page.flip-to-left {
-            transform: rotateY(-180deg);
-            transform-origin: right center;
-            left: 0;
-        }
-
-        .flipping-page.flip-to-right {
-            transform: rotateY(180deg);
-            transform-origin: left center;
-            left: 50%;
-        }
-
-        .flipping-page .front, .flipping-page .back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            backface-visibility: hidden;
-            padding: 45px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background: #ffffff;
-        }
-
-        .flipping-page .back {
-            transform: rotateY(180deg);
-        }
     </style>
 </head>
 <body>
@@ -259,13 +207,11 @@
     </header>
 
     <div class="main-container">
-        <button class="side-arrow" onclick="turnPrev()">&#10094;</button>
-        <div class="book-container single-mode" id="bookContainer">
-            <div class="spread-view" id="spreadView">
-                <!-- Renderizado dinámico -->
-            </div>
+        <button class="side-arrow" onclick="prevSpread()">&#10094;</button>
+        <div class="magazine-spread" id="spreadContainer">
+            <!-- Renderizado dinámico limpio y estable -->
         </div>
-        <button class="side-arrow" onclick="turnNext()">&#10095;</button>
+        <button class="side-arrow" onclick="nextSpread()">&#10095;</button>
     </div>
 
     <script>
@@ -273,7 +219,7 @@
             {
                 type: 'cover',
                 html: `
-                    <div class="page-single-full">
+                    <div class="page-cover-solo">
                         <div class="page-inner">
                             <img src="logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
                             <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 0; margin-bottom: 15px; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
@@ -339,7 +285,6 @@
         ];
 
         let currentIndex = 0;
-        let isAnimating = false;
 
         function playPageSound() {
             try {
@@ -376,15 +321,14 @@
         }
 
         function renderSpread() {
-            const container = document.getElementById('spreadView');
-            const bookContainer = document.getElementById('bookContainer');
+            const container = document.getElementById('spreadContainer');
             const data = spreads[currentIndex];
 
-            if (currentIndex === 0) {
-                bookContainer.classList.add('single-mode');
+            if (data.type === 'cover') {
+                container.classList.remove('open');
                 container.innerHTML = data.html;
             } else {
-                bookContainer.classList.remove('single-mode');
+                container.classList.add('open');
                 container.innerHTML = `
                     <div class="page">${data.left}</div>
                     <div class="page">${data.right}</div>
@@ -392,79 +336,25 @@
             }
         }
 
-        function turnNext() {
-            if (isAnimating || currentIndex >= spreads.length - 1) return;
-            isAnimating = true;
-            playPageSound();
-
-            const bookContainer = document.getElementById('bookContainer');
-            const currentData = spreads[currentIndex];
-            const nextData = spreads[currentIndex + 1];
-
-            // Crear hoja animada para doblado 3D
-            const flipper = document.createElement('div');
-            flipper.className = 'flipping-page flip-to-left';
-            flipper.style.left = currentIndex === 0 ? '0px' : '50%';
-            
-            const frontHTML = currentIndex === 0 ? currentData.html : currentData.right;
-            const backHTML = nextData.type === 'cover' ? '' : nextData.left;
-
-            flipper.innerHTML = `
-                <div class="front">${frontHTML}</div>
-                <div class="back">${backHTML}</div>
-            `;
-            bookContainer.appendChild(flipper);
-
-            setTimeout(() => {
-                flipper.style.transform = 'rotateY(-180deg)';
-            }, 20);
-
-            setTimeout(() => {
+        function nextSpread() {
+            if (currentIndex < spreads.length - 1) {
                 currentIndex++;
                 renderSpread();
-                flipper.remove();
-                isAnimating = false;
-            }, 600);
+                playPageSound();
+            }
         }
 
-        function turnPrev() {
-            if (isAnimating || currentIndex <= 0) return;
-            isAnimating = true;
-            playPageSound();
-
-            const bookContainer = document.getElementById('bookContainer');
-            const currentData = spreads[currentIndex];
-            const prevData = spreads[currentIndex - 1];
-
-            const flipper = document.createElement('div');
-            flipper.className = 'flipping-page flip-to-right';
-            flipper.style.left = '0px';
-            flipper.style.transform = 'rotateY(-180deg)';
-
-            const frontHTML = prevData.type === 'cover' ? '' : prevData.right;
-            const backHTML = currentData.type === 'cover' ? currentData.html : currentData.left;
-
-            flipper.innerHTML = `
-                <div class="front">${frontHTML}</div>
-                <div class="back">${backHTML}</div>
-            `;
-            bookContainer.appendChild(flipper);
-
-            setTimeout(() => {
-                flipper.style.transform = 'rotateY(0deg)';
-            }, 20);
-
-            setTimeout(() => {
+        function prevSpread() {
+            if (currentIndex > 0) {
                 currentIndex--;
                 renderSpread();
-                flipper.remove();
-                isAnimating = false;
-            }, 600);
+                playPageSound();
+            }
         }
 
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') turnNext();
-            if (e.key === 'ArrowLeft') turnPrev();
+            if (e.key === 'ArrowRight') nextSpread();
+            if (e.key === 'ArrowLeft') prevSpread();
         });
 
         window.addEventListener('DOMContentLoaded', () => {

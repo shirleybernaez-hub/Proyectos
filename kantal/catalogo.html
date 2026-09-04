@@ -79,10 +79,11 @@
         .side-arrow:hover { color: #555; }
         .side-arrow:active { transform: scale(0.95); }
 
-        /* Contenedor principal donde la librería montará el libro interactivo */
+        /* Contenedor principal con posición relativa y dimensiones estrictas para el canvas */
         #book-container {
             width: 960px;
             height: 600px;
+            position: relative;
             box-shadow: 0 25px 50px rgba(0,0,0,0.12);
             border: 1px solid #eaeaea;
             background: #ffffff;

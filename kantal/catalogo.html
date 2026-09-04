@@ -8,7 +8,7 @@
     <style>
         * { box-sizing: border-box; }
         body {
-            background-color: #fcfcfc;
+            background-color: #ffffff;
             color: #000;
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -28,7 +28,7 @@
             left: 0;
             right: 0;
             height: 70px;
-            background: #fff;
+            background: #ffffff;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
@@ -97,7 +97,7 @@
         .magazine-spread {
             width: 960px;
             height: 600px;
-            background: #fff;
+            background: #ffffff;
             box-shadow: 0 20px 40px rgba(0,0,0,0.06);
             border-radius: 12px;
             display: flex;
@@ -130,8 +130,9 @@
             user-select: none;
         }
 
-        .page-single {
-            width: 100%;
+        /* Página de portada cerrada ubicada a la derecha */
+        .page-cover-right {
+            width: 50%;
             height: 100%;
             background-color: #000;
             color: #fff;
@@ -141,6 +142,14 @@
             justify-content: space-between;
             align-items: center;
             text-align: center;
+        }
+
+        /* Mitad izquierda vacía/negra de cortesía cuando el libro está cerrado en la portada */
+        .page-cover-left-empty {
+            width: 50%;
+            height: 100%;
+            background-color: #111;
+            border-right: 1px solid #222;
         }
 
         .page-inner {
@@ -204,7 +213,7 @@
         }
 
         .page-num-dark {
-            color: #555 !important;
+            color: #777 !important;
         }
     </style>
 </head>
@@ -212,7 +221,7 @@
 
     <header>
         <div>
-            <img src="logo/logokantal.svg" alt="Kantal Logo">
+            <img src="logo/logokantal.jpg" alt="Kantal Logo">
         </div>
 
         <div class="nav-controls">
@@ -236,10 +245,11 @@
     <script>
         const spreads = [
             {
-                type: 'single',
+                type: 'cover-closed',
                 pages: '1 / 7',
                 html: `
-                    <div class="page-single">
+                    <div class="page-cover-left-empty"></div>
+                    <div class="page-cover-right">
                         <div class="page-inner">
                             <img src="logo/logo_kantal blanco.png" style="width: 180px; margin-bottom: 25px;" alt="Logo">
                             <h1 style="font-family: 'Inter', sans-serif; font-size: 26px; font-weight: 900; line-height: 1.2; text-transform: uppercase; letter-spacing: -0.03em;">Catálogo de productos</h1>
@@ -355,9 +365,9 @@
             const container = document.getElementById('spreadContainer');
             const data = spreads[currentIndex];
             
-            document.getElementById('pageIndicator').innerText = `Páginas ${data.pages}`;
+            document.getElementById('pageIndicator').innerText = `Página ${data.pages}`;
 
-            if (data.type === 'single') {
+            if (data.type === 'cover-closed') {
                 container.innerHTML = data.html;
             } else {
                 const leftBg = data.isLeftDark ? 'background: #000; color: #fff;' : '';

@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANTAL | Revista Digital • Page Curl Interactivo con Sonido</title>
+    <title>KANTAL | Catálogo Revista Editorial</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Librería Turn.js / PageFlip con soporte completo de arrastre interactivo con el puntero (grab & drag) -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -120,26 +119,27 @@
             border-color: #fff;
         }
 
-        /* Visor del Flipbook */
+        /* Visor del Flipbook centrado en doble página */
         .magazine-viewport {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: calc(100vh - 60px);
-            cursor: grab;
+            overflow: hidden;
         }
-        .magazine-viewport:active {
-            cursor: grabbing;
+
+        #book {
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         /* Páginas individuales con textura crema editorial */
         .page {
             background-color: var(--paper-cream);
-            background-image: linear-gradient(to right, #ece4da 0%, var(--paper-cream) 5%, var(--paper-cream) 95%, #ece4da 100%);
+            background-image: linear-gradient(to right, #ece4da 0%, var(--paper-cream) 4%, var(--paper-cream) 96%, #ece4da 100%);
             border: 1px solid var(--paper-border);
             box-sizing: border-box;
-            padding: 45px;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -166,10 +166,10 @@
             text-align: center;
         }
 
-        .page-img { max-height: 270px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); margin-bottom: 15px; }
+        .page-img { max-height: 250px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); margin-bottom: 12px; }
         .page-category { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3em; color: #9E2300; margin-bottom: 6px; }
-        .page-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; line-height: 1.1; }
-        .page-desc { font-size: 11px; color: #555; line-height: 1.5; max-width: 300px; margin: 0 auto; }
+        .page-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; line-height: 1.1; }
+        .page-desc { font-size: 11px; color: #555; line-height: 1.4; max-width: 280px; margin: 0 auto; }
         .page-footer { font-size: 9px; font-weight: 700; color: #999; letter-spacing: 0.1em; text-align: center; width: 100%; }
 
         /* Botón CTA Flotante */
@@ -260,22 +260,22 @@
         <button class="side-icon-btn" title="Pantalla Completa">⛶</button>
     </div>
 
-    <!-- Visor Principal con Page-Curl interactivo por puntero y sonido físico -->
+    <!-- Visor Principal con Doble Página Forzada y Page-Curl Interactivo -->
     <main class="magazine-viewport">
         <div id="book">
             
             <!-- Página 1: Portada -->
             <div class="page page-cover">
                 <div class="page-content">
-                    <img src="logo/logokantal.svg" style="width: 180px; filter: brightness(0) invert(1); margin-bottom: 20px;" alt="Kantal">
-                    <h1 style="font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 10px;">CATÁLOGO OFICIAL</h1>
-                    <p style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 20px;">FASHION & CARE LOOKBOOK</p>
-                    <p style="font-size: 11px; color: #888; max-width: 260px; line-height: 1.5;">Tradicionalmente Sano. Arrastra la esquina con el puntero para pasar las páginas.</p>
+                    <img src="logo/logokantal.svg" style="width: 160px; filter: brightness(0) invert(1); margin-bottom: 15px;" alt="Kantal">
+                    <h1 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 8px;">CATÁLOGO OFICIAL</h1>
+                    <p style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 15px;">FASHION & CARE LOOKBOOK</p>
+                    <p style="font-size: 11px; color: #888; max-width: 240px; line-height: 1.4;">Tradicionalmente Sano. Arrastra las esquinas con el puntero para pasar las páginas.</p>
                 </div>
                 <div class="page-footer" style="color: #666;">1</div>
             </div>
 
-            <!-- Página 2: Colonia Machios -->
+            <!-- Página 2: Colonia Machos -->
             <div class="page">
                 <div class="page-content">
                     <span class="page-category">Línea Cosmética</span>
@@ -339,18 +339,14 @@
     <script>
         let bookObj;
 
-        // Generador de efecto de sonido de papel al pasar la página usando Web Audio API (sin dependencias externas de audio)
         function playPageSound() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                const bufferSize = audioCtx.sampleRate * 0.15; // 150ms de duración
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+                const bufferSize = audioCtx.sampleRate * 0.15;
                 const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
                 const data = buffer.getChannelData(0);
                 
-                // Ruido blanco filtrado para imitar el roce de papel de revista
                 for (let i = 0; i < bufferSize; i++) {
                     data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.04));
                 }
@@ -372,28 +368,28 @@
                 gain.connect(audioCtx.destination);
 
                 noise.start();
-            } catch (e) {
-                // Audio bloqueado por políticas del navegador hasta la primera interacción del usuario
-            }
+            } catch (e) {}
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            // Configuración forzada en modo doble página (display: "double") con tamaño fijo óptimo para escritorio
             const flipBook = new StPageFlip.PageFlip(
                 document.getElementById('book'),
                 {
-                    width: 420,
-                    height: 560,
-                    size: "stretch",
+                    width: 450,
+                    height: 580,
+                    size: "fixed",
                     minWidth: 300,
-                    maxWidth: 600,
+                    maxWidth: 700,
                     minHeight: 400,
                     maxHeight: 800,
-                    maxShadowOpacity: 0.75, // Sombra profunda de pliegue 3D
+                    drawShadow: true,
+                    maxShadowOpacity: 0.8,
                     showCover: true,
                     mobileScrollSupport: false,
                     swipeDistance: 20,
                     clickEventForward: true,
-                    useMouseEvents: true // Habilita el control interactivo absoluto con el puntero (grab & drag de esquinas)
+                    useMouseEvents: true
                 }
             );
 
@@ -402,7 +398,7 @@
 
             flipBook.on('flip', (e) => {
                 document.getElementById('pageIndicator').innerText = `${e.data + 1} / ${flipBook.getPageCount()}`;
-                playPageSound(); // Reproduce el sonido realista de papel al voltear
+                playPageSound();
             });
         });
 

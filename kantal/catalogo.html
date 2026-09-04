@@ -84,21 +84,27 @@
             border-color: #fff;
         }
 
-        /* Contenedor central donde se monta la revista */
-        #magazine-container {
-            margin-top: 40px;
+        /* Contenedor estricto para forzar el ancho de dos páginas juntas (480px * 2 = 960px) */
+        .magazine-viewport {
+            margin-top: 50px;
+            width: 960px;
+            height: 600px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            background: #0b1320;
         }
 
-        /* Estilo base para cada página individual de la revista */
+        /* Página individual */
         .page {
+            width: 480px;
+            height: 600px;
             background-color: #f9f6f0;
             background-image: linear-gradient(to right, #e8dfd2 0%, #f9f6f0 5%, #f9f6f0 95%, #e8dfd2 100%);
             box-sizing: border-box;
-            padding: 35px;
+            padding: 45px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -125,41 +131,41 @@
         }
 
         .prod-image {
-            max-height: 220px;
+            max-height: 260px;
             max-width: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
-            margin-bottom: 15px;
+            filter: drop-shadow(0 12px 20px rgba(0,0,0,0.12));
+            margin-bottom: 20px;
         }
 
         .cat-tag {
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.3em;
             color: #9E2300;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .prod-title {
             font-family: 'Playfair Display', serif;
-            font-size: 17px;
+            font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             line-height: 1.1;
         }
 
         .prod-desc {
-            font-size: 11px;
+            font-size: 12px;
             color: #555;
             line-height: 1.5;
-            max-width: 270px;
+            max-width: 320px;
             margin: 0 auto;
         }
 
         .page-num {
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 700;
             color: #888;
             letter-spacing: 0.1em;
@@ -187,118 +193,95 @@
         </nav>
     </header>
 
-    <main id="magazine-container">
+    <div class="magazine-viewport">
         <div id="magazine">
-            <!-- Portada -->
+            <!-- Portada (Página 1) -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
-                    <img src="logo/logo_kantal blanco.png" style="width: 140px; margin-bottom: 15px;" alt="Logo">
-                    <h1 style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 8px;">CATÁLOGO OFICIAL</h1>
-                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 15px;">FASHION & CARE LOOKBOOK</p>
-                    <p style="font-size: 10px; color: #888; max-width: 230px; line-height: 1.4;">Tradicionalmente Sano. Arrastra las esquinas con el puntero.</p>
+                    <img src="logo/logo_kantal blanco.png" style="width: 160px; margin-bottom: 20px;" alt="Logo">
+                    <h1 style="font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; margin-bottom: 10px;">SÚPER GALLETAS KANTAL</h1>
+                    <p style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #aaa; margin-bottom: 20px;">LOOKBOOK OFICIAL</p>
+                    <p style="font-size: 11px; color: #888; max-width: 260px; line-height: 1.4;">Tradicionalmente Sano. Arrastra las esquinas para pasar de página.</p>
                 </div>
                 <div class="page-num" style="color: #666;">1</div>
             </div>
 
-            <!-- Página 2 -->
+            <!-- Página 2: Súper Galleta de Carne -->
             <div class="page">
                 <div class="page-inner">
-                    <span class="cat-tag">Línea Cosmética</span>
-                    <h3 class="prod-title">Enjuague Desenredante</h3>
-                    <img src="fichas/catalogo/ENJUAGUE DESENR...240.png" class="prod-image" alt="Enjuague Desenredante">
-                    <p class="prod-desc">Suavizante de alto rendimiento que facilita el peinado, elimina nudos y aporta un brillo sedoso espectacular.</p>
+                    <span class="cat-tag">Línea Súper Galletas</span>
+                    <h3 class="prod-title">Súper Galleta de Carne</h3>
+                    <img src="fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
+                    <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
                 </div>
                 <div class="page-num">2</div>
             </div>
 
-            <!-- Página 3 -->
+            <!-- Página 3: Súper Galleta Cachorros -->
             <div class="page">
                 <div class="page-inner">
-                    <span class="cat-tag">Línea Cosmética</span>
-                    <h3 class="prod-title">Champú Cosmético</h3>
-                    <img src="fichas/catalogo/CHAMPU COSME...240.png" class="prod-image" alt="Champú Cosmético">
-                    <p class="prod-desc">Deja el pelo de su mascota con suave aroma y un brillo natural radiante, limpiando profundamente sin resecar.</p>
+                    <span class="cat-tag">Línea Súper Galletas</span>
+                    <h3 class="prod-title">Súper Galleta Cachorros</h3>
+                    <img src="fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
+                    <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
                 </div>
                 <div class="page-num">3</div>
             </div>
 
-            <!-- Página 4 -->
+            <!-- Página 4: Súper Galleta de Queso -->
             <div class="page">
                 <div class="page-inner">
-                    <span class="cat-tag">Línea Cosmética</span>
-                    <h3 class="prod-title">Colonia Cachorros</h3>
-                    <img src="fichas/catalogo/COLONIA CACHORROS.png" class="prod-image" alt="Colonia Cachorros">
-                    <p class="prod-desc">Fórmula sumamente suave adaptada especialmente para la piel sensible de los cachorros, otorgando un aroma tierno y fresco.</p>
+                    <span class="cat-tag">Línea Súper Galletas</span>
+                    <h3 class="prod-title">Súper Galleta de Queso</h3>
+                    <img src="fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
+                    <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
                 </div>
                 <div class="page-num">4</div>
             </div>
 
-            <!-- Página 5 -->
+            <!-- Página 5: Súper Galleta de Pollo -->
             <div class="page">
                 <div class="page-inner">
-                    <span class="cat-tag">Línea Cosmética</span>
-                    <h3 class="prod-title">Colonia Mascotas Macho</h3>
-                    <img src="fichas/catalogo/COLONIA MACHIOS.png" class="prod-image" alt="Colonia Machios">
-                    <p class="prod-desc">Fragancia exclusiva diseñada para resaltar un aroma duradero y varonil, manteniendo el cuidado delicado de su pelaje.</p>
+                    <span class="cat-tag">Línea Súper Galletas</span>
+                    <h3 class="prod-title">Súper Galleta de Pollo</h3>
+                    <img src="fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
+                    <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
                 </div>
                 <div class="page-num">5</div>
             </div>
 
-            <!-- Página 6 -->
+            <!-- Página 6: Súper Galletas de Salmón -->
             <div class="page" data-density="hard">
                 <div class="page-inner">
-                    <span class="cat-tag">Línea Cosmética</span>
-                    <h3 class="prod-title">Colonia Perros y Gatos</h3>
-                    <img src="fichas/catalogo/COLONIA PERROS...OS.png" class="prod-image" alt="Colonia Perros y Gatos">
-                    <p class="prod-desc">Spray sin gas de uso diario que neutraliza olores y proporciona una frescura natural y agradable sin irritar su piel.</p>
+                    <span class="cat-tag">Línea Súper Galletas</span>
+                    <h3 class="prod-title">Súper Galletas de Salmón</h3>
+                    <img src="fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
+                    <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
                 </div>
                 <div class="page-num">6</div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script>
         let bookObj;
-
-        function playPageSound() {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                if (ctx.state === 'suspended') ctx.resume();
-                const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < buffer.length; i++) {
-                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.03));
-                }
-                const src = ctx.createBufferSource();
-                src.buffer = buffer;
-                const filter = ctx.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.value = 1100;
-                const gain = ctx.createGain();
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                src.connect(filter);
-                filter.connect(gain);
-                gain.connect(ctx.destination);
-                src.start();
-            } catch (e) {}
-        }
 
         window.addEventListener('DOMContentLoaded', () => {
             const flipBook = new StPageFlip.PageFlip(
                 document.getElementById('magazine'),
                 {
-                    width: 400,
-                    height: 550,
+                    width: 480,
+                    height: 600,
                     size: "fixed",
-                    minWidth: 300,
-                    maxWidth: 500,
-                    minHeight: 400,
-                    maxHeight: 700,
+                    minWidth: 480,
+                    maxWidth: 480,
+                    minHeight: 600,
+                    maxHeight: 600,
                     drawShadow: true,
-                    maxShadowOpacity: 0.7,
+                    maxShadowOpacity: 0.8,
                     showCover: true,
                     mobileScrollSupport: false,
-                    swipeDistance: 25,
+                    swipeDistance: 30,
                     clickEventForward: true,
                     useMouseEvents: true
                 }
@@ -309,7 +292,6 @@
 
             flipBook.on('flip', (e) => {
                 document.getElementById('pageIndicator').innerText = `Página ${e.data + 1} / ${flipBook.getPageCount()}`;
-                playPageSound();
             });
         });
 

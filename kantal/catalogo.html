@@ -84,17 +84,19 @@
             border-color: #fff;
         }
 
-        /* Visor horizontal centrado */
+        /* Contenedor estricto para forzar el tamaño horizontal abierto */
         .magazine-viewport {
-            margin-top: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin-top: 50px;
+            width: 900px;
+            height: 560px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             border-radius: 6px;
+            background: #f9f6f0;
         }
 
         .page {
+            width: 450px;
+            height: 560px;
             background-color: #f9f6f0;
             background-image: linear-gradient(to right, #e8dfd2 0%, #f9f6f0 5%, #f9f6f0 95%, #e8dfd2 100%);
             box-sizing: border-box;
@@ -187,7 +189,7 @@
         </nav>
     </header>
 
-    <main class="magazine-viewport">
+    <div class="magazine-viewport">
         <div id="magazine">
             <!-- Portada -->
             <div class="page page-cover" data-density="hard">
@@ -255,7 +257,7 @@
                 <div class="page-num">6</div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script>
         let bookObj;
@@ -289,11 +291,11 @@
                 {
                     width: 450,
                     height: 560,
-                    size: "stretch",
-                    minWidth: 315,
-                    maxWidth: 600,
-                    minHeight: 400,
-                    maxHeight: 700,
+                    size: "fixed",
+                    minWidth: 450,
+                    maxWidth: 450,
+                    minHeight: 560,
+                    maxHeight: 560,
                     drawShadow: true,
                     maxShadowOpacity: 0.8,
                     showCover: true,
@@ -308,8 +310,8 @@
             bookObj = flipBook;
 
             flipBook.on('flip', (e) => {
-                const current = e.data + 1;
-                document.getElementById('pageIndicator').innerText = `Página ${current} / ${flipBook.getPageCount()}`;
+                const page = e.data + 1;
+                document.getElementById('pageIndicator').innerText = `Página ${page} / ${flipBook.getPageCount()}`;
                 playPageSound();
             });
         });

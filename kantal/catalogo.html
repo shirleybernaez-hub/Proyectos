@@ -80,11 +80,14 @@
         .side-arrow:hover { color: #555; }
         .side-arrow:active { transform: scale(0.95); }
 
-        /* Contenedor del libro adaptado para que StPageFlip controle la transición de portada y doble página */
+        /* Contenedor estricto para el libro interactivo */
         #book-container {
-            margin: 0 auto;
+            width: 960px;
+            height: 600px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+            border: 1px solid #eaeaea;
             background: #ffffff;
+            margin: 0 auto;
         }
 
         /* Estilo de cada página individual */
@@ -283,7 +286,8 @@
             } catch (e) {}
         }
 
-        window.addEventListener('load', () => {
+        // Inicialización segura asegurando que el DOM esté completamente pintado
+        window.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('book-container');
 
             try {

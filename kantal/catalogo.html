@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo de productos</title>
-    <!-- Librería oficial PageFlip optimizada para navegador -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -80,10 +79,12 @@
         .side-arrow:hover { color: #555; }
         .side-arrow:active { transform: scale(0.95); }
 
-        /* Contenedor del Libro */
+        /* Contenedor estricto con dimensiones fijas para evitar fallos de renderizado en blanco */
         #book-container {
             width: 960px;
             height: 600px;
+            min-width: 960px;
+            min-height: 600px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.12);
             border: 1px solid #eaeaea;
             background: #ffffff;
@@ -177,9 +178,7 @@
     <div class="main-container">
         <button class="side-arrow" onclick="prevPage()">&#10094;</button>
         
-        <!-- Contenedor del Libro -->
         <div id="book-container">
-            <!-- 1. Portada Única -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
                     <img src="logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
@@ -187,7 +186,6 @@
                 </div>
             </div>
 
-            <!-- 2. Página interna izquierda (Al abrir la portada muestra doble página) -->
             <div class="page">
                 <div class="page-inner" style="background: #ffffff; color: #000; width: 100%; height: 100%;">
                     <img src="logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
@@ -195,7 +193,6 @@
                 </div>
             </div>
 
-            <!-- 3. Súper Galleta de Carne -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
@@ -205,7 +202,6 @@
                 <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
             </div>
 
-            <!-- 4. Súper Galleta Cachorros -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta Cachorros</h3>
@@ -215,7 +211,6 @@
                 <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
             </div>
 
-            <!-- 5. Súper Galleta de Queso -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Queso</h3>
@@ -225,7 +220,6 @@
                 <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
             </div>
 
-            <!-- 6. Súper Galleta de Pollo -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Pollo</h3>
@@ -235,7 +229,6 @@
                 <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
             </div>
 
-            <!-- 7. Súper Galletas de Salmón -->
             <div class="page" data-density="hard">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
@@ -286,8 +279,10 @@
             } catch (e) {}
         }
 
-        window.addEventListener('load', () => {
+        // Inicialización segura garantizada con verificación de carga completa
+        function initBook() {
             const container = document.getElementById('book-container');
+            if (!container || pageFlip) return;
 
             try {
                 pageFlip = new StPageFlip.PageFlip(container, {
@@ -314,7 +309,10 @@
             } catch (err) {
                 console.error("Error al inicializar PageFlip:", err);
             }
-        });
+        }
+
+        window.addEventListener('DOMContentLoaded', initBook);
+        window.addEventListener('load', initBook);
 
         function nextPage() {
             if (pageFlip) pageFlip.flipNext();

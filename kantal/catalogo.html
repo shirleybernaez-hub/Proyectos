@@ -20,7 +20,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            perspective: 2500px;
         }
 
         header {
@@ -85,7 +84,6 @@
         .side-arrow:hover { color: #555; }
         .side-arrow:active { transform: scale(0.95); }
 
-        /* Contenedor del Libro */
         .magazine-spread {
             width: 480px;
             height: 600px;
@@ -94,10 +92,9 @@
             border-radius: 0px;
             display: flex;
             position: relative;
-            overflow: visible; /* Permite ver el doblado de la esquina fuera del contenedor */
+            overflow: hidden;
             border: 1px solid #eaeaea;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .magazine-spread.open {
@@ -194,34 +191,6 @@
             max-width: 300px;
             margin: 0 auto;
         }
-
-        /* Zona interactiva de arrastre en la esquina derecha */
-        .corner-peel {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 80px;
-            height: 80px;
-            cursor: grab;
-            z-index: 100;
-        }
-        .corner-peel:active {
-            cursor: grabbing;
-        }
-
-        /* Sombra y efecto de hoja doblada dinámica */
-        .curl-overlay {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to left, rgba(0,0,0,0.15), transparent);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 40;
-        }
     </style>
 </head>
 <body>
@@ -239,10 +208,8 @@
 
     <div class="main-container">
         <button class="side-arrow" onclick="prevSpread()">&#10094;</button>
-        <div class="magazine-spread" id="spreadContainer" onmousedown="startDrag(event)">
-            <!-- Renderizado dinámico con interacción de esquina -->
-            <div class="curl-overlay" id="curlOverlay"></div>
-            <div class="corner-peel" title="Arrastra para pasar página"></div>
+        <div class="magazine-spread" id="spreadContainer">
+            <!-- Renderizado dinámico limpio y estable -->
         </div>
         <button class="side-arrow" onclick="nextSpread()">&#10095;</button>
     </div>
@@ -318,8 +285,6 @@
         ];
 
         let currentIndex = 0;
-        let isDragging = false;
-        let startX = 0;
 
         function playPageSound() {
             try {
@@ -359,18 +324,15 @@
             const container = document.getElementById('spreadContainer');
             const data = spreads[currentIndex];
 
-            // Mantener overlay y esquina interactiva
-            const overlayHTML = `<div class="curl-overlay" id="curlOverlay"></div><div class="corner-peel"></div>`;
-
             if (data.type === 'cover') {
                 container.classList.remove('open');
-                container.innerHTML = data.html + overlayHTML;
+                container.innerHTML = data.html;
             } else {
                 container.classList.add('open');
                 container.innerHTML = `
                     <div class="page">${data.left}</div>
                     <div class="page">${data.right}</div>
-                ` + overlayHTML;
+                `;
             }
         }
 
@@ -389,35 +351,6 @@
                 playPageSound();
             }
         }
-
-        // Física de arrastre en la esquina (Swipe / Drag)
-        function startDrag(e) {
-            startX = e.clientX;
-            isDragging = true;
-            document.getElementById('curlOverlay').style.opacity = '1';
-        }
-
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const diff = startX - e.clientX;
-            if (diff > 50) {
-                isDragging = false;
-                document.getElementById('curlOverlay').style.opacity = '0';
-                nextSpread();
-            } else if (diff < -50) {
-                isDragging = false;
-                document.getElementById('curlOverlay').style.opacity = '0';
-                prevSpread();
-            }
-        });
-
-        window.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-                const overlay = document.getElementById('curlOverlay');
-                if (overlay) overlay.style.opacity = '0';
-            }
-        });
 
         window.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextSpread();

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo Revista Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Motor físico StPageFlip para arrastre real desde la esquina -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -85,7 +84,6 @@
             border-color: #fff;
         }
 
-        /* Visor principal del libro */
         .magazine-viewport {
             margin-top: 40px;
             display: flex;
@@ -93,7 +91,6 @@
             align-items: center;
         }
 
-        /* Páginas individuales de la revista */
         .page {
             background-color: #f9f6f0;
             background-image: linear-gradient(to right, #e8dfd2 0%, #f9f6f0 5%, #f9f6f0 95%, #e8dfd2 100%);
@@ -172,7 +169,7 @@
 
     <header class="top-nav">
         <div>
-            <!-- Logo blanco especificado -->
+            <!-- Logo blanco exacto -->
             <img src="logo/logo_kantal blanco.png" alt="Kantal Logo">
         </div>
 
@@ -299,7 +296,7 @@
                     maxShadowOpacity: 0.8,
                     showCover: true,
                     mobileScrollSupport: false,
-                    swipeDistance: 20,
+                    swipeDistance: 30,
                     clickEventForward: true,
                     useMouseEvents: true
                 }

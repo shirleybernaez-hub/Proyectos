@@ -84,11 +84,14 @@
             border-color: #fff;
         }
 
+        /* Visor horizontal centrado */
         .magazine-viewport {
             margin-top: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            border-radius: 6px;
         }
 
         .page {
@@ -169,13 +172,12 @@
 
     <header class="top-nav">
         <div>
-            <!-- Logo blanco exacto -->
             <img src="logo/logo_kantal blanco.png" alt="Kantal Logo">
         </div>
 
         <div class="nav-controls">
             <button class="nav-btn" onclick="turnPrev()">&#10094;</button>
-            <span id="pageIndicator">Página 1 / 6</span>
+            <span id="pageIndicator">Páginas 1-2 / 6</span>
             <button class="nav-btn" onclick="turnNext()">&#10095;</button>
         </div>
 
@@ -285,13 +287,13 @@
             const flipBook = new StPageFlip.PageFlip(
                 document.getElementById('magazine'),
                 {
-                    width: 420,
+                    width: 450,
                     height: 560,
-                    size: "fixed",
-                    minWidth: 300,
-                    maxWidth: 700,
+                    size: "stretch",
+                    minWidth: 315,
+                    maxWidth: 600,
                     minHeight: 400,
-                    maxHeight: 800,
+                    maxHeight: 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.8,
                     showCover: true,
@@ -306,7 +308,8 @@
             bookObj = flipBook;
 
             flipBook.on('flip', (e) => {
-                document.getElementById('pageIndicator').innerText = `Página ${e.data + 1} / ${flipBook.getPageCount()}`;
+                const current = e.data + 1;
+                document.getElementById('pageIndicator').innerText = `Página ${current} / ${flipBook.getPageCount()}`;
                 playPageSound();
             });
         });

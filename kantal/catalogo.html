@@ -84,16 +84,19 @@
             border-color: #fff;
         }
 
-        /* Contenedor estricto para forzar el tamaño horizontal abierto */
+        /* Contenedor horizontal estricto de doble página */
         .magazine-viewport {
             margin-top: 50px;
             width: 900px;
             height: 560px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             border-radius: 6px;
-            background: #f9f6f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* Estilo de cada página individual (450px ancho x 560px alto) */
         .page {
             width: 450px;
             height: 560px;
@@ -179,7 +182,7 @@
 
         <div class="nav-controls">
             <button class="nav-btn" onclick="turnPrev()">&#10094;</button>
-            <span id="pageIndicator">Páginas 1-2 / 6</span>
+            <span id="pageIndicator">Página 1 / 6</span>
             <button class="nav-btn" onclick="turnNext()">&#10095;</button>
         </div>
 
@@ -192,7 +195,7 @@
     <div class="magazine-viewport">
         <div id="magazine">
             <!-- Portada -->
-            <div class="page page-cover" data-density="hard">
+            <div class="page page-cover">
                 <div class="page-inner">
                     <img src="logo/logo_kantal blanco.png" style="width: 150px; margin-bottom: 15px;" alt="Logo">
                     <h1 style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px;">CATÁLOGO OFICIAL</h1>
@@ -247,7 +250,7 @@
             </div>
 
             <!-- Página 6 -->
-            <div class="page" data-density="hard">
+            <div class="page">
                 <div class="page-inner">
                     <span class="cat-tag">Línea Cosmética</span>
                     <h3 class="prod-title">Colonia Perros y Gatos</h3>

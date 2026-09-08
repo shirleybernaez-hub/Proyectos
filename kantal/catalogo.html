@@ -88,10 +88,10 @@
         .page {
             background-color: #ffffff;
             background-image: linear-gradient(to right, #f2f2f2 0%, #ffffff 5%, #ffffff 95%, #f2f2f2 100%);
-            padding: 35px 40px;
+            padding: 30px 40px;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Centra perfectamente el contenido verticalmente */
+            justify-content: center; /* Centra perfectamente el contenido verticalmente sin espacios vacíos */
             align-items: center;     /* Centra perfectamente el contenido horizontalmente */
             text-align: center;
             overflow: hidden;
@@ -115,15 +115,15 @@
         }
 
         .prod-image-container {
-            height: 250px;
+            height: 240px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 12px 0;
+            margin: 10px 0;
         }
 
         .prod-image {
-            max-height: 240px;
+            max-height: 230px;
             max-width: 100%;
             object-fit: contain;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.06));
@@ -226,20 +226,12 @@
                 </div>
             </div>
 
-            <!-- 1. Contraportada interior -->
-            <div class="page">
-                <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 100px; height: auto; opacity: 0.6;" alt="Kantal">
-                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 10px;">Tradicionalmente Sano</p>
-                </div>
-            </div>
-
-            <!-- 2. paginacatalogo.jpg -->
+            <!-- 1. paginacatalogo.jpg (Abre limpia al pasar la portada) -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
             </div>
 
-            <!-- 3. Súper Galleta de Carne -->
+            <!-- 2. Súper Galleta de Carne -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
@@ -249,7 +241,7 @@
                 <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
             </div>
 
-            <!-- 4. Súper Galleta Cachorros -->
+            <!-- 3. Súper Galleta Cachorros -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta Cachorros</h3>
@@ -259,7 +251,7 @@
                 <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
             </div>
 
-            <!-- 5. Súper Galleta de Queso -->
+            <!-- 4. Súper Galleta de Queso -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Queso</h3>
@@ -269,7 +261,7 @@
                 <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
             </div>
 
-            <!-- 6. Súper Galleta de Pollo -->
+            <!-- 5. Súper Galleta de Pollo -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Pollo</h3>
@@ -279,7 +271,7 @@
                 <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
             </div>
 
-            <!-- 7. Súper Galletas de Salmón -->
+            <!-- 6. Súper Galletas de Salmón -->
             <div class="page page-cover" data-density="hard">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>

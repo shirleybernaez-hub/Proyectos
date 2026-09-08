@@ -20,6 +20,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            user-select: none;
         }
 
         header {
@@ -94,6 +95,10 @@
             position: relative;
             overflow: hidden;
             border-radius: 4px;
+            cursor: grab;
+        }
+        .magazine-book:active {
+            cursor: grabbing;
         }
 
         .magazine-book::before {
@@ -116,7 +121,7 @@
             display: flex;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease-in-out;
+            transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
         .page-sheet.active {
@@ -134,7 +139,6 @@
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
-            user-select: none;
             position: relative;
         }
 
@@ -250,9 +254,9 @@
     </header>
 
     <div class="main-container">
-        <button class="side-arrow" onclick="prevSheet()">&#10094;</button>
+        <button class="side-arrow" onclick="nextSheet()">&#10094;</button>
         
-        <div class="magazine-book">
+        <div class="magazine-book" id="bookContainer">
             <!-- Hoja 0: Portada -->
             <div class="page-sheet active" id="sheet-0">
                 <div class="page-full">
@@ -393,6 +397,7 @@
                 if (sheet) {
                     if (i === currentSheet) {
                         sheet.classList.add('active');
+                        sheet.style.transform = 'translateX(0)';
                     } else {
                         sheet.classList.remove('active');
                     }
@@ -415,6 +420,74 @@
                 playPageSound();
             }
         }
+
+        // --- SISTEMA DE ARRASTRE MANUAL (DRAG / SWIPE) ---
+        const bookContainer = document.getElementById('bookContainer');
+        let startX = 0;
+        let isDragging = false;
+
+        bookContainer.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            isDragging = true;
+        });
+
+        bookContainer.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const currentX = e.clientX;
+            const diff = currentX - startX;
+            
+            const activeSheet = document.getElementById(`sheet-${currentSheet}`);
+            if (activeSheet && Math.abs(diff) < 200) {
+                activeSheet.style.transform = `translateX(${diff * 0.4}px)`;
+            }
+        });
+
+        bookContainer.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            const endX = e.clientX;
+            const diff = endX - startX;
+
+            if (diff < -50) {
+                nextSheet(); // Arrastró hacia la izquierda -> avanzar
+            } else if (diff > 50) {
+                prevSheet(); // Arrastró hacia la derecha -> retroceder
+            } else {
+                updateView(); // Si arrastró poco, regresa a su sitio
+            }
+        });
+
+        // Soporte táctil para celulares y tablets
+        bookContainer.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        }, { passive: true });
+
+        bookContainer.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const currentX = e.touches[0].clientX;
+            const diff = currentX - startX;
+            
+            const activeSheet = document.getElementById(`sheet-${currentSheet}`);
+            if (activeSheet && Math.abs(diff) < 200) {
+                activeSheet.style.transform = `translateX(${diff * 0.4}px)`;
+            }
+        }, { passive: true });
+
+        bookContainer.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            const endX = e.changedTouches[0].clientX;
+            const diff = endX - startX;
+
+            if (diff < -40) {
+                nextSheet();
+            } else if (diff > 40) {
+                prevSheet();
+            } else {
+                updateView();
+            }
+        });
 
         window.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextSheet();

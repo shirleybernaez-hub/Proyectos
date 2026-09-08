@@ -225,14 +225,14 @@
                 </div>
             </div>
 
-            <!-- 1. Contraportada interior blanca (Se oculta limpiamente debajo de la portada y evita que se vea el perro al hacer hover) -->
+            <!-- 1. Contraportada interior blanca -->
             <div class="page">
                 <div class="page-inner">
-                    <!-- Página totalmente limpia en blanco -->
+                    <!-- Página limpia en blanco -->
                 </div>
             </div>
 
-            <!-- 2. paginacatalogo.jpg (Aparece solo al pasar la portada) -->
+            <!-- 2. paginacatalogo.jpg -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
             </div>
@@ -353,6 +353,9 @@
                 });
 
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));
+
+                /* FUERZA EL INICIO ESTRICTO EN LA PORTADA CERRADA (PÁGINA 0) */
+                pageFlip.turnToPage(0);
 
                 pageFlip.on('flip', (e) => {
                     playPageSound();

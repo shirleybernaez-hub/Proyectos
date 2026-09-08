@@ -80,11 +80,10 @@
         .side-arrow:hover { background: #000; color: #fff; border-color: #000; transform: scale(1.05); }
         .side-arrow:active { transform: scale(0.95); }
 
-        /* Contenedor adaptado para permitir que StPageFlip gestione el ancho de portada (1 pág) y libro abierto (2 págs) */
+        /* Contenedor limpio para que StPageFlip maneje el canvas de forma fluida */
         #book-container {
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            background: transparent;
             margin: 0 auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
         }
 
         .page {
@@ -209,7 +208,7 @@
         <button class="side-arrow" onclick="prevPage()">&#10094;</button>
         
         <div id="book-container">
-            <!-- 1. Portada (Inicia centrada y sola como libro cerrado) -->
+            <!-- 0. Portada (Inicia centrada y sola como libro cerrado) -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
                     <img src="./logo/logokantal.png" style="width: 200px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
@@ -217,7 +216,7 @@
                 </div>
             </div>
 
-            <!-- 2. Página izquierda interior (se muestra al abrir el libro) -->
+            <!-- 1. Contraportada interior / Página izquierda de apertura -->
             <div class="page">
                 <div class="page-inner">
                     <img src="./logo/logokantal.png" style="width: 110px; height: auto; opacity: 0.6;" alt="Kantal">
@@ -225,12 +224,12 @@
                 </div>
             </div>
 
-            <!-- 3. Página derecha interior: paginacatalogo.jpg ajustada a todo el espacio -->
+            <!-- 2. Página derecha de apertura: paginacatalogo.jpg ajustada a todo el espacio -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Catálogo Kantal" onerror="this.onerror=null; this.src='../fichas/catalogo/paginacatalogo.jpg';">
             </div>
 
-            <!-- 4. Súper Galleta de Carne -->
+            <!-- 3. Súper Galleta de Carne -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
@@ -240,7 +239,7 @@
                 <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
             </div>
 
-            <!-- 5. Súper Galleta Cachorros -->
+            <!-- 4. Súper Galleta Cachorros -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta Cachorros</h3>
@@ -250,7 +249,7 @@
                 <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
             </div>
 
-            <!-- 6. Súper Galleta de Queso -->
+            <!-- 5. Súper Galleta de Queso -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Queso</h3>
@@ -260,7 +259,7 @@
                 <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
             </div>
 
-            <!-- 7. Súper Galleta de Pollo -->
+            <!-- 6. Súper Galleta de Pollo -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Pollo</h3>
@@ -270,8 +269,8 @@
                 <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
             </div>
 
-            <!-- 8. Súper Galletas de Salmón (Contraportada final) -->
-            <div class="page" data-density="hard">
+            <!-- 7. Súper Galletas de Salmón (Contraportada final dura) -->
+            <div class="page page-cover" data-density="hard">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
                 <div class="prod-image-container">
@@ -326,11 +325,13 @@
             const isMobile = window.innerWidth <= 768;
 
             try {
+                // Configuramos explícitamente el tamaño base de una página (width: 480, height: 600)
+                // St.PageFlip duplicará automáticamente el ancho a 960 al abrir el libro.
                 pageFlip = new St.PageFlip(container, {
                     width: isMobile ? 360 : 480,
                     height: isMobile ? 500 : 600,
                     size: "fixed",
-                    minWidth: 300,
+                    minWidth: 280,
                     maxWidth: 600,
                     minHeight: 400,
                     maxHeight: 700,

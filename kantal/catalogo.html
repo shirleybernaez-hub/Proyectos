@@ -217,7 +217,7 @@
         <button class="side-arrow" onclick="prevPage()">&#10094;</button>
         
         <div id="book-container">
-            <!-- 0. Portada (Exterior) -->
+            <!-- 0. Portada principal -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
                     <img src="./logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 20px;" alt="Logo Kantal">
@@ -225,15 +225,14 @@
                 </div>
             </div>
 
-            <!-- 1. Contraportada interior (Página izquierda al abrir el libro, evita que la librería duplique la portada) -->
+            <!-- 1. Contraportada interna en blanco (Página izquierda al abrir la portada) -->
             <div class="page">
                 <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 100px; height: auto; opacity: 0.5;" alt="Kantal">
-                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #777; margin-top: 10px;">Tradicionalmente Sano</p>
+                    <!-- Página interior limpia en blanco -->
                 </div>
             </div>
 
-            <!-- 2. paginacatalogo.jpg (Página derecha de presentación limpia) -->
+            <!-- 2. paginacatalogo.jpg (Página derecha al abrir la portada) -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
             </div>

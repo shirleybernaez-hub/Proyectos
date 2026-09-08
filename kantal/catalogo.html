@@ -136,6 +136,14 @@
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.06));
         }
 
+        /* Estilo para la imagen de presentación de la página interna */
+        .spread-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
         .cat-tag {
             font-size: 10px;
             font-weight: 800;
@@ -189,12 +197,9 @@
                 </div>
             </div>
 
-            <!-- 2. Contraportada interna -->
-            <div class="page">
-                <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 130px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
-                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin: 0;">Tradicionalmente Sano</p>
-                </div>
+            <!-- 2. Página posterior a la portada con paginacatalogo.jpg -->
+            <div class="page" style="padding: 0;">
+                <img src="../fichas/catalogo/paginacatalogo.jpg" class="spread-image" alt="Presentación Catálogo Kantal">
             </div>
 
             <!-- 3. Súper Galleta de Carne -->

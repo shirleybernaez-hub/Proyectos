@@ -225,16 +225,16 @@
                 </div>
             </div>
 
-            <!-- 1. paginacatalogo.jpg (Quedará correctamente alineada a la derecha al abrir) -->
-            <div class="page spread-container">
-                <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
-            </div>
-
-            <!-- 2. Contraportada interna en blanco (Quedará a la izquierda) -->
+            <!-- 1. Contraportada interior en blanco -->
             <div class="page">
                 <div class="page-inner">
-                    <!-- Página interior limpia en blanco -->
+                    <!-- Página limpia en blanco -->
                 </div>
+            </div>
+
+            <!-- 2. paginacatalogo.jpg (Imagen de presentación) -->
+            <div class="page spread-container">
+                <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
             </div>
 
             <!-- 3. Súper Galleta de Carne -->
@@ -344,7 +344,7 @@
                     maxHeight: 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
-                    showCover: true,
+                    showCover: false, /* Desactivado para que respete exactamente el orden de nuestras paginas en HTML */
                     usePortrait: isMobile ? true : false,
                     mobileScrollSupport: false,
                     useMouseEvents: true,

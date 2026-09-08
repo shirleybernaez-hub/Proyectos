@@ -129,22 +129,18 @@
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.06));
         }
 
-        .spread-container {
-            width: 100%;
-            height: 100%;
+        /* Estilo limpio para la imagen de presentacion sin romper el canvas */
+        .presentation-page {
             padding: 0 !important;
-            margin: 0 !important;
-            overflow: hidden;
-            display: block !important;
+            background: #ffffff !important;
         }
 
-        .spread-image {
+        .presentation-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center;
             display: block;
-            border: none;
         }
 
         .cat-tag {
@@ -232,9 +228,9 @@
                 </div>
             </div>
 
-            <!-- 2. paginacatalogo.jpg -->
-            <div class="page spread-container">
-                <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
+            <!-- 2. paginacatalogo.jpg convertida en pagina limpia sin interferir -->
+            <div class="page presentation-page">
+                <img src="./paginacatalogo.jpg" class="presentation-img" alt="Presentación Estática Kantal">
             </div>
 
             <!-- 3. Súper Galleta de Carne -->
@@ -354,7 +350,7 @@
 
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));
 
-                /* FUERZA EL INICIO ESTRICTO EN LA PORTADA CERRADA (PÁGINA 0) */
+                /* Forzar inicio estricto en la portada cerrada */
                 pageFlip.turnToPage(0);
 
                 pageFlip.on('flip', (e) => {

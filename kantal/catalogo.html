@@ -80,9 +80,8 @@
         .side-arrow:hover { background: #000; color: #fff; border-color: #000; transform: scale(1.05); }
         .side-arrow:active { transform: scale(0.95); }
 
+        /* Contenedor adaptado para permitir que StPageFlip gestione el ancho de portada (1 pág) y libro abierto (2 págs) */
         #book-container {
-            width: 960px;
-            height: 600px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.15);
             background: transparent;
             margin: 0 auto;
@@ -184,11 +183,6 @@
                 flex-direction: column;
                 gap: 15px;
                 padding-bottom: 40px;
-            }
-            #book-container {
-                width: 100% !important;
-                max-width: 380px !important;
-                height: 520px !important;
             }
             .side-arrow {
                 width: 45px;
@@ -335,8 +329,8 @@
                 pageFlip = new St.PageFlip(container, {
                     width: isMobile ? 360 : 480,
                     height: isMobile ? 500 : 600,
-                    size: isMobile ? "stretch" : "fixed",
-                    minWidth: 280,
+                    size: "fixed",
+                    minWidth: 300,
                     maxWidth: 600,
                     minHeight: 400,
                     maxHeight: 700,

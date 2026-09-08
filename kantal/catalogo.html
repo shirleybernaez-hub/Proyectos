@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo de productos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Librería oficial PageFlip con el namespace correcto St.PageFlip -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
         body {
@@ -20,8 +22,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            user-select: none;
-            perspective: 1500px; /* Perspectiva 3D para efecto de revista */
         }
 
         header {
@@ -86,76 +86,33 @@
         .side-arrow:hover { background: #000; color: #fff; border-color: #000; }
         .side-arrow:active { transform: scale(0.92); }
 
-        .magazine-book {
+        /* Contenedor exacto para el motor de StPageFlip */
+        #book-container {
             width: 960px;
-            height: 560px;
-            background: #ffffff;
+            height: 600px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.12);
             border: 1px solid #eaeaea;
-            display: flex;
-            position: relative;
-            overflow: hidden;
-            border-radius: 4px;
-            transform-style: preserve-3d;
-            cursor: grab;
-        }
-        .magazine-book:active {
-            cursor: grabbing;
+            background: #ffffff;
+            margin: 0 auto;
         }
 
-        .magazine-book::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 2px;
-            background: linear-gradient(to right, rgba(0,0,0,0.08), rgba(0,0,0,0.02));
-            z-index: 10;
-        }
-
-        .page-sheet {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            opacity: 0;
-            pointer-events: none;
-            transform-origin: left center;
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
-        }
-
-        .page-sheet.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
+        /* Estilo de cada página individual de la revista */
         .page {
-            width: 50%;
-            height: 100%;
             background-color: #ffffff;
             background-image: linear-gradient(to right, #f4f4f4 0%, #ffffff 4%, #ffffff 96%, #f4f4f4 100%);
-            padding: 40px;
+            padding: 45px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
-            position: relative;
+            user-select: none;
+            height: 100%;
+            width: 100%;
         }
 
-        .page-full {
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            text-align: center;
-            position: relative;
+        .page-cover {
+            background: #ffffff !important;
+            background-image: none !important;
         }
 
         .page-inner {
@@ -168,18 +125,18 @@
         }
 
         .prod-image-container {
-            height: 200px;
+            height: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .prod-image {
-            max-height: 200px;
+            max-height: 220px;
             max-width: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.05));
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.05));
         }
 
         .cat-tag {
@@ -193,10 +150,10 @@
 
         .prod-title {
             font-family: 'Inter', sans-serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             line-height: 1.1;
             letter-spacing: -0.02em;
         }
@@ -204,46 +161,9 @@
         .prod-desc {
             font-size: 11px;
             color: #555;
-            line-height: 1.4;
-            max-width: 280px;
+            line-height: 1.5;
+            max-width: 300px;
             margin: 0 auto;
-        }
-
-        .corner-curl-right {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 70px;
-            height: 70px;
-            cursor: pointer;
-            z-index: 99;
-            background: linear-gradient(135deg, transparent 40%, rgba(0,0,0,0.08) 50%, rgba(255,255,255,0.95) 70%, rgba(0,0,0,0.2) 100%);
-            transition: width 0.2s, height 0.2s;
-        }
-        .corner-curl-right:hover { width: 90px; height: 90px; }
-
-        .corner-curl-left {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 70px;
-            height: 70px;
-            cursor: pointer;
-            z-index: 99;
-            background: linear-gradient(225deg, transparent 40%, rgba(0,0,0,0.08) 50%, rgba(255,255,255,0.95) 70%, rgba(0,0,0,0.2) 100%);
-            transition: width 0.2s, height 0.2s;
-        }
-        .corner-curl-left:hover { width: 90px; height: 90px; }
-
-        .page-counter {
-            position: absolute;
-            bottom: 15px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 10px;
-            color: #888;
-            letter-spacing: 0.1em;
         }
     </style>
 </head>
@@ -261,108 +181,82 @@
     </header>
 
     <div class="main-container">
-        <button class="side-arrow" onclick="prevSheet()">&#10094;</button>
+        <button class="side-arrow" onclick="prevPage()">&#10094;</button>
         
-        <div class="magazine-book" id="bookContainer">
-            <!-- Hoja 0: Portada -->
-            <div class="page-sheet active" id="sheet-0">
-                <div class="page-full">
-                    <div class="page-inner">
-                        <img src="../logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
-                        <h1 style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
-                    </div>
-                    <div class="page-counter">Portada</div>
-                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar página"></div>
+        <!-- Contenedor del Libro interactivo real -->
+        <div id="book-container">
+            <!-- 1. Portada -->
+            <div class="page page-cover" data-density="hard">
+                <div class="page-inner">
+                    <img src="../logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
+                    <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 0; margin-bottom: 15px; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
                 </div>
             </div>
 
-            <!-- Hoja 1: Presentación y Carne -->
-            <div class="page-sheet" id="sheet-1">
-                <div class="page">
-                    <div class="page-inner">
-                        <img src="../logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
-                        <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin: 0;">Tradicionalmente Sano</p>
-                    </div>
-                    <div class="page-counter">Página 1</div>
-                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder página"></div>
-                </div>
-                <div class="page">
-                    <div>
-                        <span class="cat-tag">Línea Súper Galletas</span>
-                        <h3 class="prod-title">Súper Galleta de Carne</h3>
-                        <div class="prod-image-container">
-                            <img src="../fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
-                        </div>
-                        <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
-                    </div>
-                    <div class="page-counter">Página 2</div>
-                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar página"></div>
+            <!-- 2. Contraportada interna -->
+            <div class="page">
+                <div class="page-inner" style="background: #ffffff; color: #000; width: 100%; height: 100%;">
+                    <img src="../logo/logokantal.png" style="width: 120px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
+                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 8px;">Tradicionalmente Sano</p>
                 </div>
             </div>
 
-            <!-- Hoja 2: Cachorros y Queso -->
-            <div class="page-sheet" id="sheet-2">
-                <div class="page">
-                    <div>
-                        <span class="cat-tag">Línea Súper Galletas</span>
-                        <h3 class="prod-title">Súper Galleta Cachorros</h3>
-                        <div class="prod-image-container">
-                            <img src="../fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
-                        </div>
-                        <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
-                    </div>
-                    <div class="page-counter">Página 3</div>
-                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder página"></div>
+            <!-- 3. Súper Galleta de Carne -->
+            <div class="page">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta de Carne</h3>
+                <div class="prod-image-container">
+                    <img src="../fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
                 </div>
-                <div class="page">
-                    <div>
-                        <span class="cat-tag">Línea Súper Galletas</span>
-                        <h3 class="prod-title">Súper Galleta de Queso</h3>
-                        <div class="prod-image-container">
-                            <img src="../fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
-                        </div>
-                        <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
-                    </div>
-                    <div class="page-counter">Página 4</div>
-                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar página"></div>
-                </div>
+                <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
             </div>
 
-            <!-- Hoja 3: Pollo y Salmón -->
-            <div class="page-sheet" id="sheet-3">
-                <div class="page">
-                    <div>
-                        <span class="cat-tag">Línea Súper Galletas</span>
-                        <h3 class="prod-title">Súper Galleta de Pollo</h3>
-                        <div class="prod-image-container">
-                            <img src="../fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
-                        </div>
-                        <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
-                    </div>
-                    <div class="page-counter">Página 5</div>
-                    <div class="corner-curl-left" onclick="prevSheet()" title="Retroceder página"></div>
+            <!-- 4. Súper Galleta Cachorros -->
+            <div class="page">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta Cachorros</h3>
+                <div class="prod-image-container">
+                    <img src="../fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
                 </div>
-                <div class="page">
-                    <div>
-                        <span class="cat-tag">Línea Súper Galletas</span>
-                        <h3 class="prod-title">Súper Galletas de Salmón</h3>
-                        <div class="prod-image-container">
-                            <img src="../fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
-                        </div>
-                        <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
-                    </div>
-                    <div class="page-counter">Página 6</div>
-                    <div class="corner-curl-right" onclick="nextSheet()" title="Avanzar página"></div>
+                <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
+            </div>
+
+            <!-- 5. Súper Galleta de Queso -->
+            <div class="page">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta de Queso</h3>
+                <div class="prod-image-container">
+                    <img src="../fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
                 </div>
+                <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
+            </div>
+
+            <!-- 6. Súper Galleta de Pollo -->
+            <div class="page">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta de Pollo</h3>
+                <div class="prod-image-container">
+                    <img src="../fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
+                </div>
+                <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
+            </div>
+
+            <!-- 7. Súper Galletas de Salmón -->
+            <div class="page" data-density="hard">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galletas de Salmón</h3>
+                <div class="prod-image-container">
+                    <img src="../fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
+                </div>
+                <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
             </div>
         </div>
 
-        <button class="side-arrow" onclick="nextSheet()">&#10095;</button>
+        <button class="side-arrow" onclick="nextPage()">&#10095;</button>
     </div>
 
     <script>
-        let currentSheet = 0;
-        const totalSheets = 4;
+        let pageFlip;
 
         function playPageSound() {
             try {
@@ -370,12 +264,12 @@
                 const ctx = new AudioCtx();
                 if (ctx.state === 'suspended') ctx.resume();
 
-                const bufferSize = ctx.sampleRate * 0.1;
+                const bufferSize = ctx.sampleRate * 0.12;
                 const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
                 const data = buffer.getChannelData(0);
                 
                 for (let i = 0; i < bufferSize; i++) {
-                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.03));
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.04));
                 }
 
                 const noise = ctx.createBufferSource();
@@ -383,12 +277,12 @@
 
                 const filter = ctx.createBiquadFilter();
                 filter.type = 'bandpass';
-                filter.frequency.value = 1400;
-                filter.Q.value = 1.0;
+                filter.frequency.value = 1200;
+                filter.Q.value = 1.2;
 
                 const gain = ctx.createGain();
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.35, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
 
                 noise.connect(filter);
                 filter.connect(gain);
@@ -398,110 +292,48 @@
             } catch (e) {}
         }
 
-        function updateView() {
-            for (let i = 0; i < totalSheets; i++) {
-                const sheet = document.getElementById(`sheet-${i}`);
-                if (sheet) {
-                    if (i === currentSheet) {
-                        sheet.classList.add('active');
-                        sheet.style.transform = 'rotateY(0deg)';
-                        sheet.style.opacity = '1';
-                    } else {
-                        sheet.classList.remove('active');
-                        sheet.style.transform = 'none';
-                    }
-                }
+        // Inicialización oficial de StPageFlip con soporte nativo de arrastre de esquinas y mouse
+        window.addEventListener('load', () => {
+            const container = document.getElementById('book-container');
+
+            try {
+                pageFlip = new St.PageFlip(container, {
+                    width: 480,
+                    height: 600,
+                    size: "fixed",
+                    minWidth: 480,
+                    maxWidth: 480,
+                    minHeight: 600,
+                    maxHeight: 600,
+                    drawShadow: true,
+                    maxShadowOpacity: 0.5,
+                    showCover: true,
+                    mobileScrollSupport: false,
+                    useMouseEvents: true,
+                    clickEventForward: true
+                });
+
+                pageFlip.loadFromHTML(container.querySelectorAll('.page'));
+
+                pageFlip.on('flip', (e) => {
+                    playPageSound();
+                });
+            } catch (err) {
+                console.error("Error al inicializar PageFlip:", err);
             }
+        });
+
+        function nextPage() {
+            if (pageFlip) pageFlip.flipNext();
         }
 
-        function nextSheet() {
-            if (currentSheet < totalSheets - 1) {
-                currentSheet++;
-                updateView();
-                playPageSound();
-            }
+        function prevPage() {
+            if (pageFlip) pageFlip.flipPrev();
         }
-
-        function prevSheet() {
-            if (currentSheet > 0) {
-                currentSheet--;
-                updateView();
-                playPageSound();
-            }
-        }
-
-        // --- EFECTO DE ROTACIÓN 3D AL ARRASTRAR (VOLTEO DE PÁGINA) ---
-        const bookContainer = document.getElementById('bookContainer');
-        let startX = 0;
-        let isDragging = false;
-
-        bookContainer.addEventListener('mousedown', (e) => {
-            startX = e.clientX;
-            isDragging = true;
-        });
-
-        bookContainer.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const diff = e.clientX - startX;
-            const activeSheet = document.getElementById(`sheet-${currentSheet}`);
-            
-            if (activeSheet) {
-                // Rota la página en 3D sobre el lomo central imitando una revista real
-                let angle = (diff / 500) * -90;
-                if (angle > 0) angle = 0; // Solo gira hacia adelante al arrastrar a la izquierda
-                activeSheet.style.transform = `rotateY(${angle}deg)`;
-            }
-        });
-
-        bookContainer.addEventListener('mouseup', (e) => {
-            if (!isDragging) return;
-            isDragging = false;
-            const diff = e.clientX - startX;
-
-            if (diff < -70 && currentSheet < totalSheets - 1) {
-                nextSheet();
-            } else if (diff > 70 && currentSheet > 0) {
-                prevSheet();
-            } else {
-                updateView(); // Regresa la página a su posición si no se soltó con fuerza
-            }
-        });
-
-        // Soporte táctil en 3D para celulares y tablets
-        bookContainer.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            isDragging = true;
-        }, { passive: true });
-
-        bookContainer.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const diff = e.touches[0].clientX - startX;
-            const activeSheet = document.getElementById(`sheet-${currentSheet}`);
-            
-            if (activeSheet) {
-                let angle = (diff / 500) * -90;
-                if (angle > 0) angle = 0;
-                activeSheet.style.transform = `rotateY(${angle}deg)`;
-            }
-        }, { passive: true });
-
-        bookContainer.addEventListener('touchend', (e) => {
-            if (!isDragging) return;
-            isDragging = false;
-            const diff = e.changedTouches[0].clientX - startX;
-
-            if (diff < -50 && currentSheet < totalSheets - 1) {
-                nextSheet();
-            } else if (diff > 50 && currentSheet > 0) {
-                prevSheet();
-            } else {
-                updateView();
-            }
-        });
 
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextSheet();
-            if (e.key === 'ArrowLeft') prevSheet();
+            if (e.key === 'ArrowRight') nextPage();
+            if (e.key === 'ArrowLeft') prevPage();
         });
     </script>
 </body>

@@ -225,19 +225,27 @@
                 </div>
             </div>
 
-            <!-- 1. Contraportada interior limpia en blanco (Página izquierda al abrir) -->
+            <!-- 1. Contraportada interior limpia (Quedará a la izquierda al abrir) -->
             <div class="page">
                 <div class="page-inner">
-                    <!-- Página completamente en blanco -->
+                    <!-- Página izquierda en blanco -->
                 </div>
             </div>
 
-            <!-- 2. paginacatalogo.jpg (Página derecha de presentación limpia) -->
+            <!-- 2. Portada interior con Logo y Texto (Quedará a la derecha al abrir) -->
+            <div class="page">
+                <div class="page-inner">
+                    <img src="./logo/logokantal.png" style="width: 150px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
+                    <h2 style="font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h2>
+                </div>
+            </div>
+
+            <!-- 3. paginacatalogo.jpg (Imagen de presentación en la siguiente página) -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
             </div>
 
-            <!-- 3. Súper Galleta de Carne -->
+            <!-- 4. Súper Galleta de Carne -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
@@ -247,7 +255,7 @@
                 <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
             </div>
 
-            <!-- 4. Súper Galleta Cachorros -->
+            <!-- 5. Súper Galleta Cachorros -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta Cachorros</h3>
@@ -257,7 +265,7 @@
                 <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
             </div>
 
-            <!-- 5. Súper Galleta de Queso -->
+            <!-- 6. Súper Galleta de Queso -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Queso</h3>
@@ -267,7 +275,7 @@
                 <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
             </div>
 
-            <!-- 6. Súper Galleta de Pollo -->
+            <!-- 7. Súper Galleta de Pollo -->
             <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Pollo</h3>
@@ -277,7 +285,7 @@
                 <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
             </div>
 
-            <!-- 7. Súper Galletas de Salmón -->
+            <!-- 8. Súper Galletas de Salmón -->
             <div class="page page-cover" data-density="hard">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
@@ -344,7 +352,7 @@
                     maxHeight: 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
-                    showCover: false, /* Desactivado para evitar que la libreria meta la imagen de presentacion a la fuerza a la izquierda */
+                    showCover: false, /* Desactivado para controlar manualmente el orden exacto de las páginas */
                     usePortrait: isMobile ? true : false,
                     mobileScrollSupport: false,
                     useMouseEvents: true,

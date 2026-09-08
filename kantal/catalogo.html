@@ -49,10 +49,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 25px;
+            gap: 20px;
             width: 100%;
             max-width: 1100px;
-            padding: 0 15px;
+            padding: 0 10px;
         }
 
         /* Flechas redondas, perfectamente simétricas y optimizadas */
@@ -62,10 +62,10 @@
             color: #111;
             font-size: 22px;
             cursor: pointer;
-            width: 50px;
-            height: 50px;
-            min-width: 50px;
-            min-height: 50px;
+            width: 45px;
+            height: 45px;
+            min-width: 45px;
+            min-height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -88,7 +88,7 @@
         .page {
             background-color: #ffffff;
             background-image: linear-gradient(to right, #f2f2f2 0%, #ffffff 5%, #ffffff 95%, #f2f2f2 100%);
-            padding: 40px;
+            padding: 35px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -113,15 +113,15 @@
         }
 
         .prod-image-container {
-            height: 220px;
+            height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .prod-image {
-            max-height: 220px;
+            max-height: 200px;
             max-width: 100%;
             object-fit: contain;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.06));
@@ -146,52 +146,57 @@
         }
 
         .cat-tag {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.3em;
             color: #9E2300;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .prod-title {
             font-family: 'Inter', sans-serif;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             line-height: 1.1;
             letter-spacing: -0.02em;
         }
 
         .prod-desc {
-            font-size: 11px;
+            font-size: 10px;
             color: #555;
-            line-height: 1.5;
-            max-width: 300px;
+            line-height: 1.4;
+            max-width: 280px;
             margin: 0 auto;
         }
 
-        /* --- ADAPTACIÓN RESPONSIVE --- */
+        /* --- OPTIMIZACIÓN RESPONSIVE ESTRICTA PARA MÓVILES --- */
         @media (max-width: 768px) {
-            body { overflow: auto; height: auto; display: block; }
-            header { position: relative; }
+            body {
+                overflow: hidden; /* Evita scroll fantasma en el body móvil */
+                width: 100vw;
+                height: 100vh;
+            }
             .main-container {
-                margin-top: 90px;
-                flex-direction: column;
-                gap: 15px;
-                padding-bottom: 40px;
+                margin-top: 60px;
+                gap: 8px;
+                padding: 0 5px;
+                width: 100vw;
             }
             .side-arrow {
-                width: 45px;
-                height: 45px;
-                min-width: 45px;
-                min-height: 45px;
-                font-size: 20px;
+                width: 38px;
+                height: 38px;
+                min-width: 38px;
+                min-height: 38px;
+                font-size: 16px;
             }
-            .page { padding: 25px; }
-            .prod-image-container { height: 180px; }
-            .prod-image { max-height: 180px; }
+            .page { padding: 15px; }
+            .prod-image-container { height: 130px; }
+            .prod-image { max-height: 130px; }
+            .prod-title { font-size: 13px; }
+            .prod-desc { font-size: 9px; }
         }
     </style>
 </head>
@@ -207,23 +212,23 @@
         <button class="side-arrow" onclick="prevPage()">&#10094;</button>
         
         <div id="book-container">
-            <!-- 0. Portada (Inicia centrada y sola como libro cerrado) -->
+            <!-- 0. Portada -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 200px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
-                    <h1 style="font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
+                    <img src="./logo/logokantal.png" style="width: 160px; height: auto; margin-bottom: 20px;" alt="Logo Kantal">
+                    <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
                 </div>
             </div>
 
-            <!-- 1. Contraportada interior / Página izquierda de apertura -->
+            <!-- 1. Contraportada interior -->
             <div class="page">
                 <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 110px; height: auto; opacity: 0.6;" alt="Kantal">
-                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 10px;">Tradicionalmente Sano</p>
+                    <img src="./logo/logokantal.png" style="width: 90px; height: auto; opacity: 0.6;" alt="Kantal">
+                    <p style="font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 8px;">Tradicionalmente Sano</p>
                 </div>
             </div>
 
-            <!-- 2. Página derecha de apertura: paginacatalogo.jpg ajustada a todo el espacio -->
+            <!-- 2. paginacatalogo.jpg -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Catálogo Kantal" onerror="this.onerror=null; this.src='../fichas/catalogo/paginacatalogo.jpg';">
             </div>
@@ -268,7 +273,7 @@
                 <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
             </div>
 
-            <!-- 7. Súper Galletas de Salmón (Contraportada final dura) -->
+            <!-- 7. Súper Galletas de Salmón -->
             <div class="page page-cover" data-density="hard">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
@@ -323,23 +328,34 @@
             const container = document.getElementById('book-container');
             const isMobile = window.innerWidth <= 768;
 
+            // Calculamos dimensiones proporcionales exactas según la pantalla actual
+            let pWidth = 480;
+            let pHeight = 600;
+
+            if (isMobile) {
+                // En móvil ajustamos para que el libro abierto quepa perfectamente sin desbordar
+                const availableWidth = window.innerWidth - 90;
+                pWidth = Math.floor(availableWidth / 2);
+                pHeight = Math.floor(pWidth * 1.35); // Proporción ideal de revista
+            }
+
             try {
                 pageFlip = new St.PageFlip(container, {
-                    width: isMobile ? 360 : 480,
-                    height: isMobile ? 500 : 600,
-                    size: "fixed",
-                    minWidth: 300,
+                    width: pWidth,
+                    height: pHeight,
+                    size: isMobile ? "stretch" : "fixed",
+                    minWidth: 140,
                     maxWidth: 600,
-                    minHeight: 400,
+                    minHeight: 200,
                     maxHeight: 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
                     showCover: true,
-                    usePortrait: false, /* CORRECCIÓN CLAVE: Evita que la librería fuerce una sola página en desktop */
-                    mobileScrollSupport: true,
+                    usePortrait: false,
+                    mobileScrollSupport: false, /* Evita que la página arrastre el scroll vertical del celular por accidente */
                     useMouseEvents: true,
                     clickEventForward: true,
-                    flippingTime: 600
+                    flippingTime: 500
                 });
 
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));

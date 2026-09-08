@@ -80,7 +80,6 @@
         .side-arrow:hover { background: #000; color: #fff; border-color: #000; transform: scale(1.05); }
         .side-arrow:active { transform: scale(0.95); }
 
-        /* Contenedor limpio para que StPageFlip maneje el canvas de forma fluida */
         #book-container {
             margin: 0 auto;
             box-shadow: 0 25px 50px rgba(0,0,0,0.15);
@@ -325,19 +324,18 @@
             const isMobile = window.innerWidth <= 768;
 
             try {
-                // Configuramos explícitamente el tamaño base de una página (width: 480, height: 600)
-                // St.PageFlip duplicará automáticamente el ancho a 960 al abrir el libro.
                 pageFlip = new St.PageFlip(container, {
                     width: isMobile ? 360 : 480,
                     height: isMobile ? 500 : 600,
                     size: "fixed",
-                    minWidth: 280,
+                    minWidth: 300,
                     maxWidth: 600,
                     minHeight: 400,
                     maxHeight: 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
                     showCover: true,
+                    usePortrait: false, /* CORRECCIÓN CLAVE: Evita que la librería fuerce una sola página en desktop */
                     mobileScrollSupport: true,
                     useMouseEvents: true,
                     clickEventForward: true,

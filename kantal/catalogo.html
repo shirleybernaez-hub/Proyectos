@@ -226,7 +226,7 @@
                 </div>
             </div>
 
-            <!-- 1. paginacatalogo.jpg (Abre limpia al pasar la portada) -->
+            <!-- 1. paginacatalogo.jpg -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
             </div>
@@ -338,7 +338,7 @@
                     maxHeight: 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
-                    showCover: true,
+                    showCover: false, /* Desactivado para evitar que la librería auto-agrupe de forma errónea las páginas de presentacion */
                     usePortrait: isMobile ? true : false,
                     mobileScrollSupport: false,
                     useMouseEvents: true,

@@ -88,10 +88,12 @@
         .page {
             background-color: #ffffff;
             background-image: linear-gradient(to right, #f2f2f2 0%, #ffffff 5%, #ffffff 95%, #f2f2f2 100%);
-            padding: 40px;
+            padding: 35px 40px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center; /* Centra perfectamente el contenido verticalmente */
+            align-items: center;     /* Centra perfectamente el contenido horizontalmente */
+            text-align: center;
             overflow: hidden;
             user-select: none;
             height: 100%;
@@ -113,15 +115,15 @@
         }
 
         .prod-image-container {
-            height: 220px;
+            height: 250px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 15px;
+            margin: 12px 0;
         }
 
         .prod-image {
-            max-height: 220px;
+            max-height: 240px;
             max-width: 100%;
             object-fit: contain;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.06));
@@ -134,6 +136,7 @@
             padding: 0 !important;
             margin: 0 !important;
             overflow: hidden;
+            display: block !important;
         }
 
         .spread-image {

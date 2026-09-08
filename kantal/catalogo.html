@@ -217,7 +217,7 @@
         <button class="side-arrow" onclick="prevPage()">&#10094;</button>
         
         <div id="book-container">
-            <!-- 0. Portada principal -->
+            <!-- 0. Portada principal (Quedará a la derecha al cerrar/iniciar) -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
                     <img src="./logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 20px;" alt="Logo Kantal">
@@ -225,14 +225,14 @@
                 </div>
             </div>
 
-            <!-- 1. Contraportada interior en blanco -->
+            <!-- 1. Contraportada interior en blanco (Quedará a la izquierda al abrir la portada) -->
             <div class="page">
                 <div class="page-inner">
-                    <!-- Página limpia en blanco -->
+                    <!-- Página interior limpia en blanco -->
                 </div>
             </div>
 
-            <!-- 2. paginacatalogo.jpg (Imagen de presentación) -->
+            <!-- 2. paginacatalogo.jpg (Quedará a la derecha, en la siguiente página tras la contraportada interior) -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
             </div>
@@ -344,7 +344,7 @@
                     maxHeight: 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
-                    showCover: false, /* Desactivado para que respete exactamente el orden de nuestras paginas en HTML */
+                    showCover: true, /* Reactivado para que gestione correctamente la portada a la derecha y apertura de libro */
                     usePortrait: isMobile ? true : false,
                     mobileScrollSupport: false,
                     useMouseEvents: true,

@@ -172,7 +172,7 @@
             margin: 0 auto;
         }
 
-        /* --- ADAPTACIÓN ESTRICTA PARA LECTURA MÓVIL A PANTALLA COMPLETA --- */
+        /* --- ADAPTACIÓN ESTRICTA PARA MÓVILES --- */
         @media (max-width: 768px) {
             body {
                 overflow: hidden;
@@ -233,7 +233,7 @@
 
             <!-- 2. paginacatalogo.jpg -->
             <div class="page spread-container">
-                <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Catálogo Kantal" onerror="this.onerror=null; this.src='../fichas/catalogo/paginacatalogo.jpg';">
+                <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Catálogo Kantal">
             </div>
 
             <!-- 3. Súper Galleta de Carne -->
@@ -241,7 +241,7 @@
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
                 <div class="prod-image-container">
-                    <img src="../fichas/catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
+                    <img src="./catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
                 </div>
                 <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
             </div>
@@ -251,7 +251,7 @@
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta Cachorros</h3>
                 <div class="prod-image-container">
-                    <img src="../fichas/catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
+                    <img src="./catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
                 </div>
                 <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
             </div>
@@ -261,7 +261,7 @@
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Queso</h3>
                 <div class="prod-image-container">
-                    <img src="../fichas/catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
+                    <img src="./catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
                 </div>
                 <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
             </div>
@@ -271,7 +271,7 @@
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Pollo</h3>
                 <div class="prod-image-container">
-                    <img src="../fichas/catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
+                    <img src="./catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
                 </div>
                 <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
             </div>
@@ -281,7 +281,7 @@
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
                 <div class="prod-image-container">
-                    <img src="../fichas/catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
+                    <img src="./catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
                 </div>
                 <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
             </div>
@@ -333,7 +333,6 @@
 
             try {
                 pageFlip = new St.PageFlip(container, {
-                    // En desktop se mantiene intacto (480x600), en móvil se adapta a pantalla completa individual (340x520)
                     width: isMobile ? 340 : 480,
                     height: isMobile ? 520 : 600,
                     size: isMobile ? "stretch" : "fixed",
@@ -344,7 +343,7 @@
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
                     showCover: true,
-                    usePortrait: isMobile ? true : false, /* CLAVE: Activa el modo de una sola página como lector de libros solo en celular, manteniendo intacto el desktop */
+                    usePortrait: isMobile ? true : false,
                     mobileScrollSupport: false,
                     useMouseEvents: true,
                     clickEventForward: true,

@@ -225,22 +225,21 @@
                 </div>
             </div>
 
-            <!-- 1. Contraportada interior limpia (Quedará a la izquierda al abrir) -->
+            <!-- 1. Contraportada interior izquierda: SOLO EL LOGO -->
             <div class="page">
                 <div class="page-inner">
-                    <!-- Página izquierda en blanco -->
+                    <img src="./logo/logokantal.png" style="width: 130px; height: auto;" alt="Logo Kantal">
                 </div>
             </div>
 
-            <!-- 2. Portada interior con Logo y Texto (Quedará a la derecha al abrir) -->
+            <!-- 2. Página derecha: TEXTO CATÁLOGO DE PRODUCTOS -->
             <div class="page">
                 <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 150px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
-                    <h2 style="font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h2>
+                    <h2 style="font-size: 12px; letter-spacing: 0.35em; text-transform: uppercase; color: #444; margin: 0; font-weight: 700;">CATÁLOGO DE PRODUCTOS</h2>
                 </div>
             </div>
 
-            <!-- 3. paginacatalogo.jpg (Imagen de presentación en la siguiente página) -->
+            <!-- 3. paginacatalogo.jpg (Imagen de presentación) -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
             </div>
@@ -352,7 +351,7 @@
                     maxHeight: 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
-                    showCover: false, /* Desactivado para controlar manualmente el orden exacto de las páginas */
+                    showCover: false,
                     usePortrait: isMobile ? true : false,
                     mobileScrollSupport: false,
                     useMouseEvents: true,

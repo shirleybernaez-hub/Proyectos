@@ -121,7 +121,7 @@
             display: flex;
             opacity: 0;
             pointer-events: none;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.2s ease-out, opacity 0.2s ease;
         }
 
         .page-sheet.active {
@@ -210,23 +210,27 @@
             position: absolute;
             right: 0;
             bottom: 0;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             cursor: pointer;
             z-index: 99;
-            background: linear-gradient(135deg, transparent 45%, rgba(0,0,0,0.06) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.15) 100%);
+            background: linear-gradient(135deg, transparent 40%, rgba(0,0,0,0.08) 50%, rgba(255,255,255,0.95) 70%, rgba(0,0,0,0.2) 100%);
+            transition: width 0.2s, height 0.2s;
         }
+        .corner-curl-right:hover { width: 90px; height: 90px; }
 
         .corner-curl-left {
             position: absolute;
             left: 0;
             bottom: 0;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             cursor: pointer;
             z-index: 99;
-            background: linear-gradient(225deg, transparent 45%, rgba(0,0,0,0.06) 50%, rgba(255,255,255,0.9) 70%, rgba(0,0,0,0.15) 100%);
+            background: linear-gradient(225deg, transparent 40%, rgba(0,0,0,0.08) 50%, rgba(255,255,255,0.95) 70%, rgba(0,0,0,0.2) 100%);
+            transition: width 0.2s, height 0.2s;
         }
+        .corner-curl-left:hover { width: 90px; height: 90px; }
 
         .page-counter {
             position: absolute;
@@ -254,7 +258,7 @@
     </header>
 
     <div class="main-container">
-        <button class="side-arrow" onclick="nextSheet()">&#10094;</button>
+        <button class="side-arrow" onclick="prevSheet()">&#10094;</button>
         
         <div class="magazine-book" id="bookContainer">
             <!-- Hoja 0: Portada -->
@@ -397,9 +401,11 @@
                 if (sheet) {
                     if (i === currentSheet) {
                         sheet.classList.add('active');
-                        sheet.style.transform = 'translateX(0)';
+                        sheet.style.transform = 'translateX(0) rotateY(0)';
+                        sheet.style.opacity = '1';
                     } else {
                         sheet.classList.remove('active');
+                        sheet.style.transform = 'none';
                     }
                 }
             }
@@ -421,7 +427,7 @@
             }
         }
 
-        // --- SISTEMA DE ARRASTRE MANUAL (DRAG / SWIPE) ---
+        // --- SISTEMA DE ARRASTRE MANUAL FLUIDO EN TIEMPO REAL ---
         const bookContainer = document.getElementById('bookContainer');
         let startX = 0;
         let isDragging = false;
@@ -433,31 +439,31 @@
 
         bookContainer.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            const currentX = e.clientX;
-            const diff = currentX - startX;
-            
+            const diff = e.clientX - startX;
             const activeSheet = document.getElementById(`sheet-${currentSheet}`);
-            if (activeSheet && Math.abs(diff) < 200) {
-                activeSheet.style.transform = `translateX(${diff * 0.4}px)`;
+            
+            if (activeSheet) {
+                // Efecto de arrastre físico siguiendo el cursor
+                activeSheet.style.transform = `translateX(${diff}px)`;
+                activeSheet.style.opacity = `${Math.max(0.3, 1 - Math.abs(diff) / 500)}`;
             }
         });
 
         bookContainer.addEventListener('mouseup', (e) => {
             if (!isDragging) return;
             isDragging = false;
-            const endX = e.clientX;
-            const diff = endX - startX;
+            const diff = e.clientX - startX;
 
-            if (diff < -50) {
-                nextSheet(); // Arrastró hacia la izquierda -> avanzar
-            } else if (diff > 50) {
-                prevSheet(); // Arrastró hacia la derecha -> retroceder
+            if (diff < -80 && currentSheet < totalSheets - 1) {
+                nextSheet();
+            } else if (diff > 80 && currentSheet > 0) {
+                prevSheet();
             } else {
-                updateView(); // Si arrastró poco, regresa a su sitio
+                updateView(); // Regresa suavemente si no se arrastró lo suficiente
             }
         });
 
-        // Soporte táctil para celulares y tablets
+        // Soporte táctil fluido para móviles y tablets
         bookContainer.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             isDragging = true;
@@ -465,24 +471,23 @@
 
         bookContainer.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
-            const currentX = e.touches[0].clientX;
-            const diff = currentX - startX;
-            
+            const diff = e.touches[0].clientX - startX;
             const activeSheet = document.getElementById(`sheet-${currentSheet}`);
-            if (activeSheet && Math.abs(diff) < 200) {
-                activeSheet.style.transform = `translateX(${diff * 0.4}px)`;
+            
+            if (activeSheet) {
+                activeSheet.style.transform = `translateX(${diff}px)`;
+                activeSheet.style.opacity = `${Math.max(0.3, 1 - Math.abs(diff) / 500)}`;
             }
         }, { passive: true });
 
         bookContainer.addEventListener('touchend', (e) => {
             if (!isDragging) return;
             isDragging = false;
-            const endX = e.changedTouches[0].clientX;
-            const diff = endX - startX;
+            const diff = e.changedTouches[0].clientX - startX;
 
-            if (diff < -40) {
+            if (diff < -60 && currentSheet < totalSheets - 1) {
                 nextSheet();
-            } else if (diff > 40) {
+            } else if (diff > 60 && currentSheet > 0) {
                 prevSheet();
             } else {
                 updateView();

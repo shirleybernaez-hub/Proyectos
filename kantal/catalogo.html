@@ -49,10 +49,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             width: 100%;
             max-width: 1100px;
-            padding: 0 10px;
+            padding: 0 15px;
         }
 
         /* Flechas redondas, perfectamente simétricas y optimizadas */
@@ -62,10 +62,10 @@
             color: #111;
             font-size: 22px;
             cursor: pointer;
-            width: 45px;
-            height: 45px;
-            min-width: 45px;
-            min-height: 45px;
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            min-height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -88,7 +88,7 @@
         .page {
             background-color: #ffffff;
             background-image: linear-gradient(to right, #f2f2f2 0%, #ffffff 5%, #ffffff 95%, #f2f2f2 100%);
-            padding: 35px;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -113,15 +113,15 @@
         }
 
         .prod-image-container {
-            height: 200px;
+            height: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .prod-image {
-            max-height: 200px;
+            max-height: 220px;
             max-width: 100%;
             object-fit: contain;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.06));
@@ -146,57 +146,60 @@
         }
 
         .cat-tag {
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.3em;
             color: #9E2300;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
         .prod-title {
             font-family: 'Inter', sans-serif;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             line-height: 1.1;
             letter-spacing: -0.02em;
         }
 
         .prod-desc {
-            font-size: 10px;
+            font-size: 11px;
             color: #555;
-            line-height: 1.4;
-            max-width: 280px;
+            line-height: 1.5;
+            max-width: 300px;
             margin: 0 auto;
         }
 
-        /* --- OPTIMIZACIÓN RESPONSIVE ESTRICTA PARA MÓVILES --- */
+        /* --- ADAPTACIÓN ESTRICTA PARA LECTURA MÓVIL A PANTALLA COMPLETA --- */
         @media (max-width: 768px) {
             body {
-                overflow: hidden; /* Evita scroll fantasma en el body móvil */
+                overflow: hidden;
                 width: 100vw;
                 height: 100vh;
+                background-color: #ffffff;
             }
+            header { position: relative; height: 60px; padding: 0 15px; }
+            header img { width: 90px; }
             .main-container {
-                margin-top: 60px;
-                gap: 8px;
+                margin-top: 10px;
+                gap: 10px;
                 padding: 0 5px;
                 width: 100vw;
             }
             .side-arrow {
-                width: 38px;
-                height: 38px;
-                min-width: 38px;
-                min-height: 38px;
-                font-size: 16px;
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+                min-height: 40px;
+                font-size: 18px;
             }
-            .page { padding: 15px; }
-            .prod-image-container { height: 130px; }
-            .prod-image { max-height: 130px; }
-            .prod-title { font-size: 13px; }
-            .prod-desc { font-size: 9px; }
+            .page { padding: 20px; }
+            .prod-image-container { height: 180px; }
+            .prod-image { max-height: 180px; }
+            .prod-title { font-size: 15px; }
+            .prod-desc { font-size: 10px; }
         }
     </style>
 </head>
@@ -215,16 +218,16 @@
             <!-- 0. Portada -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 160px; height: auto; margin-bottom: 20px;" alt="Logo Kantal">
-                    <h1 style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
+                    <img src="./logo/logokantal.png" style="width: 180px; height: auto; margin-bottom: 20px;" alt="Logo Kantal">
+                    <h1 style="font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
                 </div>
             </div>
 
             <!-- 1. Contraportada interior -->
             <div class="page">
                 <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 90px; height: auto; opacity: 0.6;" alt="Kantal">
-                    <p style="font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 8px;">Tradicionalmente Sano</p>
+                    <img src="./logo/logokantal.png" style="width: 100px; height: auto; opacity: 0.6;" alt="Kantal">
+                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 10px;">Tradicionalmente Sano</p>
                 </div>
             </div>
 
@@ -328,34 +331,24 @@
             const container = document.getElementById('book-container');
             const isMobile = window.innerWidth <= 768;
 
-            // Calculamos dimensiones proporcionales exactas según la pantalla actual
-            let pWidth = 480;
-            let pHeight = 600;
-
-            if (isMobile) {
-                // En móvil ajustamos para que el libro abierto quepa perfectamente sin desbordar
-                const availableWidth = window.innerWidth - 90;
-                pWidth = Math.floor(availableWidth / 2);
-                pHeight = Math.floor(pWidth * 1.35); // Proporción ideal de revista
-            }
-
             try {
                 pageFlip = new St.PageFlip(container, {
-                    width: pWidth,
-                    height: pHeight,
+                    // En desktop se mantiene intacto (480x600), en móvil se adapta a pantalla completa individual (340x520)
+                    width: isMobile ? 340 : 480,
+                    height: isMobile ? 520 : 600,
                     size: isMobile ? "stretch" : "fixed",
-                    minWidth: 140,
+                    minWidth: 280,
                     maxWidth: 600,
-                    minHeight: 200,
+                    minHeight: 400,
                     maxHeight: 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
                     showCover: true,
-                    usePortrait: false,
-                    mobileScrollSupport: false, /* Evita que la página arrastre el scroll vertical del celular por accidente */
+                    usePortrait: isMobile ? true : false, /* CLAVE: Activa el modo de una sola página como lector de libros solo en celular, manteniendo intacto el desktop */
+                    mobileScrollSupport: false,
                     useMouseEvents: true,
                     clickEventForward: true,
-                    flippingTime: 500
+                    flippingTime: 600
                 });
 
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));

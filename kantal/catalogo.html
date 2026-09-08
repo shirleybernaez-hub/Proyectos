@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KANTAL | Catálogo de productos</title>
-    <!-- Librería oficial PageFlip -->
+    <!-- Librería oficial PageFlip versión estable -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -235,7 +235,7 @@
         <button class="side-arrow" onclick="prevPage()">&#10094;</button>
         
         <div id="book-container">
-            <!-- 1. Portada (Aparece centrada y sola como libro cerrado) -->
+            <!-- 1. Portada (Inicia centrada y sola como libro cerrado) -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
                     <img src="./logo/logokantal.png" style="width: 200px; height: auto; margin-bottom: 25px;" alt="Logo Kantal">
@@ -243,14 +243,15 @@
                 </div>
             </div>
 
-            <!-- 2. Página interna izquierda (Contraportada interior en blanco o con toque elegante) -->
+            <!-- 2. Página izquierda interior (se muestra al abrir el libro) -->
             <div class="page">
                 <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 100px; height: auto; opacity: 0.5;" alt="Kantal">
+                    <img src="./logo/logokantal.png" style="width: 110px; height: auto; opacity: 0.6;" alt="Kantal">
+                    <p style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #666; margin-top: 10px;">Tradicionalmente Sano</p>
                 </div>
             </div>
 
-            <!-- 3. Página interna derecha: paginacatalogo.jpg ajustada a todo el espacio -->
+            <!-- 3. Página derecha interior: paginacatalogo.jpg ajustada a todo el espacio -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Catálogo Kantal" onerror="this.onerror=null; this.src='../fichas/catalogo/paginacatalogo.jpg';">
             </div>

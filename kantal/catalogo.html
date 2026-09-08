@@ -64,7 +64,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             width: 100%;
             max-width: 1100px;
             padding: 0 15px;
@@ -145,7 +145,7 @@
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.06));
         }
 
-        /* Imagen de presentación ajustada a todo el espacio sin bordes blancos */
+        /* Imagen de presentación ajustada sin bordes blancos */
         .spread-container {
             width: 100%;
             height: 100%;
@@ -190,36 +190,31 @@
             margin: 0 auto;
         }
 
-        /* --- OPTIMIZACIÓN RESPONSIVE PARA MÓVILES Y TABLETS --- */
-        @media (max-width: 1024px) {
-            #book-container {
-                width: 100% !important;
-                max-width: 700px;
-                height: 450px !important;
-            }
-            .page { padding: 25px; }
-            .prod-image-container { height: 150px; }
-            .prod-image { max-height: 150px; }
-            .prod-title { font-size: 15px; }
-            .prod-desc { font-size: 10px; }
-        }
-
+        /* --- ADAPTACIÓN ESPECIAL PARA MÓVILES (VISTA VERTICAL FLUIDA) --- */
         @media (max-width: 768px) {
-            .main-container { gap: 10px; padding: 0 5px; }
+            body { overflow: auto; height: auto; display: block; }
+            header { position: relative; }
+            .main-container {
+                margin-top: 90px;
+                flex-direction: column;
+                gap: 15px;
+                padding-bottom: 40px;
+            }
             #book-container {
                 width: 100% !important;
-                height: 380px !important;
+                max-width: 380px !important;
+                height: 520px !important;
             }
             .side-arrow {
-                width: 40px;
-                height: 40px;
-                min-width: 40px;
-                min-height: 40px;
-                font-size: 18px;
+                width: 45px;
+                height: 45px;
+                min-width: 45px;
+                min-height: 45px;
+                font-size: 20px;
             }
-            .page { padding: 15px; }
-            .prod-image-container { height: 120px; }
-            .prod-image { max-height: 120px; }
+            .page { padding: 25px; }
+            .prod-image-container { height: 180px; }
+            .prod-image { max-height: 180px; }
         }
     </style>
 </head>
@@ -248,7 +243,7 @@
                 </div>
             </div>
 
-            <!-- 2. Página posterior a la portada con paginacatalogo.jpg sin bordes blancos -->
+            <!-- 2. Página posterior a la portada con paginacatalogo.jpg actualizado -->
             <div class="page spread-container">
                 <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Catálogo Kantal" onerror="this.onerror=null; this.src='../fichas/catalogo/paginacatalogo.jpg';">
             </div>
@@ -347,36 +342,25 @@
         window.addEventListener('load', () => {
             const container = document.getElementById('book-container');
 
-            // Ajuste dinámico de dimensiones según la pantalla para optimizar en móviles y tablets
+            // Detectar si es dispositivo móvil para configurar visualización de una sola página en vertical
             const isMobile = window.innerWidth <= 768;
-            const isTablet = window.innerWidth > 768 && window.innerWidth <= 1024;
-            
-            let bookWidth = 480;
-            let bookHeight = 600;
-
-            if (isMobile) {
-                bookWidth = Math.floor((window.innerWidth - 60) / 2);
-                bookHeight = 380;
-            } else if (isTablet) {
-                bookWidth = 340;
-                bookHeight = 450;
-            }
 
             try {
                 pageFlip = new St.PageFlip(container, {
-                    width: bookWidth,
-                    height: bookHeight,
-                    size: "fixed",
+                    width: isMobile ? 360 : 480,
+                    height: isMobile ? 500 : 600,
+                    size: isMobile ? "stretch" : "fixed",
                     minWidth: 280,
                     maxWidth: 600,
-                    minHeight: 350,
+                    minHeight: 400,
                     maxHeight: 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
                     showCover: true,
                     mobileScrollSupport: true,
                     useMouseEvents: true,
-                    clickEventForward: true
+                    clickEventForward: true,
+                    flippingTime: 600
                 });
 
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));

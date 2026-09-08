@@ -91,8 +91,8 @@
             padding: 35px 40px;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Centra perfectamente el contenido verticalmente sin espacios vacíos */
-            align-items: center;     /* Centra perfectamente el contenido horizontalmente */
+            justify-content: center;
+            align-items: center;
             text-align: center;
             overflow: hidden;
             user-select: none;
@@ -225,16 +225,16 @@
                 </div>
             </div>
 
-            <!-- 1. Contraportada interna en blanco (Página izquierda al abrir la portada) -->
+            <!-- 1. paginacatalogo.jpg (Quedará correctamente alineada a la derecha al abrir) -->
+            <div class="page spread-container">
+                <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
+            </div>
+
+            <!-- 2. Contraportada interna en blanco (Quedará a la izquierda) -->
             <div class="page">
                 <div class="page-inner">
                     <!-- Página interior limpia en blanco -->
                 </div>
-            </div>
-
-            <!-- 2. paginacatalogo.jpg (Página derecha al abrir la portada) -->
-            <div class="page spread-container">
-                <img src="./paginacatalogo.jpg" class="spread-image" alt="Presentación Estática Kantal">
             </div>
 
             <!-- 3. Súper Galleta de Carne -->

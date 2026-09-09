@@ -169,7 +169,7 @@
             margin: 0 auto;
         }
 
-        /* --- ADAPTACIÓN ESTRICTA Y AMPLIADA PARA MÓVILES (CASI PANTALLA COMPLETA) --- */
+        /* --- ADAPTACIÓN ESTRICTA Y TÁCTIL PARA MÓVILES --- */
         @media (max-width: 768px) {
             body {
                 overflow: hidden;
@@ -180,36 +180,39 @@
             }
             header { 
                 position: relative; 
-                height: 50px; 
-                padding: 0 10px; 
+                height: 55px; 
+                padding: 0 15px; 
             }
             header img { 
-                width: 80px; 
+                width: 90px; 
             }
             .main-container {
                 margin-top: 0;
-                gap: 5px;
+                gap: 0;
                 padding: 0;
                 width: 100vw;
-                height: calc(100vh - 50px);
+                height: calc(100vh - 55px);
+                position: relative;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
+            /* Botones flotantes minimalistas en la parte inferior para móvil */
             .side-arrow {
-                width: 35px;
-                height: 35px;
-                min-width: 35px;
-                min-height: 35px;
-                font-size: 16px;
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+                min-height: 40px;
+                font-size: 18px;
                 position: absolute;
-                bottom: 15px;
+                bottom: 20px;
                 z-index: 100;
-                background: rgba(255, 255, 255, 0.9);
+                background: #ffffff;
+                border: 1px solid #dcdcdc;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             }
-            /* Posicionamiento flotante discreto para los botones en móvil para ganar tamaño máximo */
-            .side-arrow:nth-of-type(1) { left: 15px; }
-            .side-arrow:nth-of-type(2) { right: 15px; }
+            .side-arrow:nth-of-type(1) { left: 20px; }
+            .side-arrow:nth-of-type(2) { right: 20px; }
 
             #book-container {
                 width: 100% !important;
@@ -217,19 +220,19 @@
                 box-shadow: none;
             }
             .page { 
-                padding: 15px; 
+                padding: 20px; 
             }
             .prod-image-container { 
-                height: 200px; 
+                height: 220px; 
             }
             .prod-image { 
-                max-height: 190px; 
+                max-height: 210px; 
             }
             .prod-title { 
-                font-size: 14px; 
+                font-size: 16px; 
             }
             .prod-desc { 
-                font-size: 10px; 
+                font-size: 11px; 
             }
         }
     </style>
@@ -249,7 +252,7 @@
             <!-- 0. Portada principal -->
             <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 150px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
+                    <img src="./logo/logokantal.png" style="width: 160px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
                     <h1 style="font-size: 8px; letter-spacing: 0.35em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
                 </div>
             </div>
@@ -365,20 +368,20 @@
             try {
                 pageFlip = new St.PageFlip(container, {
                     width: isMobile ? window.innerWidth : 480,
-                    height: isMobile ? window.innerHeight - 60 : 600,
-                    size: "stretch",
+                    height: isMobile ? window.innerHeight - 55 : 600,
+                    size: isMobile ? "stretch" : "fixed",
                     minWidth: 280,
-                    maxWidth: 1000,
+                    maxWidth: isMobile ? window.innerWidth : 600,
                     minHeight: 400,
-                    maxHeight: 1200,
+                    maxHeight: isMobile ? window.innerHeight - 55 : 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.5,
                     showCover: true,
-                    usePortrait: isMobile ? true : false,
-                    mobileScrollSupport: false,
+                    usePortrait: isMobile ? true : false, /* CLAVE: Fuerza una sola pagina en movil para gestos fluidos */
+                    mobileScrollSupport: true,          /* CLAVE: Habilita el desplazamiento y toque tactil natural */
                     useMouseEvents: true,
                     clickEventForward: true,
-                    flippingTime: 600
+                    flippingTime: 400                    /* Animacion mas agil y fluida para el toque */
                 });
 
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));

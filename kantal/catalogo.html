@@ -169,70 +169,70 @@
             margin: 0 auto;
         }
 
-        /* --- ADAPTACIÓN ESTRICTA Y TÁCTIL PARA MÓVILES --- */
+        /* --- ADAPTACIÓN MÓVIL OPTIMIZADA CON MARGEN PARA FÁCIL ARRASTRE --- */
         @media (max-width: 768px) {
             body {
                 overflow: hidden;
                 width: 100vw;
                 height: 100vh;
-                background-color: #ffffff;
+                background-color: #f4f5f7;
                 justify-content: flex-start;
             }
             header { 
                 position: relative; 
-                height: 55px; 
+                height: 50px; 
                 padding: 0 15px; 
             }
             header img { 
-                width: 90px; 
+                width: 85px; 
             }
             .main-container {
                 margin-top: 0;
                 gap: 0;
-                padding: 0;
+                padding: 0 10px; /* Margen a los lados para que las esquinas sean fáciles de tomar con el dedo */
                 width: 100vw;
-                height: calc(100vh - 55px);
+                height: calc(100vh - 50px);
                 position: relative;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
-            /* Botones flotantes minimalistas en la parte inferior para móvil */
+            /* Botones flotantes minimalistas */
             .side-arrow {
-                width: 40px;
-                height: 40px;
-                min-width: 40px;
-                min-height: 40px;
-                font-size: 18px;
+                width: 38px;
+                height: 38px;
+                min-width: 38px;
+                min-height: 38px;
+                font-size: 16px;
                 position: absolute;
-                bottom: 20px;
+                bottom: 15px;
                 z-index: 100;
                 background: #ffffff;
                 border: 1px solid #dcdcdc;
                 box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             }
-            .side-arrow:nth-of-type(1) { left: 20px; }
-            .side-arrow:nth-of-type(2) { right: 20px; }
+            .side-arrow:nth-of-type(1) { left: 15px; }
+            .side-arrow:nth-of-type(2) { right: 15px; }
 
             #book-container {
                 width: 100% !important;
-                height: 100% !important;
-                box-shadow: none;
+                height: 88% !important; /* Ligeramente más pequeño para ver los bordes y arrastrar sin trabarse */
+                box-shadow: 0 10px 30px rgba(0,0,0,0.12);
             }
             .page { 
-                padding: 20px; 
+                padding: 15px; 
             }
             .prod-image-container { 
-                height: 220px; 
+                height: 190px; 
             }
             .prod-image { 
-                max-height: 210px; 
+                max-height: 180px; 
             }
             .prod-title { 
-                font-size: 16px; 
+                font-size: 15px; 
             }
             .prod-desc { 
-                font-size: 11px; 
+                font-size: 10px; 
             }
         }
     </style>
@@ -250,27 +250,27 @@
         
         <div id="book-container">
             <!-- 0. Portada principal -->
-            <div class="page page-cover" data-density="hard">
+            <div class="page page-cover" data-density="soft">
                 <div class="page-inner">
-                    <img src="./logo/logokantal.png" style="width: 160px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
+                    <img src="./logo/logokantal.png" style="width: 150px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
                     <h1 style="font-size: 8px; letter-spacing: 0.35em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
                 </div>
             </div>
 
             <!-- 1. Contraportada interior blanca -->
-            <div class="page">
+            <div class="page" data-density="soft">
                 <div class="page-inner">
                     <!-- Página limpia en blanco -->
                 </div>
             </div>
 
             <!-- 2. paginacatalogo.jpg -->
-            <div class="page presentation-page">
+            <div class="page presentation-page" data-density="soft">
                 <img src="./paginacatalogo.jpg" class="presentation-img" alt="Presentación Estática Kantal">
             </div>
 
             <!-- 3. Súper Galleta de Carne -->
-            <div class="page">
+            <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
                 <div class="prod-image-container">
@@ -280,7 +280,7 @@
             </div>
 
             <!-- 4. Súper Galleta Cachorros -->
-            <div class="page">
+            <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta Cachorros</h3>
                 <div class="prod-image-container">
@@ -290,7 +290,7 @@
             </div>
 
             <!-- 5. Súper Galleta de Queso -->
-            <div class="page">
+            <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Queso</h3>
                 <div class="prod-image-container">
@@ -300,7 +300,7 @@
             </div>
 
             <!-- 6. Súper Galleta de Pollo -->
-            <div class="page">
+            <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Pollo</h3>
                 <div class="prod-image-container">
@@ -310,7 +310,7 @@
             </div>
 
             <!-- 7. Súper Galletas de Salmón -->
-            <div class="page page-cover" data-density="hard">
+            <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
                 <div class="prod-image-container">
@@ -367,21 +367,21 @@
 
             try {
                 pageFlip = new St.PageFlip(container, {
-                    width: isMobile ? window.innerWidth : 480,
-                    height: isMobile ? window.innerHeight - 55 : 600,
+                    width: isMobile ? window.innerWidth - 30 : 480,
+                    height: isMobile ? window.innerHeight - 120 : 600,
                     size: isMobile ? "stretch" : "fixed",
-                    minWidth: 280,
+                    minWidth: 250,
                     maxWidth: isMobile ? window.innerWidth : 600,
-                    minHeight: 400,
-                    maxHeight: isMobile ? window.innerHeight - 55 : 700,
+                    minHeight: 350,
+                    maxHeight: isMobile ? window.innerHeight - 100 : 700,
                     drawShadow: true,
-                    maxShadowOpacity: 0.5,
-                    showCover: true,
-                    usePortrait: isMobile ? true : false, /* CLAVE: Fuerza una sola pagina en movil para gestos fluidos */
-                    mobileScrollSupport: true,          /* CLAVE: Habilita el desplazamiento y toque tactil natural */
+                    maxShadowOpacity: 0.4,
+                    showCover: false,                   /* Desactivado showCover para que todas las paginas se arrastren libremente por igual */
+                    usePortrait: isMobile ? true : false,
+                    mobileScrollSupport: false,         /* Desactivado para que el toque en esquinas active el arrastre de hoja sin bloquearse con el scroll de la pagina */
                     useMouseEvents: true,
                     clickEventForward: true,
-                    flippingTime: 400                    /* Animacion mas agil y fluida para el toque */
+                    flippingTime: 350                   /* Respuesta ultrarrápida al toque */
                 });
 
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));
@@ -392,7 +392,7 @@
                     playPageSound();
                 });
             } catch (err) {
-                console.error("Error al inicializar PageFlip:", err);
+                console.error("Error al initialise PageFlip:", err);
             }
         });
 

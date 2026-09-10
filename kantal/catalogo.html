@@ -129,16 +129,17 @@
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.06));
         }
 
-        /* Corrección para que las páginas de presentación muestren la imagen completa sin cortes raros */
+        /* Ajuste perfecto para las páginas de presentación de imágenes */
         .presentation-page {
             padding: 0 !important;
             background: #ffffff !important;
+            background-image: none !important;
         }
 
         .presentation-img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Cambiado a contain para que la imagen no se deforme ni se corte */
+            object-fit: fill;
             object-position: center;
             display: block;
         }
@@ -264,14 +265,14 @@
                 </div>
             </div>
 
-            <!-- 2. paginacatalogo.jpg -->
+            <!-- 2. paginacatalogo.jpg (Página izquierda) -->
             <div class="page presentation-page">
-                <img src="./paginacatalogo.jpg" class="presentation-img" alt="Presentación Estática Kantal">
+                <img src="./paginacatalogo.jpg" class="presentation-img" alt="Presentación Izquierda Kantal">
             </div>
 
-            <!-- 3. paginacatalogo2.jpg -->
+            <!-- 3. paginacatalogo2.jpg (Página derecha) -->
             <div class="page presentation-page">
-                <img src="./paginacatalogo2.jpg" class="presentation-img" alt="Presentación Estática 2 Kantal">
+                <img src="./paginacatalogo2.jpg" class="presentation-img" alt="Presentación Derecha Kantal">
             </div>
 
             <!-- 4. Súper Galleta de Carne -->

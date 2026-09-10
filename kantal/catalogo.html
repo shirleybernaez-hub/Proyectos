@@ -189,7 +189,7 @@
             .main-container {
                 margin-top: 0;
                 gap: 0;
-                padding: 0 10px; /* Margen a los lados para que las esquinas sean fáciles de tomar con el dedo */
+                padding: 0 10px;
                 width: 100vw;
                 height: calc(100vh - 50px);
                 position: relative;
@@ -197,7 +197,6 @@
                 align-items: center;
                 justify-content: center;
             }
-            /* Botones flotantes minimalistas */
             .side-arrow {
                 width: 38px;
                 height: 38px;
@@ -216,7 +215,7 @@
 
             #book-container {
                 width: 100% !important;
-                height: 88% !important; /* Ligeramente más pequeño para ver los bordes y arrastrar sin trabarse */
+                height: 88% !important;
                 box-shadow: 0 10px 30px rgba(0,0,0,0.12);
             }
             .page { 
@@ -269,7 +268,12 @@
                 <img src="./paginacatalogo.jpg" class="presentation-img" alt="Presentación Estática Kantal">
             </div>
 
-            <!-- 3. Súper Galleta de Carne -->
+            <!-- 3. paginacatalogo2.jpg (Insertada justo después de paginacatalogo.jpg) -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./paginacatalogo2.jpg" class="presentation-img" alt="Presentación Estática 2 Kantal">
+            </div>
+
+            <!-- 4. Súper Galleta de Carne -->
             <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
@@ -279,7 +283,7 @@
                 <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
             </div>
 
-            <!-- 4. Súper Galleta Cachorros -->
+            <!-- 5. Súper Galleta Cachorros -->
             <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta Cachorros</h3>
@@ -289,7 +293,7 @@
                 <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
             </div>
 
-            <!-- 5. Súper Galleta de Queso -->
+            <!-- 6. Súper Galleta de Queso -->
             <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Queso</h3>
@@ -299,7 +303,7 @@
                 <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
             </div>
 
-            <!-- 6. Súper Galleta de Pollo -->
+            <!-- 7. Súper Galleta de Pollo -->
             <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Pollo</h3>
@@ -309,7 +313,7 @@
                 <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
             </div>
 
-            <!-- 7. Súper Galletas de Salmón -->
+            <!-- 8. Súper Galletas de Salmón -->
             <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
@@ -376,12 +380,12 @@
                     maxHeight: isMobile ? window.innerHeight - 100 : 700,
                     drawShadow: true,
                     maxShadowOpacity: 0.4,
-                    showCover: false,                   /* Desactivado showCover para que todas las paginas se arrastren libremente por igual */
+                    showCover: false,
                     usePortrait: isMobile ? true : false,
-                    mobileScrollSupport: false,         /* Desactivado para que el toque en esquinas active el arrastre de hoja sin bloquearse con el scroll de la pagina */
+                    mobileScrollSupport: false,
                     useMouseEvents: true,
                     clickEventForward: true,
-                    flippingTime: 350                   /* Respuesta ultrarrápida al toque */
+                    flippingTime: 350
                 });
 
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));
@@ -392,7 +396,7 @@
                     playPageSound();
                 });
             } catch (err) {
-                console.error("Error al initialise PageFlip:", err);
+                console.error("Error al inicializar PageFlip:", err);
             }
         });
 

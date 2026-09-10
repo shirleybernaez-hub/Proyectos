@@ -169,7 +169,7 @@
             margin: 0 auto;
         }
 
-        /* --- ADAPTACIÓN MÓVIL OPTIMIZADA CON MARGEN PARA FÁCIL ARRASTRE --- */
+        /* --- ADAPTACIÓN MÓVIL OPTIMIZADA --- */
         @media (max-width: 768px) {
             body {
                 overflow: hidden;
@@ -215,7 +215,7 @@
 
             #book-container {
                 width: 100% !important;
-                height: 88% !important;
+                height: 85% !important;
                 box-shadow: 0 10px 30px rgba(0,0,0,0.12);
             }
             .page { 
@@ -249,7 +249,7 @@
         
         <div id="book-container">
             <!-- 0. Portada principal -->
-            <div class="page page-cover" data-density="soft">
+            <div class="page page-cover">
                 <div class="page-inner">
                     <img src="./logo/logokantal.png" style="width: 150px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
                     <h1 style="font-size: 8px; letter-spacing: 0.35em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
@@ -257,24 +257,24 @@
             </div>
 
             <!-- 1. Contraportada interior blanca -->
-            <div class="page" data-density="soft">
+            <div class="page">
                 <div class="page-inner">
                     <!-- Página limpia en blanco -->
                 </div>
             </div>
 
             <!-- 2. paginacatalogo.jpg -->
-            <div class="page presentation-page" data-density="soft">
+            <div class="page presentation-page">
                 <img src="./paginacatalogo.jpg" class="presentation-img" alt="Presentación Estática Kantal">
             </div>
 
-            <!-- 3. paginacatalogo2.jpg (Insertada justo después de paginacatalogo.jpg) -->
-            <div class="page presentation-page" data-density="soft">
+            <!-- 3. paginacatalogo2.jpg (Nuevo diseño) -->
+            <div class="page presentation-page">
                 <img src="./paginacatalogo2.jpg" class="presentation-img" alt="Presentación Estática 2 Kantal">
             </div>
 
             <!-- 4. Súper Galleta de Carne -->
-            <div class="page" data-density="soft">
+            <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
                 <div class="prod-image-container">
@@ -284,7 +284,7 @@
             </div>
 
             <!-- 5. Súper Galleta Cachorros -->
-            <div class="page" data-density="soft">
+            <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta Cachorros</h3>
                 <div class="prod-image-container">
@@ -294,7 +294,7 @@
             </div>
 
             <!-- 6. Súper Galleta de Queso -->
-            <div class="page" data-density="soft">
+            <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Queso</h3>
                 <div class="prod-image-container">
@@ -304,7 +304,7 @@
             </div>
 
             <!-- 7. Súper Galleta de Pollo -->
-            <div class="page" data-density="soft">
+            <div class="page">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Pollo</h3>
                 <div class="prod-image-container">
@@ -314,7 +314,7 @@
             </div>
 
             <!-- 8. Súper Galletas de Salmón -->
-            <div class="page" data-density="soft">
+            <div class="page page-cover">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
                 <div class="prod-image-container">
@@ -371,13 +371,13 @@
 
             try {
                 pageFlip = new St.PageFlip(container, {
-                    width: isMobile ? window.innerWidth - 30 : 480,
-                    height: isMobile ? window.innerHeight - 120 : 600,
-                    size: isMobile ? "stretch" : "fixed",
-                    minWidth: 250,
-                    maxWidth: isMobile ? window.innerWidth : 600,
-                    minHeight: 350,
-                    maxHeight: isMobile ? window.innerHeight - 100 : 700,
+                    width: isMobile ? 320 : 480,
+                    height: isMobile ? 480 : 600,
+                    size: "fixed",
+                    minWidth: 280,
+                    maxWidth: 800,
+                    minHeight: 400,
+                    maxHeight: 900,
                     drawShadow: true,
                     maxShadowOpacity: 0.4,
                     showCover: false,
@@ -389,7 +389,6 @@
                 });
 
                 pageFlip.loadFromHTML(container.querySelectorAll('.page'));
-
                 pageFlip.turnToPage(0);
 
                 pageFlip.on('flip', (e) => {

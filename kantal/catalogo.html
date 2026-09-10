@@ -251,25 +251,25 @@
         
         <div id="book-container">
             <!-- 0. Portada principal -->
-            <div class="page page-cover">
+            <div class="page page-cover" data-density="hard">
                 <div class="page-inner">
                     <img src="./logo/logokantal.png" style="width: 150px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
                     <h1 style="font-size: 8px; letter-spacing: 0.35em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
                 </div>
             </div>
 
-            <!-- 1. paginacatalogo.jpg (Página Izquierda limpia) -->
-            <div class="page presentation-page">
+            <!-- 1. paginacatalogo.jpg (Página Izquierda) -->
+            <div class="page presentation-page" data-density="soft">
                 <img src="./paginacatalogo.jpg" class="presentation-img" alt="Presentación Izquierda Kantal">
             </div>
 
-            <!-- 2. paginacatalogo2.jpg (Página Derecha: SOLO una imagen limpia) -->
-            <div class="page presentation-page">
+            <!-- 2. paginacatalogo2.jpg (Página Derecha exclusiva) -->
+            <div class="page presentation-page" data-density="soft">
                 <img src="./paginacatalogo2.jpg" class="presentation-img" alt="Presentación Derecha Kantal">
             </div>
 
             <!-- 3. Súper Galleta de Carne -->
-            <div class="page">
+            <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Carne</h3>
                 <div class="prod-image-container">
@@ -279,7 +279,7 @@
             </div>
 
             <!-- 4. Súper Galleta Cachorros -->
-            <div class="page">
+            <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta Cachorros</h3>
                 <div class="prod-image-container">
@@ -289,7 +289,7 @@
             </div>
 
             <!-- 5. Súper Galleta de Queso -->
-            <div class="page">
+            <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Queso</h3>
                 <div class="prod-image-container">
@@ -299,7 +299,7 @@
             </div>
 
             <!-- 6. Súper Galleta de Pollo -->
-            <div class="page">
+            <div class="page" data-density="soft">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galleta de Pollo</h3>
                 <div class="prod-image-container">
@@ -309,7 +309,7 @@
             </div>
 
             <!-- 7. Súper Galletas de Salmón -->
-            <div class="page page-cover">
+            <div class="page page-cover" data-density="hard">
                 <span class="cat-tag">Línea Súper Galletas</span>
                 <h3 class="prod-title">Súper Galletas de Salmón</h3>
                 <div class="prod-image-container">
@@ -375,7 +375,7 @@
                     maxHeight: 900,
                     drawShadow: true,
                     maxShadowOpacity: 0.4,
-                    showCover: false,
+                    showCover: true,
                     usePortrait: isMobile ? true : false,
                     mobileScrollSupport: false,
                     useMouseEvents: true,

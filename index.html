@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KANTAL | Catálogo de productos</title>
+    <!-- Librería oficial PageFlip versión estable -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            background-color: #f4f5f7;
+            color: #000;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 100;
+        }
+
+        header img {
+            width: 110px;
+            height: auto;
+        }
+
+        .main-container {
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px;
+            padding: 0 15px;
+        }
+
+        /* Flechas redondas, perfectamente simétricas y optimizadas */
+        .side-arrow {
+            background: #ffffff;
+            border: 1px solid #dcdcdc;
+            color: #111;
+            font-size: 22px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            min-height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+            user-select: none;
+            z-index: 50;
+            padding: 0;
+            line-height: 1;
+        }
+        .side-arrow:hover { background: #000; color: #fff; border-color: #000; transform: scale(1.05); }
+        .side-arrow:active { transform: scale(0.95); }
+
+        #book-container {
+            margin: 0 auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        .page {
+            background-color: #ffffff;
+            background-image: linear-gradient(to right, #f2f2f2 0%, #ffffff 5%, #ffffff 95%, #f2f2f2 100%);
+            padding: 35px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            user-select: none;
+            height: 100%;
+            width: 100%;
+        }
+
+        .page-cover {
+            background: #ffffff !important;
+            background-image: none !important;
+        }
+
+        .page-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .prod-image-container {
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .prod-image {
+            max-height: 250px;
+            max-width: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.06));
+        }
+
+        /* Ajuste limpio para las páginas de imagen completa */
+        .presentation-page {
+            padding: 0 !important;
+            background: #ffffff !important;
+            background-image: none !important;
+        }
+
+        .presentation-img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            object-position: center;
+            display: block;
+        }
+
+        /* Ajuste para la página de video integrada */
+        .video-page {
+            padding: 0 !important;
+            background: #000000 !important;
+            background-image: none !important;
+        }
+
+        .catalog-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .cat-tag {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: #9E2300;
+            margin-bottom: 8px;
+        }
+
+        .prod-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .prod-desc {
+            font-size: 11px;
+            color: #555;
+            line-height: 1.5;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        /* --- ADAPTACIÓN MÓVIL OPTIMIZADA --- */
+        @media (max-width: 768px) {
+            body {
+                overflow: hidden;
+                width: 100vw;
+                height: 100vh;
+                background-color: #f4f5f7;
+                justify-content: flex-start;
+            }
+            header { 
+                position: relative; 
+                height: 50px; 
+                padding: 0 15px; 
+            }
+            header img { 
+                width: 85px; 
+            }
+            .main-container {
+                margin-top: 0;
+                gap: 0;
+                padding: 0 10px;
+                width: 100vw;
+                height: calc(100vh - 50px);
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .side-arrow {
+                width: 38px;
+                height: 38px;
+                min-width: 38px;
+                min-height: 38px;
+                font-size: 16px;
+                position: absolute;
+                bottom: 15px;
+                z-index: 100;
+                background: #ffffff;
+                border: 1px solid #dcdcdc;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            }
+            .side-arrow:nth-of-type(1) { left: 15px; }
+            .side-arrow:nth-of-type(2) { right: 15px; }
+
+            #book-container {
+                width: 100% !important;
+                height: 85% !important;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            }
+            .page { 
+                padding: 15px; 
+            }
+            .prod-image-container { 
+                height: 190px; 
+            }
+            .prod-image { 
+                max-height: 180px; 
+            }
+            .prod-title { 
+                font-size: 15px; 
+            }
+            .prod-desc { 
+                font-size: 10px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <img src="./logo/logokantal.png" alt="Kantal Logo">
+        </div>
+    </header>
+
+    <div class="main-container">
+        <button class="side-arrow" onclick="prevPage()">&#10094;</button>
+        
+        <div id="book-container">
+            <!-- 0. Portada principal -->
+            <div class="page page-cover" data-density="hard">
+                <div class="page-inner">
+                    <img src="./logo/logokantal.png" style="width: 150px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
+                    <h1 style="font-size: 8px; letter-spacing: 0.35em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">CATÁLOGO DE PRODUCTOS</h1>
+                </div>
+            </div>
+
+            <!-- 1. paginacatalogo.jpg (Página Izquierda) -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./paginacatalogo.jpg" class="presentation-img" alt="Presentación Izquierda Kantal">
+            </div>
+
+            <!-- 2. paginacatalogo2.jpg (Página Derecha) -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./paginacatalogo2.jpg" class="presentation-img" alt="Presentación Derecha Kantal">
+            </div>
+
+            <!-- 3. videorpuebakantal.mp4 (Video integrado) -->
+            <div class="page video-page" data-density="soft">
+                <video class="catalog-video" autoplay loop muted playsinline>
+                    <source src="./videorpuebakantal.mp4" type="video/mp4">
+                    Tu navegador no soporta videos HTML5.
+                </video>
+            </div>
+
+            <!-- 4. Súper Galleta de Carne -->
+            <div class="page" data-density="soft">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta de Carne</h3>
+                <div class="prod-image-container">
+                    <img src="./catalogo/Supergalleta_carne.png" class="prod-image" alt="Súper Galleta de Carne">
+                </div>
+                <p class="prod-desc">Galletas horneadas con auténtico sabor a carne, ideales como premio nutritivo y energético para consentir a su mascota.</p>
+            </div>
+
+            <!-- 5. Súper Galleta Cachorros -->
+            <div class="page" data-density="soft">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta Cachorros</h3>
+                <div class="prod-image-container">
+                    <img src="./catalogo/supergalleta_cachorros.png" class="prod-image" alt="Súper Galleta Cachorros">
+                </div>
+                <p class="prod-desc">Fórmula especial de fácil digestión diseñada para el crecimiento saludable y la nutrición delicada de los cachorros.</p>
+            </div>
+
+            <!-- 6. Súper Galleta de Queso -->
+            <div class="page" data-density="soft">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta de Queso</h3>
+                <div class="prod-image-container">
+                    <img src="./catalogo/supergalleta_queso.png" class="prod-image" alt="Súper Galleta de Queso">
+                </div>
+                <p class="prod-desc">Irresistible sabor a queso seleccionado, aportando calcio y un estímulo de sabor único que encantará a su perro.</p>
+            </div>
+
+            <!-- 7. Súper Galleta de Pollo -->
+            <div class="page" data-density="soft">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galleta de Pollo</h3>
+                <div class="prod-image-container">
+                    <img src="./catalogo/supergalletapollo.png" class="prod-image" alt="Súper Galleta de Pollo">
+                </div>
+                <p class="prod-desc">Bocados crujientes con exquisito sabor a pollo, ricos en proteínas de alta calidad para vitalidad diaria.</p>
+            </div>
+
+            <!-- 8. Súper Galletas de Salmón -->
+            <div class="page" data-density="soft">
+                <span class="cat-tag">Línea Súper Galletas</span>
+                <h3 class="prod-title">Súper Galletas de Salmón</h3>
+                <div class="prod-image-container">
+                    <img src="./catalogo/supergalletas_salmon.png" class="prod-image" alt="Súper Galletas de Salmón">
+                </div>
+                <p class="prod-desc">Enriquecidas con ácidos grasos esenciales Omega 3 para un pelaje brillante y una salud cutánea superior.</p>
+            </div>
+
+            <!-- 9. Fichas individuales en páginas completas de alta calidad -->
+            <!-- Enjuague Desenredante 180ml -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/perrosygatos/enjuague180.jpg" class="presentation-img" alt="Enjuague Desenredante 180ml">
+            </div>
+
+            <!-- Champú 180ml -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/perrosygatos/champu180.jpg" class="presentation-img" alt="Champú 180ml">
+            </div>
+
+            <!-- Champú Cosmético -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/perrosygatos/champucosmetico.jpg" class="presentation-img" alt="Champú Cosmético">
+            </div>
+
+            <!-- Colonia Cachorros -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/perrosygatos/coloniacachorros.jpg" class="presentation-img" alt="Colonia Cachorros">
+            </div>
+
+            <!-- Colonia Machos -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/perrosygatos/coloniamachos.jpg" class="presentation-img" alt="Colonia Machos">
+            </div>
+
+            <!-- Colonia Perros y Gatos -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/perrosygatos/coloniaperrosygatos.jpg" class="presentation-img" alt="Colonia Perros y Gatos">
+            </div>
+
+            <!-- Antiparasitario Pájaros -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/aves/antiparasitariopajaros.jpg" class="presentation-img" alt="Antiparasitario Pájaros">
+            </div>
+
+            <!-- Alimento Hámster -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/roedores/alimentohamster.jpg" class="presentation-img" alt="Alimento Hámster">
+            </div>
+
+            <!-- Supergalleta Cachorros Ficha -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/supergalletas/supergalleta_cachorros.jpg" class="presentation-img" alt="Supergalleta Cachorros Ficha">
+            </div>
+
+            <!-- Supergalleta Carne Ficha -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/supergalletas/supergalleta_carne.jpg" class="presentation-img" alt="Supergalleta Carne Ficha">
+            </div>
+
+            <!-- Supergalleta Pollo Ficha -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/supergalletas/supergalleta_pollo.jpg" class="presentation-img" alt="Supergalleta Pollo Ficha">
+            </div>
+
+            <!-- Supergalleta Queso Ficha -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/supergalletas/supergalleta_queso.jpg" class="presentation-img" alt="Supergalleta Queso Ficha">
+            </div>
+
+            <!-- Supergalletas Salmón Ficha -->
+            <div class="page presentation-page" data-density="soft">
+                <img src="./fichas/supergalletas/supergalletas_salmon.jpg" class="presentation-img" alt="Supergalletas Salmón Ficha">
+            </div>
+
+            <!-- Cierre / Contraportada -->
+            <div class="page page-cover" data-density="hard">
+                <div class="page-inner">
+                    <img src="./logo/logokantal.png" style="width: 150px; height: auto; margin-bottom: 15px;" alt="Logo Kantal">
+                    <h1 style="font-size: 8px; letter-spacing: 0.35em; text-transform: uppercase; color: #555; margin: 0; font-weight: 600;">GRACIAS POR SU VISITA</h1>
+                </div>
+            </div>
+        </div>
+
+        <button class="side-arrow" onclick="nextPage()">&#10095;</button>
+    </div>
+
+    <script>
+        let pageFlip;
+
+        function playPageSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioCtx();
+                if (ctx.state === 'suspended') ctx.resume();
+
+                const bufferSize = ctx.sampleRate * 0.12;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.04));
+                }
+
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1200;
+                filter.Q.value = 1.2;
+
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.35, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+
+                noise.start();
+            } catch (e) {}
+        }
+
+        window.addEventListener('load', () => {
+            const container = document.getElementById('book-container');
+            const isMobile = window.innerWidth <= 768;
+
+            try {
+                pageFlip = new St.PageFlip(container, {
+                    width: isMobile ? 320 : 480,
+                    height: isMobile ? 480 : 600,
+                    size: "fixed",
+                    minWidth: 280,
+                    maxWidth: 800,
+                    minHeight: 400,
+                    maxHeight: 900,
+                    drawShadow: true,
+                    maxShadowOpacity: 0.4,
+                    showCover: true,
+                    usePortrait: isMobile ? true : false,
+                    mobileScrollSupport: false,
+                    useMouseEvents: true,
+                    clickEventForward: true,
+                    flippingTime: 350
+                });
+
+                pageFlip.loadFromHTML(container.querySelectorAll('.page'));
+                pageFlip.turnToPage(0);
+
+                pageFlip.on('flip', (e) => {
+                    playPageSound();
+                });
+            } catch (err) {
+                console.error("Error al inicializar PageFlip:", err);
+            }
+        });
+
+        function nextPage() {
+            if (pageFlip) pageFlip.flipNext();
+        }
+
+        function prevPage() {
+            if (pageFlip) pageFlip.flipPrev();
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextPage();
+            if (e.key === 'ArrowLeft') prevPage();
+        });
+    </script>
+</body>
+</html>

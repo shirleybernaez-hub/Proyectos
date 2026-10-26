@@ -12,7 +12,6 @@
         .logo-kantal { height: auto; display: inline-block; width: 200px; }
         @media (min-width: 768px) { .logo-kantal { width: 350px; } }
         
-        /* Barra de navegación superior oculta o ajustada */
         .nav-switch { display: none; }
 
         .content-wrapper { max-width: 1400px; margin: 0 auto; padding: 20px 20px 80px 20px; }
@@ -66,6 +65,7 @@
             <button class="tab-button active" onclick="openTab(event, 'cat-cosmetica')">Línea Cosmética (7)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-productos')">Productos Perros/Gatos (10)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-galletas')">Súper Galletas (5)</button>
+            <button class="tab-button" onclick="openTab(event, 'cat-spray')">Productos en Spray (4)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-arena')">Arena Gatos (0)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-aves')">Aves (1)</button>
             <button class="tab-button" onclick="openTab(event, 'cat-peces')">Peces/Tortugas (0)</button>
@@ -86,6 +86,11 @@
         <div id="cat-galletas" class="category-content">
             <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Súper Galletas (5)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
             <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-galletas"></section>
+        </div>
+
+        <div id="cat-spray" class="category-content">
+            <div class="mb-6"><h3 class="text-xl font-black uppercase category-title">Productos en Spray (4)</h3><div class="h-1 w-12 bg-black mt-1"></div></div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8" id="grid-spray"></section>
         </div>
 
         <div id="cat-aves" class="category-content">
@@ -189,6 +194,14 @@
             ['sg5', 'Súper Galleta de Queso', 'supergalleta_queso.jpg', 'supergalleta_queso.pdf', 'supergalletas']
         ];
         galletas.forEach(p => createProductCard(...p, 'grid-galletas'));
+
+        const spray = [
+            ['sp1', 'Antiparasitario Pájaros Spray', 'antiparasitario_pajaros.jpg', 'antiparasitario_pajaros.pdf', 'Spray'],
+            ['sp2', 'Matagusanos Ectoparasiticida 1', 'matagusanos_ectoparasitar...jpg', 'matagusanos_ectoparasitardo.pdf', 'Spray'],
+            ['sp3', 'Matagusanos Ectoparasiticida 2', 'matagusanos_ectoparasiticida.jpg', 'matagusanos_ectoparasiticida.pdf', 'Spray'],
+            ['sp4', 'Sarnicida Pulguicida', 'sarnicida_pulguicida.jpg', 'sarnicida_pulguicida.pdf', 'Spray']
+        ];
+        spray.forEach(p => createProductCard(...p, 'grid-spray'));
 
         createProductCard('a1', 'Antiparasitario Pájaros', 'antiparasitariopajaros.jpg', 'antiparasitariopajaros.pdf', 'aves', 'grid-aves');
         createProductCard('r1', 'Alimento Hamster', 'alimentohamster.jpg', 'alimentohamster.pdf', 'roedores', 'grid-roedores');

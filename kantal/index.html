@@ -46,11 +46,6 @@
         <img src="logo/logokantal.svg" class="logo-kantal" alt="Kantal Logo">
     </header>
 
-    <nav class="nav-switch">
-        <a href="index.html" class="switch-btn active">Fichas Técnicas</a>
-        <a href="catalogo.html" class="switch-btn">Catálogo Revista</a>
-    </nav>
-
     <div class="content-wrapper">
         <div class="text-center mb-8">
             <h2 class="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-0">Fichas Técnicas</h2>
@@ -114,7 +109,9 @@
                 <article class="product-card" data-name="${name}">
                     <h4 class="text-[13px] font-bold uppercase tracking-tight">${name}</h4>
                     <div class="w-full bg-[#fcfcfc] p-2 rounded-2xl border border-zinc-50">
-                        <img src="fichas/${folder}/${img}" class="w-full h-auto object-contain rounded-lg">
+                        <img src="fichas/${folder}/${img}" 
+                             onerror="this.onerror=null; this.src='fichas/${folder}/${img.toUpperCase()}';" 
+                             class="w-full h-auto object-contain rounded-lg" alt="${name}">
                     </div>
                     <a href="fichas/${folder}/${pdf}" download class="btn-download">Descargar PDF</a>
                     

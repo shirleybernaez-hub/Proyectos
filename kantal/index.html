@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -113,7 +114,7 @@
                 <article class="product-card" data-name="${name}">
                     <h4 class="text-[13px] font-bold uppercase tracking-tight">${name}</h4>
                     <div class="w-full overflow-hidden rounded-2xl">
-                        <img src="fichas/${folder}/${img}?v=1793058018" onerror="if(!this.dataset.t1){this.dataset.t1=1;this.src='fichas/'+folder+'/'+img.replace('_', ' ');}else if(!this.dataset.t2){this.dataset.t2=1;this.src='fichas/'+folder+'/'+img.replace('_', '-');}else if(!this.dataset.t3){this.dataset.t3=1;this.src='fichas/'+folder+'/sarnicida.jpg';}" class="w-full h-auto object-contain rounded-lg">
+                        <img src="fichas/${folder}/${img}" class="w-full h-auto object-contain rounded-lg">
                     </div>
                     <a href="fichas/${folder}/${pdf}" download class="btn-download">Descargar PDF</a>
                     
